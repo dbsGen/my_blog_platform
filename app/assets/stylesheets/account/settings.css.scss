@@ -1,0 +1,16 @@
+// Place all the styles related to the account/setting controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#name-card-thumbnail {
+  background-color: #ffffff;
+  width:60px;
+  height:76px;
+}
+
+#settings-form {
+  background-color: white;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 0 0 1px #DDDDDD;
+  margin: 10px 0px 0px;
+}

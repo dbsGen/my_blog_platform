@@ -1,0 +1,21 @@
+-#这个页面需要users
+= javascript_tag do
+  this.account_admin_search_users_path = "#{account_admin_search_users_path}"
+  this.source_url = "#{request.url}"
+= javascript_include_tag 'account/admin/users'
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('admin.title')}>#{t('admin.users')}"
+      .navbar
+        .navbar-inner
+          .search-bar
+            .navbar-search.pull-right
+              = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+              %i.icon-search.disable#search-icon
+
+      = render :partial => 'account/admin/content',
+               :locals => {:partial => 'account/admin/users/user',
+                           :objects => @users,
+                           :page => params[:page],
+                           :total_page => @total_page}

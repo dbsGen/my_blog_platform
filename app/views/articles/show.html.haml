@@ -1,0 +1,8 @@
+.article.container
+  .article-header
+    .article-title= @article.title
+    .article-subtitle subtitle
+  .article-body
+    - @article.elements.each do |element|
+      = render :file => '/home/gen/Project/simple-text/view_model/view/content.html.haml',
+               :locals => {:id => 'content_id', :content => element.content}

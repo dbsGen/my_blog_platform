@@ -1,0 +1,3 @@
+module HomePageHelper
+
+end

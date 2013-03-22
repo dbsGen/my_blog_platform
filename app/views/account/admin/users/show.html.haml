@@ -1,0 +1,43 @@
+= form_tag account_admin_user_path(@user), :method => 'put', :remote => true, :class => 'form-horizontal' do
+  %section
+    %fieldset
+      %legend= "#{t('admin.title')}>#{t('admin.users')}>#{@user.name}"
+      .control-group
+        %label.control-label{:for => 'name_card'}
+          = t 'name_card'
+        .controls
+          #name_card
+            %a.thumbnail#name-card-thumbnail{:href => '#'}
+              = image_tag @user.portrait_path, :size => '60x60'
+              = t('edit')
+      .control-group
+        %label.control-label
+          = t('email')
+        .controls
+          = text_field_tag 'email', @user.email
+      .control-group
+        %label.control-label
+          = t('summary')
+        .controls
+          = text_area_tag 'summary', @user.summary, :rows => 3
+      .control-group
+        %label.control-label
+          = t 'password'
+        .controls
+          = text_field_tag 'password', '', :placeholder => t('input_new_password')
+      .control-group
+        %label.control-label
+          = t('register_at')
+        .controls
+          = text_field_tag 'register_time', @user.register_time.strftime('%F'), :disabled => true
+      .control-group
+        %label.control-label
+          = t('sessions.title')
+        .controls
+          = render :partial => 'account/admin/content',
+                         :locals => {:partial => 'account/admin/sessions/session',
+                                     :objects => @sessions,
+                                     :page => 1,
+                                     :total_page => 1}
+      .form-actions
+        = submit_tag t('save'), :class => 'btn-primary btn', :id => 'save_button'

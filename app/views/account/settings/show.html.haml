@@ -1,0 +1,41 @@
+= javascript_tag do
+  this.user_path = "#{user_path}"
+  this.short_password = "#{t('modify_password.too_short')}"
+  this.confirmation_failed = "#{t('modify_password.confirmation_failed')}"
+= javascript_include_tag 'account/setting'
+.form-horizontal
+  %section
+    %fieldset
+      %legend= t('settings')
+      .control-group
+        %label.control-label{:for => 'name_card'}
+          = t 'name_card'
+        .controls
+          #name_card
+            %a.thumbnail#name-card-thumbnail{:href => '#'}
+              = image_tag current_user.portrait_path, :size => '60x60'
+              = t('edit')
+      .control-group
+        %label.control-label
+          = t 'email'
+        .controls
+          %input{:type => 'text', :disabled => true, :value => current_user.email}
+      .control-group
+        %label.control-label
+          = t 'summary'
+        .controls
+          %textarea#summary-area= current_user.summary
+          %i#loading-icon.icon-refresh.spin{:style => 'display:none;'}
+      .control-group
+        %label.control-label
+          = t 'password'
+        .controls
+          %a#modify-password-button.btn{:href => "#password-modal", :role => 'button', 'data-toggle' => 'modal'}
+            = t 'modify_password.title'
+      .control-group
+        %label.control-label
+          = t 'register_at'
+        .controls
+          %input{:type => 'text', :disabled => true, :value => current_user.register_time.strftime('%F')}
+
+= render :partial => 'account/settings/modify_password'

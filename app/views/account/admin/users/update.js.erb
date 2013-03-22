@@ -1,0 +1,8 @@
+<% if @ret -%>
+Messenger().post('<%= t 'save_success'%>');
+<% else -%>
+Messenger().post({
+    message:'<%= t 'save_failed'%>',
+    type: 'error'
+});
+<% end -%>

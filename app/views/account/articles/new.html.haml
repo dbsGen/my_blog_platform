@@ -1,0 +1,22 @@
+= javascript_include_tag 'third_party/advanced'
+= javascript_include_tag 'third_party/wysihtml5-0.3.0'
+= javascript_include_tag 'articles/new'
+
+.form-horizontal
+  %section
+    %fieldset
+      %legend= t('articles.new')
+      .control-group
+        %label.control-label= t('articles.title.label')
+        .controls
+          = text_field_tag 'title', '', :placeholder => t('articles.title.placeholder'), :class => 'span8'
+      .control-group
+        %label.control-label= t('articles.content.label')
+        .controls
+          = render :file => '/home/gen/Project/simple-text/edit_model/view/content.html.haml', :locals => {:id => 'content_id'}
+      .form-actions
+        = link_to t('post'), account_articles_path,
+                  :class => 'btn btn-primary',
+                  :id => 'post'
+        = link_to t('cancel'), account_articles_path, :class => 'btn'
+

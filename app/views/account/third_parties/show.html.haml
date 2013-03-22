@@ -1,0 +1,16 @@
+= stylesheet_link_tag 'colorbox'
+= javascript_include_tag 'jquery.colorbox-min'
+= third_party_js
+
+.form-horizontal
+  %section
+    %fieldset
+      %legend= t('third_parties.title')
+      .control-group
+        %label.control-label= t('third_parties.baidu_yun')
+        .controls
+          = third_party_tag(baidu_yun_name, 'baidu', baidu_path)
+      .control-group
+        %label.control-label= t('third_parties.youku')
+        .controls
+          = third_party_tag(youku_name, 'youku', youku_path)

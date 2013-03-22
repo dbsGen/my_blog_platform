@@ -1,0 +1,19 @@
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('articles.title.label')}"
+      .navbar
+        .navbar-inner
+          = link_to raw("<i class='icon-plus'></i>#{t('articles.new')}"),
+                    new_account_article_path,
+                    :class => 'btn pull-left'
+          .search-bar
+            .navbar-search.pull-right
+              = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+              %i.icon-search.disable#search-icon
+
+      = render :partial => 'account/admin/content',
+               :locals => {:partial => 'account/articles/article',
+                           :objects => @users,
+                           :page => params[:page],
+                           :total_page => @total_page}

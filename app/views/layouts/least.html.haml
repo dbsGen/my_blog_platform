@@ -1,0 +1,9 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? "BlogSystem" : @title
+    = stylesheet_link_tag    "least", :media => "all"
+    = javascript_include_tag "least"
+    = csrf_meta_tags
+  %body
+    = yield

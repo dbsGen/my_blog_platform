@@ -1,0 +1,111 @@
+zh:
+  login: '登录'
+  ID: '用户名'
+  password: '密码'
+  or: '&emsp;'
+  signup: '注册'
+  email: '邮箱'
+  register_failed: '注册失败!'
+  remember_me: '记住我'
+  login_failed: '帐号或密码错误'
+  must_login: '登录后才能浏览这个页面!'
+  logout_success: '已注销'
+  logout: '注销'
+  profiles: '用户页面'
+  articles: '文章'
+  settings: '设置'
+  name_card: '名片'
+  edit: '编辑'
+  summary: '简介'
+  close: '关闭'
+  OK: '确定'
+  loading: '请稍候...'
+  old_password: '密码'
+  new_password: '新密码'
+  input_old_password: '老密码'
+  input_new_password: '不小于4个字符'
+  password_confirmation: '密码确认'
+  input_password_confirmation: '再输入一次'
+  register_at: '注册时间'
+  search: '搜索'
+  delete: '删除'
+  save: '保存'
+  delete_success: '删除成功'
+  save_success: '保存成功'
+  save_failed: '保存失败'
+  post: '发布'
+  cancel: '取消'
+  author: '作者'
+
+  articles:
+    label: '文章'
+    new: '发布文章'
+    title:
+      label: '标题'
+      placeholder: '文章标题'
+    content:
+      label: '内容'
+
+  third_parties:
+      title: '三方平台'
+      baidu_yun: '百度云'
+      youku: '优酷'
+      set: '设置'
+      success: '认证成功,请稍等...'
+
+  admin:
+    title: '管理员'
+    users: '用户'
+    actions: '操作'
+    create_at: '生成时间'
+    expired: '过期时间'
+    login_IP: '登录IP'
+
+  status:
+    401: '用户未授权,请先登录。'
+
+  modify_password:
+    title: '修改密码'
+    success: '密码修改成功'
+    failed: '密码修改失败'
+    too_short: '密码太短'
+    cannot_same: '新密码和原密码一致'
+    invalid: '密码错误'
+    confirmation_failed: '密码不一致'
+
+  layouts:
+    navbar:
+      home: '主页'
+      popular: '热门'
+      recommend: '推荐'
+      last: '最新'
+
+  sessions:
+    title: '登录状态'
+    new:
+      not_signup_yet: '还没有帐号?'
+      ID_placeholder: '用户名或邮箱'
+      pwd_placeholder: '不小于4个字符'
+  users:
+    new:
+      already_have_account: '已有帐号'
+      ID_placeholder: '4-20个字符'
+      pwd_placeholder: '不小于4个字符'
+      email_placeholder: '用于找回密码'
+
+  mongo_mapper:
+      errors:
+        models:
+          user:
+            attributes:
+              name:
+                blank: '用户名不能为空'
+                too_short: '用户名太短'
+                too_long: '用户名太长'
+                taken: '用户名被占用'
+              email:
+                taken: '邮箱被占用'
+                invalid: '邮箱不可用'
+                blank: '邮箱不能为空'
+              password:
+                too_short: '密码太短'

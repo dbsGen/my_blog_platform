@@ -1,0 +1,7 @@
+var str = "<%= escape_javascript third_party_tag(nil, @type, path_with_type(@type)) %>"
+$(str).replaceAll("#<%= @type %>");
+$('.iframe').colorbox({
+    iframe:true,
+    width:'80%',
+    height:'80%'
+});

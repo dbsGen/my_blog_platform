@@ -1,0 +1,17 @@
+-#header 是否是头部
+-#object 单个数据
+- if header == true
+  %tr
+    %th #
+    %th= t('ID')
+    %th= t('register_at')
+    %th= t('admin.actions')
+- else
+  %tr{:id => dom_id(object)}
+    %td= object.id
+    %td= object.name
+    %td= object.register_time.strftime('%F')
+    %td
+      -#TODO 需要补全url
+      = link_to t('edit'), account_admin_user_path(object)
+      = link_to t('delete'), account_admin_user_path(object), :method => 'delete', :remote => true

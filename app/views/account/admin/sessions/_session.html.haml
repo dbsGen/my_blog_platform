@@ -1,0 +1,14 @@
+- if header == true
+  %tr
+    %th #
+    %th= t('admin.create_at')
+    %th= t('admin.expired')
+    %th= t('admin.login_IP')
+    %th= t('admin.actions')
+- else
+  %tr{:id => dom_id(object)}
+    %td= object.id
+    %td= object.create_at.nil? ?  '' : object.create_at.strftime('%F')
+    %td= object.expired.nil? ?  '' : object.expired.strftime('%F')
+    %td= object.ip_address
+    %td= link_to t('delete'), account_admin_session_path(object), :method => 'delete', :remote => true

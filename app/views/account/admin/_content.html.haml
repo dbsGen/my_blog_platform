@@ -1,0 +1,11 @@
+-#这个模板需要传入 partial 用于渲染 单个数据
+-#objects表示需要显示的数据集合
+-#path分页请求地址
+
+%table.table.table-hover#content-field
+  = render :partial => partial, :locals => {:header => true}
+  - objects.each do |object|
+    = render :partial => partial, :locals => {:header => false, :object => object}
+- if total_page > 1
+  = pagination_tag(request.url, total_page, page)
+

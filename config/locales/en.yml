@@ -1,0 +1,118 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  login: 'Login'
+  ID: 'Username'
+  password: 'Password'
+  or: 'or'
+  signup: 'Signup'
+  email: 'Email'
+  register_failed: 'Register failed'
+  remember_me: 'Remember me'
+  login_failed: 'Username or password incorrect'
+  must_login: 'Please login to access the page!'
+  logout_success: 'Logout success!'
+  logout: 'Logout'
+  profiles: 'Profiles'
+  articles: 'Articles'
+  settings: 'Settings'
+  name_card: 'Name card'
+  edit: 'Edit'
+  summary: 'Summary'
+  close: 'Close'
+  OK: 'OK'
+  loading: 'Loading..'
+  old_password: 'Password'
+  new_password: 'New password'
+  input_old_password: 'Please input your password'
+  input_new_password: '4 characters or more'
+  password_confirmation: 'Password confirmation'
+  input_password_confirmation: 'Input again'
+  register_at: 'Register at'
+  search: 'Search'
+  delete: 'Delete'
+  save: 'Save'
+  delete_success: 'Delete success'
+  save_success: 'Save success'
+  save_failed: 'Save failed'
+  post: 'Post'
+  cancel: 'Cancel'
+  author: 'author'
+
+  articles:
+    label: 'Articles'
+    new: 'New article'
+    post:
+      success: 'Post success'
+      failed: 'Post failed'
+    title:
+      label: 'Title'
+      placeholder: 'Input article title here'
+    content:
+      label: 'Content'
+
+
+  third_parties:
+    title: 'Third party'
+    baidu_yun: 'Baidu yun'
+    youku: 'youku'
+    set: 'Set'
+    success: 'Authenticate success, please wait...'
+
+  admin:
+    title: 'Administrator'
+    users: 'Users'
+    actions: 'Actions'
+    create_at: 'Create at'
+    expired: 'Expired'
+    login_IP: 'Login IP'
+
+  status:
+    401: 'User is not authorized, please login first.'
+
+  modify_password:
+    title: 'Modify password'
+    success: 'Modify password success'
+    failed: 'Modify password failed'
+    too_short: 'Password is too short'
+    cannot_same: 'The same password'
+    invalid: 'Password is invalid'
+    confirmation_failed: 'Confirmation failed'
+
+  layouts:
+    navbar:
+      home: 'Home'
+      popular: 'Popular'
+      recommend: 'Recommend'
+      last: 'Last'
+
+  sessions:
+    title: 'Sessions'
+    new:
+      not_signup_yet: 'Not Signup Yet'
+      ID_placeholder: 'Username or email'
+      pwd_placeholder: '4 characters or more'
+  users:
+    new:
+      already_have_account: 'Already have account'
+      ID_placeholder: '4-20 characters'
+      pwd_placeholder: '4 characters or more'
+      email_placeholder: 'Used to retrieve the password'
+
+  mongo_mapper:
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: 'Username cannot be empty'
+              too_short: 'Username is too short'
+              too_long: 'Username is too long'
+              taken: 'Username is occupied'
+            email:
+              taken: 'Email is occupied'
+              invalid: 'Email is invalid'
+              blank: 'Email cannot be empty'
+            password:
+                too_short: 'Password is too short'

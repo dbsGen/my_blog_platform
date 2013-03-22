@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? "BlogSystem" : @title
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = check_information
+
+  %body
+    - unless hidden_navbar?
+      = render :partial => 'layouts/navbar'
+      .skip{:style => 'height:48px'}
+    = yield
+    - unless hidden_footer?
+      = render :partial => 'layouts/footer'

@@ -1,0 +1,1 @@
+CONFIG = YAML.load 'config/config.yml'

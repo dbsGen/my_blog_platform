@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? "BlogSystem" : @title
+    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag 'account/settings'
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = check_information
+  %body
+    .row
+      = render :partial => 'layouts/sidebar'
+      .span9.sidebar-main
+        .row-fluid
+          .span12#settings-form
+            = yield

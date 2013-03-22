@@ -1,0 +1,21 @@
+.span3.gen-sidebar
+  %ul.nav.nav-list.nav-stacked
+    %li
+      .row-fluid.gen-sidebar-lien
+        .span4
+          .thumbnail.gen-portrait
+            = image_tag current_user.portrait_path, :size => "48x48"
+        .span8
+          .gen-sidebar-header
+            %strong= current_user.name
+          #summary.gen-sidebar-header
+            %small= current_user.summary
+    %li.divider
+    = sidebar_li_tag t('articles.label'), account_articles_path, @page_index == :articles
+    = sidebar_li_tag t('settings'), account_settings_path, @page_index == :settings
+    = sidebar_li_tag t('third_parties.title'), account_third_parties_path, @page_index == :third_parties
+    - if admin?
+      %li.divider
+      = sidebar_header_tag t('admin.title')
+      = sidebar_li_tag t('admin.users'), account_admin_users_path, @page_index == :admin_users
+    %li.divider
