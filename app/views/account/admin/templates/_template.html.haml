@@ -1,0 +1,16 @@
+- if header == true
+  %tr
+    %th #
+    %th= t('name')
+    %th= t('version')
+    %th= t('admin.create_at')
+    %th= t('admin.actions')
+- else
+  %tr{:id => dom_id(object)}
+    %td= object.id
+    %td= object.name
+    %td= object.version || '0.0'
+    %td= object.edited_at
+    %td
+      -#TODO 需要补全url
+      = link_to t('delete'), account_admin_template_path(object), :method => 'delete', :remote => true

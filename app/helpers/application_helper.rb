@@ -49,8 +49,13 @@ $(document).ready(function(){
   end
 
   def pagination_tag(path, total, now, per_page = 25, total_to_show = 9)
-    now = 0 if now.nil?
+    now = 1 if now.nil?
+    now = now.to_i
+    now = 1 if now < 1
     total = 1 if total.nil?
+    total = total.to_i
+    path = path[0..((path.index('?') || 0) - 1)]
+
     if total <= 1
       return ''
     end
@@ -60,24 +65,25 @@ $(document).ready(function(){
     end
 
     def li_in_pagination(active, show, path)
-      if active == 'disabled' or active == 'active'
+      if active == 'disabled' or active == ''
         "<li class='#{active}'><a>#{show}</a></li>"
       else
         "<li class='#{active}'><a href='#{path}'>#{show}</a></li>"
       end
     end
 
+    #一共现实多少页
     tts = total > total_to_show ? total_to_show : total
     start = (now - tts / 2).ceil
-    start = start < 0 ? 0 : start
+    start = 1 if start < 1
 
     html = '<div class="pagination"><ul>'
-    html << li_in_pagination(now == 0 ? 'disabled' : '', '<<', path_on_page(path, 1, per_page))
+    html << li_in_pagination(now <= 1 ? 'disabled' : 'active', '<<', path_on_page(path, 1, per_page))
     tts.times do |i|
       p = start + i
-      html << li_in_pagination(now == p ? 'active' : '', p + 1, path_on_page(path, p + 1, per_page))
+      html << li_in_pagination(now != p ? 'active' : '', p, path_on_page(path, p, per_page))
     end
-    html << li_in_pagination(now == total - 1 ? 'disabled' : '', '>>', path_on_page(path, total, per_page))
+    html << li_in_pagination(now >= total ? 'disabled' : 'active', '>>', path_on_page(path, total, per_page))
     html << '</ul></div>'
     raw html
   end

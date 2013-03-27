@@ -60,13 +60,21 @@ BlogSystem::Application.routes.draw do
   namespace :account do
     get 'settings'                => 'Settings#show',         :as => 'settings'
     get 'third_parties'           => 'ThirdParties#show',     :as => 'third_parties'
+    get 'search_articles'         => 'Articles#search',       :as => 'search_articles'
     get 'third_parties/callback/:from'  => 'ThirdParties#callback', :as => 'TP_callback'
     delete 'third_parties/:type'        => 'ThirdParties#destroy',  :as => 'TP_delete'
     resources :articles
+    resources :templates, :only => [:index, :show]
     namespace :admin do
       resources :users,     :only => [:index, :show, :destroy, :update]
       resources :sessions,  :only => [:destroy]
-      post 'users/search' => 'Users#search', :as => 'search_users'
+      resources :templates, :only => [:index, :destroy]
+      resources :articles
+
+      get 'search_articles'    => 'Articles#search',       :as => 'search_articles'
+      get 'search_template'    => 'Templates#search',   :as => 'search_templates'
+      get 'search_user'        => 'Users#search',       :as => 'search_users'
+      get 'templates/default'  => 'Templates#default',  :as => 'default_templates'
     end
   end
 

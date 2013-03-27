@@ -1,2 +1,10 @@
 title: 'blog'
 system: ''
+
+#数据库配置
+db_address: 'localhost'
+db_ip: 27017
+
+#默认用户注册就拥有的模板
+default_templates:
+  - 'simple_text'

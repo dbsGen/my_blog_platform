@@ -1,9 +1,11 @@
 class Account::ArticlesController < ApplicationController
   layout 'user_page'
   before_filter :require_login, :enter_page
+  before_filter :get_article, :only => [:destroy, :update, :show]
 
   def new
     @title = t('articles.new')
+    @template = Template.first(:name => 'simple_text')
     respond_to do |format|
       format.html
       format.js
@@ -11,40 +13,116 @@ class Account::ArticlesController < ApplicationController
   end
 
   def create
-    p "get some info #{params}"
-    element = Element.new :content => params[:content]
+
+    elements = params[:elements]
+    es = []
+    s = elements.size
+    s.times do |i|
+      d = elements[i.to_s]
+      tn = d['template_name']
+      c = d['content']
+      template = Template.first(:name => tn)
+      raise 'Temp not found' if template.nil?
+      element = Element.new(:content => c, :template => template)
+      es << element
+    end
+
     article = Article.new :title => params[:title],
                           :creater => current_user,
                           :created_at => Time.now,
-                          :elements => [element]
-    if article.save and element.save
-      render_format 200, t('articles.post.success')
+                          :elements => es
+    if article.save
+      render_format 200, :msg => t('articles.post.success'), :redirect_url => article_path(article)
     else
       render_format 500, t('articles.post.failed')
     end
+
+  rescue Exception => e
+    render_format 500, t('articles.post.failed')
   end
 
   def show
-    redirect_to article_path(params[:id])
+    @title = t('articles.show.edit_label')
+  end
+
+  def search
+    per_page = params[:per_page] || 25
+    articles = current_user.articles.where :title => /#{params[:key]}/
+    @articles = articles.paginate(
+        :order    => :created_at.asc,
+        :per_page => per_page,
+        :page     => params[:page],
+    )
+    @total_page = articles.count / per_page + 1
+    respond_to do |format|
+      format.html {render :template => 'account/articles/index'}
+      format.js
+    end
   end
 
   def index
+    @title = t('articles.label')
     per_page = params[:per_page] || 25
     articles = current_user.articles
-    @total_page = articles.count / per_page + 1
-    @users = articles.paginate(
+    @total_page = articles.count / per_page.to_i + 1
+    @articles = articles.paginate(
         :order    => :created_at.asc,
         :per_page => per_page,
         :page     => params[:page],
     )
     respond_to do |format|
       format.html
-      #format.js {render :template => 'account/admin/users/search'}
+      format.js {render :template => 'account/articles/search'}
     end
+  end
+
+  def destroy
+    @key = dom_id(@article)
+    @article.destroy
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update
+    elements = params[:elements]
+    es = []
+    s = elements.size
+    s.times do |i|
+      d = elements[i.to_s]
+      tn = d['template_name']
+      c = d['content']
+      template = Template.first(:name => tn)
+      raise 'Temp not found' if template.nil?
+      element = Element.new(:content => c, :template => template)
+      es << element
+    end
+
+    ret = @article.update_attributes!(
+        :title => params[:title],
+        :edited_at => Time.now,
+        :elements => es
+    )
+    if ret
+      render_format 200, :msg => t('articles.update.success')
+    else
+      render_format 500, t('articles.update.failed')
+    end
+
+  rescue Exception => e
+    logger.error("Got a error when update #{@article} : #{e}")
+    render_format 500, t('articles.update.failed')
   end
 
   protected
   def enter_page
     @page_index = :articles
+  end
+
+  def get_article
+    @article = current_user.articles.first(:id => params[:id])
+    if @article.nil?
+      render_404
+    end
   end
 end

@@ -25,11 +25,12 @@ class User
   many :created_templates,  :class => Template, :foreign_key => :creater_id
   many :usable_templates,   :class => Template
 
+  before_destroy :clean_sessions
 
   validates :name, :email, :presence => true, :uniqueness => {:case_sensitive => false}
   validates :name,  :format => {:with => /\A\w+\z/, :message => 'only A-Z, a-z, _ allowed'}, :length => {:in => 4..20}
   validates :email, :format => {:with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/}
-  validates :password, :length => {:in => 4..100}
+  validates :password, :length => {:minimum => 4}
 
   # 使用密码时候，如果有明文密码就用明文密码替换加密密码。方便修改密码
   def password_with_encrypt
@@ -49,15 +50,15 @@ class User
   # @return user or nil
   def self.find_user_with_login(email_or_name, password)
     user = User.where(name:email_or_name).last
-    unless user.nil?
-      p "Stored password is #{user.password_with_encrypt} get password is #{password}"
-      user.password_with_encrypt == password ? user : nil
-    else
-      user = User.where(email:email_or_name).last
+    if user.nil?
+      user = User.where(email: email_or_name).last
       unless user.nil?
-        p "Stored password is #{user.password_with_encrypt} get password is #{password}"
+        p  "Stored password is #{user.password_with_encrypt} get password is #{password}"
         user.password_with_encrypt == password ? user : nil
       end
+    else
+      p "Stored password is #{user.password_with_encrypt} get password is #{password}"
+      user.password_with_encrypt == password ? user : nil
     end
   end
 
@@ -86,6 +87,12 @@ class User
 
   def youku_info
     self.third_parties.first(:type => 'youku')
+  end
+
+  def clean_sessions
+    sessions.each do |session|
+      session.destroy
+    end
   end
 
 end

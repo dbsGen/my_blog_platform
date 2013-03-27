@@ -10,10 +10,12 @@
 - else
   %tr{:id => dom_id(object)}
     %td= object.id
-    %td= object.title
+    %td= link_to object.title, article_path(object)
     %td= object.created_at.strftime('%F')
     %td= object.creater.name
     %td
-      -#TODO 需要补全url
-      = link_to t('edit'), '#'
-      = link_to t('delete'), '#', :method => 'delete', :remote => true
+      = link_to t('edit'), account_article_path(object)
+      = link_to t('delete'), account_article_path(object),
+                :method => 'delete',
+                :remote => true,
+                :confirm => t('are_u_sure')

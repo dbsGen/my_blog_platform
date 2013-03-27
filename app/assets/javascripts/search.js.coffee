@@ -14,6 +14,7 @@ $(document).ready ->
     if $(this).hasClass('icon-remove-circle')
       $('#search-text').val('')
       $('#search-icon').removeClass('icon-remove-circle').addClass('icon-search')
+      clean()
 
   $('#search-text').keyup (e) ->
     if e.which == 13
@@ -59,8 +60,8 @@ search = (key) ->
     $('#search-icon').removeClass('spin icon-refresh').addClass('icon-remove-circle')
     $(document).loading = false
   $.ajax({
-         type: 'POST'
-         url: "#{account_admin_search_users_path}.js"
+         type: 'GET'
+         url: "#{search_path}.js"
          data: {
          key: key
          }

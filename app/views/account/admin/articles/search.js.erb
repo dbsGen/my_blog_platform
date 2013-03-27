@@ -1,0 +1,6 @@
+var render_str = '<%= escape_javascript(render :partial => 'layouts/content',
+               :locals => {:partial => 'account/admin/articles/article',
+                           :objects => @articles,
+                           :page => params[:page],
+                           :total_page => @total_page}) %>';
+$(render_str).replaceAll('#content-field');

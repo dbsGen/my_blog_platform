@@ -39,18 +39,36 @@ en:
   post: 'Post'
   cancel: 'Cancel'
   author: 'author'
+  remove: 'Remove'
+  are_u_sure: 'Are you sure?'
+  name: 'Name'
+  version: 'Version'
+  unknown_error: 'Unknown error'
+
+  templates:
+    label: 'Templates'
+    default: 'Default templates'
+    all: 'All templates'
+    new: 'New'
+    error: 'Template error'
 
   articles:
     label: 'Articles'
     new: 'New article'
     post:
-      success: 'Post success'
+      success: 'Post success,redirect in 2 sec.'
       failed: 'Post failed'
     title:
       label: 'Title'
       placeholder: 'Input article title here'
     content:
       label: 'Content'
+    update:
+      success: 'Update success!'
+      failed: 'Update failed.'
+    show:
+      edit_label: 'Edit article'
+      edit: 'edit'
 
 
   third_parties:
@@ -116,3 +134,4 @@ en:
               blank: 'Email cannot be empty'
             password:
                 too_short: 'Password is too short'
+  no_element: "No element, you can select one."

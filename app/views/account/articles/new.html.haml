@@ -1,6 +1,4 @@
-= javascript_include_tag 'third_party/advanced'
-= javascript_include_tag 'third_party/wysihtml5-0.3.0'
-= javascript_include_tag 'articles/new'
+= javascript_include_tag 'articles/edit'
 
 .form-horizontal
   %section
@@ -13,7 +11,11 @@
       .control-group
         %label.control-label= t('articles.content.label')
         .controls
-          = render :file => '/home/gen/Project/simple-text/edit_model/view/content.html.haml', :locals => {:id => 'content_id'}
+          = render_edits(nil)
+      -# 选择模板
+      .control-group
+        .controls
+          %iframe{:style => 'width: 90%; height: 60px; border-style: none', :src => account_templates_path}
       .form-actions
         = link_to t('post'), account_articles_path,
                   :class => 'btn btn-primary',

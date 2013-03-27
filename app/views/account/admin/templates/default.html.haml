@@ -1,0 +1,13 @@
+
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('admin.title')}>#{t('templates.label')}"
+      .navbar
+        .navbar-inner
+          = link_to t('templates.default'),
+                    account_admin_default_templates_path,
+                    :class => 'btn'
+
+          = link_to t('new')
+

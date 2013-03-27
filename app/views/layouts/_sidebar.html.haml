@@ -18,4 +18,6 @@
       %li.divider
       = sidebar_header_tag t('admin.title')
       = sidebar_li_tag t('admin.users'), account_admin_users_path, @page_index == :admin_users
+      = sidebar_li_tag t('templates.label'), account_admin_templates_path, @page_index == :admin_templates
+      = sidebar_li_tag t('articles.label'), account_admin_articles_path, @page_index == :admin_articles
     %li.divider

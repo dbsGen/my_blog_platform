@@ -1,0 +1,21 @@
+-#header 是否是头部
+-#object 单个数据
+- if header == true
+  %tr
+    %th #
+    %th= t('articles.title.label')
+    %th= t('admin.create_at')
+    %th= t('author')
+    %th= t('admin.actions')
+- else
+  %tr{:id => dom_id(object)}
+    %td= object.id
+    %td= link_to object.title, article_path(object)
+    %td= object.created_at.strftime('%F')
+    %td= object.creater.name
+    %td
+      = link_to t('edit'), account_admin_article_path(object)
+      = link_to t('delete'), account_admin_article_path(object),
+                :method => 'delete',
+                :remote => true,
+                :confirm => t('are_u_sure')

@@ -12,6 +12,8 @@
     %td= object.name
     %td= object.register_time.strftime('%F')
     %td
-      -#TODO 需要补全url
       = link_to t('edit'), account_admin_user_path(object)
-      = link_to t('delete'), account_admin_user_path(object), :method => 'delete', :remote => true
+      = link_to t('delete'), account_admin_user_path(object),
+                :method => 'delete',
+                :remote => true,
+                :confirm => t('are_u_sure')

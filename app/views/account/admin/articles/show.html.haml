@@ -1,0 +1,26 @@
+-#编辑页面
+= javascript_include_tag 'articles/edit'
+
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('articles.show.edit')}"
+      .control-group
+        %label.control-label= t('articles.title.label')
+        .controls
+          = text_field_tag 'title', @article.title,
+                           :placeholder => t('articles.title.placeholder'),
+                           :class => 'span8'
+      .control-group
+        %label.control-label= t('articles.content.label')
+        .controls
+          = render_edits(@article.elements)
+      -# 选择模板
+      .control-group
+        .controls
+          %iframe{:style => 'width: 90%; height: 60px; border-style: none', :src => account_templates_path}
+      .form-actions
+        = link_to t('save'), account_admin_article_path(@article),
+                  :class => 'btn btn-primary',
+                  :id => 'update'
+        = link_to t('cancel'), account_admin_articles_path, :class => 'btn'

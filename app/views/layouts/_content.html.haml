@@ -7,5 +7,5 @@
   - objects.each do |object|
     = render :partial => partial, :locals => {:header => false, :object => object}
 - if total_page > 1
-  = pagination_tag(request.url, total_page, page)
+  = pagination_tag(request.url, total_page, page, per_page || 25)
 

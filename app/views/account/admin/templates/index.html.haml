@@ -1,0 +1,25 @@
+= javascript_tag do
+  this.search_path = "#{account_admin_search_templates_path}"
+  this.source_url = "#{request.url}"
+= javascript_include_tag 'search'
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('admin.title')}>#{t('templates.label')}"
+      .navbar
+        .navbar-inner
+          -#= link_to t('templates.default'),
+          -#          account_admin_default_templates_path,
+          -#          :class => 'btn pull-left'
+          .search-bar
+            .navbar-search.pull-right
+              = text_field_tag 'search-text', '',
+                               :placeholder => t('search'),
+                               :class => 'search-query'
+              %i.icon-search.disable#search-icon
+
+      = render :partial => 'layouts/content',
+               :locals => {:partial => 'account/admin/templates/template',
+                           :objects => @templates,
+                           :page => params[:page],
+                           :total_page => @total_page}

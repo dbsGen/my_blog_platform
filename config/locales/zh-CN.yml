@@ -12,7 +12,6 @@ zh:
   logout_success: '已注销'
   logout: '注销'
   profiles: '用户页面'
-  articles: '文章'
   settings: '设置'
   name_card: '名片'
   edit: '编辑'
@@ -36,6 +35,18 @@ zh:
   post: '发布'
   cancel: '取消'
   author: '作者'
+  remove: '删除'
+  are_u_sure: '你确定?'
+  name: '名字'
+  version: '版本'
+  unknown_error: '未知错误'
+
+  templates:
+    label: '模板'
+    default: '默认模板'
+    all: '全部模板'
+    new: '新建'
+    error: '模板错误'
 
   articles:
     label: '文章'
@@ -45,6 +56,15 @@ zh:
       placeholder: '文章标题'
     content:
       label: '内容'
+    post:
+      success: '发布成功,2秒后跳转.'
+      failed: '发布失败'
+    update:
+      success: '更新成功'
+      failed: '更新失败'
+    show:
+      edit_label: '编辑文章'
+      edit: '编辑'
 
   third_parties:
       title: '三方平台'
@@ -109,3 +129,4 @@ zh:
                 blank: '邮箱不能为空'
               password:
                 too_short: '密码太短'
+  no_element: "现在还没有模板，你可以从下边选择一个。"

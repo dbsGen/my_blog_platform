@@ -13,7 +13,8 @@
                 .full-input-wrap
                   = f.text_field :name,
                                  :tabIndex => 1,
-                                 :placeholder => t('.ID_placeholder')
+                                 :placeholder => t('.ID_placeholder'),
+                                 :class => 'span4'
             .control-group
               .control-label
                 = f.label t('email')
@@ -21,7 +22,8 @@
                 .full-input-wrap
                   = f.text_field :email,
                                  :tabIndex => 2,
-                                 :placeholder => t('.email_placeholder')
+                                 :placeholder => t('.email_placeholder'),
+                                 :class => 'span4'
             .control-group
               .control-label
                 = f.label t('password')
@@ -29,7 +31,8 @@
                 .full-input-wrap
                   = f.password_field :password,
                                      :tabIndex => 3,
-                                     :placeholder => t('.pwd_placeholder')
+                                     :placeholder => t('.pwd_placeholder'),
+                                     :class => 'span4'
             .gen-form-actions
               = f.submit t('signup'), :class => 'btn primary', :tabIndex => 4
               = raw t('or')

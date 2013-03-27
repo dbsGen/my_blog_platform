@@ -5,7 +5,7 @@ class Account::Admin::UsersController < ApplicationController
 
   def index
     @title = "#{t('admin.title')}>#{t('admin.users')}"
-    per_page = params[:per_page] || 25;
+    per_page = params[:per_page] || 25
     @total_page = User.all().count / per_page + 1
     @users = User.paginate(
         :order    => :register_time.asc,
@@ -20,7 +20,7 @@ class Account::Admin::UsersController < ApplicationController
 
   def search
     @title = "#{t('admin.title')}>#{t('admin.users')}"
-    per_page = params[:per_page] || 25;
+    per_page = params[:per_page] || 25
     users = User.where :name => /#{params[:key]}/
     @users = users.paginate(
       :order    => :register_time.asc,
@@ -29,7 +29,7 @@ class Account::Admin::UsersController < ApplicationController
     )
     @total_page = users.count / per_page + 1
     respond_to do |format|
-      format.html {render_404}
+      format.html {render :template => 'account/admin/users/index'}
       format.js
     end
   end

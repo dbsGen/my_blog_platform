@@ -1,0 +1,11 @@
+= javascript_include_tag 'account/templates'
+#template_content
+  - @templates.each do |template|
+    .media-object
+      = link_to image_tag(template.icon_path, :size => '46x46'),
+                account_template_path(template),
+                :class => 'thumbnail template_icon',
+                :style => 'width: 46px; height: 46px;',
+                :template_name => template.name
+
+

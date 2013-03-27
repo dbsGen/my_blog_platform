@@ -1,3 +1,7 @@
+= javascript_tag do
+  this.search_path = "#{account_search_articles_path}"
+  this.source_url = "#{request.url}"
+= javascript_include_tag 'search'
 .form-horizontal
   %section
     %fieldset
@@ -12,8 +16,9 @@
               = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
               %i.icon-search.disable#search-icon
 
-      = render :partial => 'account/admin/content',
+      = render :partial => 'layouts/content',
                :locals => {:partial => 'account/articles/article',
-                           :objects => @users,
+                           :objects => @articles,
                            :page => params[:page],
-                           :total_page => @total_page}
+                           :total_page => @total_page,
+                           :per_page => 10}

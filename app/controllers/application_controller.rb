@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   # 是否勾选记住我
   def remember_me?
     r = cookies[:remember_me]
-    r.nil? ? false : r == '1'
+    r.nil? ? false : r.to_i == 1
   end
 
   #登录成功以后保存session
@@ -51,12 +51,15 @@ class ApplicationController < ActionController::Base
 
   def saved_session
     token = session[:login_token]
-    token = cookies[:login_token] if token.nil? and remember_me?
+    if token.nil? #and remember_me?
+      token = cookies[:login_token]
+      session[:login_token] = token unless token.nil?
+    end
     token
   end
 
   def user_from_saved
-    session = Session.session_with_token saved_session, request.remote_ip
+    Session.session_with_token saved_session, request.remote_ip
   end
 
   def current_user
@@ -107,8 +110,13 @@ class ApplicationController < ActionController::Base
     @hidden_footer = true
   end
 
-  def render_format(status, msg)
-    p = {status:status, msg:msg}
+  def render_format(status, msg = '')
+    if msg.is_a?(String)
+      p = {status:status, msg:msg}
+    elsif msg.is_a?(Hash)
+      p = {status:status}
+      p.merge!(msg)
+    end
     respond_to do |format|
       format.json{render :text => p.to_json, :status => status, :layout => false}
       format.xml{render :text => p.to_xml, :status => status, :layout => false}

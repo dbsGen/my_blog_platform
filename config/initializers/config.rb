@@ -1,1 +1,1 @@
-CONFIG = YAML.load 'config/config.yml'
+CONFIG = YAML.load File.open('config/config.yml')
