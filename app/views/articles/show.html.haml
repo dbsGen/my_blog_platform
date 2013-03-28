@@ -1,7 +1,12 @@
 .article.container
   .article-header
     .article-title= @article.title
-    .article-subtitle subtitle
+    .article-subtitle
+      -#TODO 这里的链接需要补全
+      = link_to @article.creater.name, ''
+      = "#{t('articles.created_at')}:#{@article.created_at.strftime('%F')}"
+      - unless @article.edited_at != @article.creater
+        = "#{t('articles.edited_at')}:#{@article.edited_at.strftime('%F')}"
   .article-body
     - @article.elements.each do |element|
       = render_element element

@@ -44,6 +44,9 @@ en:
   name: 'Name'
   version: 'Version'
   unknown_error: 'Unknown error'
+  pagination:
+    loading: 'Loading more, please wait...'
+    over: 'No more result.'
 
   templates:
     label: 'Templates'
@@ -55,6 +58,8 @@ en:
   articles:
     label: 'Articles'
     new: 'New article'
+    created_at: 'Created at'
+    edited_at: 'Edited at'
     post:
       success: 'Post success,redirect in 2 sec.'
       failed: 'Post failed'

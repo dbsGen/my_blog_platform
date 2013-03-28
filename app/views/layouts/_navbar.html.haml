@@ -2,10 +2,11 @@
   .navbar-inner
     .container
       %ul.nav.nav-pills
-        = navbar_li_tag link_to(t('.home'), root_url), home?
-        = navbar_li_tag link_to(t('.popular'), popular_url), popular?
-        = navbar_li_tag link_to(t('.recommend'), recommend_url), recommend?
-        = navbar_li_tag link_to(t('.last'), last_url), last?
+        -#TODO 暂时只显示最新
+        -#= navbar_li_tag link_to(t('.home'), root_url), home?
+        -#= navbar_li_tag link_to(t('.popular'), popular_url), popular?
+        -#= navbar_li_tag link_to(t('.recommend'), recommend_url), recommend?
+        -#= navbar_li_tag link_to(t('.last'), last_url), last?
 
       %ul.nav.nav-pills.pull-right
         - if login?

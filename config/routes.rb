@@ -12,7 +12,7 @@ BlogSystem::Application.routes.draw do
   get     'login'     => 'Sessions#new',        :as => 'login'
   delete  'logout'    => 'Sessions#destroy',    :as => 'logout'
 
-  get     'home'      => 'Main#home_page',      :as => 'home'
+  match   'home'      => 'Main#home_page',      :as => 'home'
   get     'popular'   => 'Main#popular_page',   :as => 'popular'
   get     'recommend' => 'Main#recommend_page', :as => 'recommend'
   get     'last'      => 'Main#last_page',      :as => 'last'

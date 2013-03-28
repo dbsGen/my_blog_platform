@@ -1,0 +1,11 @@
+-#这个模板与content差不多，不过这个是以div作为容器
+-#并且这个是自动分页
+#content-field
+  = render :partial => partial, :locals => {:header => true}
+  - objects.each do |object|
+    = render :partial => partial, :locals => {:header => false, :object => object}
+#content-tail.main-tail{:style => 'display: none'}
+  %i.spin.icon-refresh
+  = t('pagination.loading')
+
+= auto_pagination_tag(url || request.url)

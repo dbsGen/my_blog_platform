@@ -10,7 +10,7 @@ class Account::Admin::UsersController < ApplicationController
     @users = User.paginate(
         :order    => :register_time.asc,
         :per_page => per_page,
-        :page     => params[:page],
+        :page     => params[:page]
     )
     respond_to do |format|
       format.html

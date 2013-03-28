@@ -33,4 +33,25 @@ module Account::ArticlesHelper
     html << '</div>'
     raw html
   end
+
+  def render_templates_tag
+    html = ''
+    html << '<ul style="list-style:none;margin:0px;padding:2px 6px 2px 6px">'
+    @templates.each do |template|
+      html << '<li style="display: inline; border: none">'
+      html << '<div class="media-object">'
+      html << link_to(
+          image_tag(template.icon_path, :size => '46x46'),
+          account_template_path(template),
+          :class => 'thumbnail template_icon',
+          :style => 'width: 46px; height: 46px;',
+          :template_name => template.name
+      )
+      html << '</div>'
+      html << '</li>'
+    end
+    html << '</ul>'
+    html << (javascript_tag() {raw "$('.template_icon').click(function(){document.add_template($(this));return false;})"})
+    raw html
+  end
 end

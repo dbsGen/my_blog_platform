@@ -5,7 +5,7 @@ class Account::ArticlesController < ApplicationController
 
   def new
     @title = t('articles.new')
-    @template = Template.first(:name => 'simple_text')
+    @templates = current_user.usable_templates
     respond_to do |format|
       format.html
       format.js

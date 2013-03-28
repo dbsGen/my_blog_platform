@@ -40,6 +40,9 @@ zh:
   name: '名字'
   version: '版本'
   unknown_error: '未知错误'
+  pagination:
+    loading: '载入中,请稍候。'
+    over: '没有更多。'
 
   templates:
     label: '模板'
@@ -51,6 +54,8 @@ zh:
   articles:
     label: '文章'
     new: '发布文章'
+    created_at: '发布于'
+    edited_at: '编辑时间'
     title:
       label: '标题'
       placeholder: '文章标题'

@@ -15,7 +15,8 @@
       -# 选择模板
       .control-group
         .controls
-          %iframe{:style => 'width: 90%; height: 60px; border-style: none', :src => account_templates_path}
+          %div{:style => 'width: 90%; height: 60px; border-style: none; overflow: auto'}
+            = render_templates_tag
       .form-actions
         = link_to t('post'), account_articles_path,
                   :class => 'btn btn-primary',
