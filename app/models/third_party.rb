@@ -12,4 +12,13 @@ class ThirdParty
   #绑定的用户
   belongs_to :user
 
+  def expire?
+    case type
+      when 'baidu_yun'
+        expire = Time.at token['expires_at'].to_i
+        Time.now > expire
+      else
+        false
+    end
+  end
 end

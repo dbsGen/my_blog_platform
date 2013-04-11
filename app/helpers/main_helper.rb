@@ -54,13 +54,31 @@ $(function(){
   end
 
   def home_summary_tag(article)
-    begin
-      fe = article.elements.first
-    rescue Exception => e
-      logger.error "Can not get the first element, #{e}"
-      return ''
+    raw "<div class='article-summary'>#{article.summary {|content| strip_tags(content)}}</div>"
+  end
+
+  def new_notice_tag
+    html = "<div id='notice-count' style='display:none'><a href='#{account_notices_path}'><span id='notice-badge' class='badge badge-important'></span></a></div>"
+    html << javascript_tag do
+      raw <<-script
+function start_count(){
+  $.ajax({
+    url:'#{account_unread_count_path}.json',
+    success: function(data){
+      if (data.count > 0) {
+        $('#notice-count').fadeIn();
+        $('#notice-badge').html("<i class='icon-envelope icon-white'></i>" + data.count);
+      }else {
+        $('#notice-count').fadeOut();
+        $('#notice-badge').text(data.count);
+      }
+    }
+  });
+}
+start_count();
+setInterval('start_count()',30000);
+      script
     end
-    c = strip_tags fe.content
-    raw "<div class='article-summary'>#{c.length > 250 ? "#{c[0..250]}..." : c}</div>"
+    raw html
   end
 end

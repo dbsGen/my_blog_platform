@@ -1,3 +1,7 @@
+#= require articles/content_add_tp_js
+#= require jquery.baidu
+#= require third_party
+
 $(document).ready ->
   this.add_template = (btn) ->
     tn = btn.attr('template_name')
@@ -43,7 +47,7 @@ $(document).ready ->
       continue if content == null or content.length == 0
       d.push({
              template_name: e.attr('template_name')
-             content: content
+             content: $.add_tp(content)
              })
 
     if d.length == 0
@@ -53,7 +57,7 @@ $(document).ready ->
       )
       return no
 
-    btn.button('loading')
+    btn.attr('disabled', true)
     $.ajax(
       url: btn.attr('href')
       type: method
@@ -66,24 +70,27 @@ $(document).ready ->
     )
 
   $('#post').click ->
-    btn = $(this)
-    submit(btn,'post',
-    (data) ->
-      Messenger().post(data.msg)
-      if data.redirect_url != null
-        setTimeout(->
-          window.location.href = data.redirect_url
-        , 2000)
-      btn.button('reset')
-    ,
-    (r)->
-      obj = eval("(#{r.responseText})")
-      Messenger().post(
-        type: 'error'
-        message: obj.msg
+    try
+      btn = $(this)
+      submit(btn,'post',
+      (data) ->
+        Messenger().post(data.msg)
+        if data.redirect_url != null
+          setTimeout(->
+            window.location.href = data.redirect_url
+          , 2000)
+        btn.attr('disabled', false)
+      ,
+      (r)->
+        obj = eval("(#{r.responseText})")
+        Messenger().post(
+          type: 'error'
+          message: obj.msg
+        )
+        btn.attr('disabled', false)
       )
-      btn.button('reset')
-    )
+    catch e
+      console.log e
     no
 
   $('#update').click ->
@@ -91,7 +98,7 @@ $(document).ready ->
     submit(btn,'put',
     (data) ->
       Messenger().post(data.msg)
-      btn.button('reset')
+      btn.attr('disabled', false)
     ,
     (r)->
       obj = eval("(#{r.responseText})")
@@ -99,7 +106,7 @@ $(document).ready ->
         type: 'error'
         message: obj.msg
       )
-      btn.button('reset')
+      btn.attr('disabled', false)
     )
     no
 

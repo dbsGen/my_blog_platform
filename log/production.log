@@ -503,3 +503,13 @@ ActionView::MissingTemplate (Missing template main/home_page, application/home_p
   /home/gen/.rvm/rubies/ruby-2.0.0-p0/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
 
 
+Started GET "/" for 127.0.0.1 at 2013-04-11 00:38:01 +0800
+Processing by MainController#home_page as HTML
+Completed 500 Internal Server Error in 10ms
+
+ActionView::MissingTemplate (Missing template main/home_page, application/home_page with {:locale=>[:zh], :formats=>[:html], :handlers=>[:erb, :builder, :coffee]}. Searched in:
+  * "/home/gen/Project/my_blog_platform/app/views"
+):
+  app/controllers/main_controller.rb:9:in `home_page'
+
+

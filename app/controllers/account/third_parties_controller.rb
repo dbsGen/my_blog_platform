@@ -1,23 +1,26 @@
 require 'customer'
+require 'third_parties_api/baidu_api'
 
 class Account::ThirdPartiesController < ApplicationController
   layout 'user_page'
   before_filter :require_login, :enter_page
+
+  helper_method :baidu_path, :youku_path, :path_with_type
 
   def show
 
   end
 
   def callback
-    from = params[:from]
+    from = params[:type]
     code = request.query_parameters[:code]
 
     case from
       when 'baidu'
         token = BAIDU_CLIENT.auth_code.get_token(code, :redirect_uri => account_TP_callback_url(from))
-        client = HTTPClient.new()
-        user_info = client.post(BAIDU_SITE + BAIDU_USER_PATH, 'access_token' => token.token)
-        params = JSON(user_info.body)
+        h_token = token.to_hash
+        p h_token, Time.new
+        params = BaiduApi.user_info(h_token)
         name = params['uname']
 
         #失败
@@ -25,19 +28,19 @@ class Account::ThirdPartiesController < ApplicationController
 
         baidu = current_user.baidu_yun_info
         if baidu.nil?
-          baidu = ThirdParty.create(
+          baidu = ThirdParty.new(
               :type => 'baidu_yun',
-              :token => token.to_hash,
+              :token => h_token,
               :name => name,
-              :other => user_info.body
+              :other => params
           )
           current_user.third_parties << baidu
           baidu.save
         else
           baidu.set(
-              :token => token.to_hash,
+              :token => h_token,
               :name => name,
-              :other => user_info.body
+              :other => params
           )
         end
       when 'youku'
@@ -69,22 +72,101 @@ class Account::ThirdPartiesController < ApplicationController
               :other => user_info.body
           )
         end
+      else
+
     end
     render :layout => 'least'
   end
 
   def destroy
-    @type = params[:type];
+    @type = params[:type]
     case @type
       when 'baidu'
         tp = current_user.baidu_yun_info
+        return render_404 if tp.nil?
+        tp.destroy
+      else
+
     end
-    return render_404 if tp.nil?
-    tp.destroy
 
     respond_to do |format|
       format.html {render_404}
       format.js
+    end
+  end
+
+  def check_login
+    type = params[:type]
+    info = current_user.tp_info(type)
+    if info.nil?
+      render_format 404, path_with_type(type)
+    else
+      render_format 200, :url => account_collections_path, :title => t('third_parties.baidu_yun')
+    end
+  end
+
+  def collections
+    type = params[:type]
+    folder = params[:folder] || '/'
+    ext = params[:ext] || ''
+    result = {}
+    case type
+      when 'baidu'
+        token_info = current_user.baidu_yun_info
+        return render_404 if token_info.nil?
+        result = BaiduApi.files(token_info.token, folder, 0, 100)
+        @tp_id = token_info.id
+      else
+
+    end
+    exts = ext.split(',')
+    if exts.size > 0
+      l = result['list']
+      @files = []
+      l.each do |v|
+        ex = v['path'][/[^\.]+$/]
+        if exts.include? ex
+          @files << v
+        end
+      end
+    else
+      @files = result['list'] || []
+    end
+
+    render :partial => 'account/third_parties/collections'
+  end
+
+  def upload_url
+    type = params[:type]
+    path = params[:path] || '/'
+    ondup = params[:ondup] || 'overwrite'
+    url = ''
+    case type
+      when 'baidu'
+        token_info = current_user.baidu_yun_info
+        return render_404 if token_info.nil?
+        url = BaiduApi.upload(token_info.token, path, ondup)
+      else
+
+    end
+    render_format 200, url
+  end
+
+  def baidu_path
+    BAIDU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('baidu'))
+  end
+
+  def youku_path
+    YOUKU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('youku'))
+  end
+
+  def path_with_type(type)
+    case type
+      when 'baidu'
+        baidu_path
+      when 'youku'
+        youku_path
+      else
     end
   end
 

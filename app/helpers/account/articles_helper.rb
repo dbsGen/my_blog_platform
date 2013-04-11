@@ -34,10 +34,10 @@ module Account::ArticlesHelper
     raw html
   end
 
-  def render_templates_tag
+  def render_templates_tag(templates)
     html = ''
     html << '<ul style="list-style:none;margin:0px;padding:2px 6px 2px 6px">'
-    @templates.each do |template|
+    templates.each do |template|
       html << '<li style="display: inline; border: none">'
       html << '<div class="media-object">'
       html << link_to(

@@ -16,7 +16,7 @@ module ArticlesHelper
     #'/home/gen/Project/simple-text/skim_model/view/content.html.haml'
     html << render(:file => "#{template.file_path}/skim_model/view/content" ,
                    :locals => {:id => "#{template.name}_#{now}",
-                               :content => element.content})
+                               :element => element})
     @index[template.name] = now + 1
     raw html
   end

@@ -16,10 +16,9 @@
       .control-group
         .controls
           %div{:style => 'width: 90%; height: 60px; border-style: none; overflow: auto'}
-            = render_templates_tag
+            = render_templates_tag @templates
       .form-actions
-        = link_to t('post'), account_articles_path,
-                  :class => 'btn btn-primary',
-                  :id => 'post'
+        %button.btn-primary.btn#post{:href => account_articles_path}
+          = t 'post'
         = link_to t('cancel'), account_articles_path, :class => 'btn'
 

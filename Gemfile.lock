@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: http://ruby.taobao.org/
   specs:
     actionmailer (3.2.12)
       actionpack (= 3.2.12)
@@ -29,7 +29,7 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
-    bson (1.8.3)
+    bson (1.8.4)
     builder (3.0.4)
     client_side_validations (3.2.2)
     client_side_validations-mongo_mapper (0.11.0)

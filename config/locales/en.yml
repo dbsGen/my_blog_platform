@@ -44,6 +44,25 @@ en:
   name: 'Name'
   version: 'Version'
   unknown_error: 'Unknown error'
+  need_login: 'Please %{login} first, or %{register}. Then you can comment'
+
+  notices:
+    label: 'Notices'
+    replied_you: '%{someone} replied your %{somewhere}'
+    replied_your_article: '%{someone} replied your %{somewhere}'
+    comment_refer_you: '%{someone} tall about you %{somewhere}'
+    article_refer_you: '%{someone} tall about you %{somewhere}'
+    system: 'System information: %{title}'
+
+
+  comments:
+    send:
+      label: 'Send'
+      success: 'Comment send success!'
+      failed: 'Comment send failed.'
+    replied: 'Click to extend'
+    reply: 'Reply'
+
   pagination:
     loading: 'Loading more, please wait...'
     over: 'No more result.'

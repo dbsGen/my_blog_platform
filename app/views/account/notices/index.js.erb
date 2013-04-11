@@ -1,0 +1,3 @@
+<%- @notices.each do |notice| %>
+    <%= render :partial => 'account/notices/notice', :locals => {:header => false, :object => notice} %>
+<%- end %>

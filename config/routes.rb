@@ -19,6 +19,7 @@ BlogSystem::Application.routes.draw do
 
   get     'signup'    => 'Users#new',           :as => 'signup'
   put     'user'      => 'Users#update',        :as => 'user'
+  get     'third_parties/tp_url/:type'  => 'ThirdParties#tp_url', :as => 'tp_url'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
@@ -36,6 +37,7 @@ BlogSystem::Application.routes.draw do
   resources :users,     :only => [:create]
   resources :sessions,  :only => [:create]
   resources :articles,  :only => [:show]
+  resources :comments,  :only => [:create]
 
   # Sample resource route with sub-resources:
   #   resources :products do
@@ -61,10 +63,15 @@ BlogSystem::Application.routes.draw do
     get 'settings'                => 'Settings#show',         :as => 'settings'
     get 'third_parties'           => 'ThirdParties#show',     :as => 'third_parties'
     get 'search_articles'         => 'Articles#search',       :as => 'search_articles'
-    get 'third_parties/callback/:from'  => 'ThirdParties#callback', :as => 'TP_callback'
+    get 'third_parties/callback/:type'  => 'ThirdParties#callback', :as => 'TP_callback'
+    get 'unread_count'            => 'Notices#unread_count',  :as => 'unread_count'
+    get 'third_parties/check_login/:type' => 'ThirdParties#check_login',    :as => 'TP_check_login'
+    get 'third_parties/collections/:type' => 'ThirdParties#collections',    :as => 'collections'
     delete 'third_parties/:type'        => 'ThirdParties#destroy',  :as => 'TP_delete'
+    get 'third_parties/upload_url/:type'  => 'ThirdParties#upload_url',     :as => 'upload_url'
     resources :articles
     resources :templates, :only => [:index, :show]
+    resources :notices,   :only => [:index]
     namespace :admin do
       resources :users,     :only => [:index, :show, :destroy, :update]
       resources :sessions,  :only => [:destroy]

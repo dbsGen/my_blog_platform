@@ -4,7 +4,7 @@
 .form-horizontal
   %section
     %fieldset
-      %legend= "#{t('articles.show.edit')}"
+      %legend= t('articles.show.edit')
       .control-group
         %label.control-label= t('articles.title.label')
         .controls
@@ -16,7 +16,8 @@
       -# 选择模板
       .control-group
         .controls
-          %iframe{:style => 'width: 90%; height: 60px; border-style: none', :src => account_templates_path}
+          %div{:style => 'width: 90%; height: 60px; border-style: none; overflow: auto'}
+            = render_templates_tag(current_user.usable_templates)
       .form-actions
         = link_to t('save'), account_article_path(@article),
                   :class => 'btn btn-primary',

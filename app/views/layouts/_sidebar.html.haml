@@ -14,6 +14,7 @@
     = sidebar_li_tag t('articles.label'), account_articles_path, @page_index == :articles
     = sidebar_li_tag t('settings'), account_settings_path, @page_index == :settings
     = sidebar_li_tag t('third_parties.title'), account_third_parties_path, @page_index == :third_parties
+    = sidebar_li_tag t('notices.label'), account_notices_path, @page_index == :notices
     - if admin?
       %li.divider
       = sidebar_header_tag t('admin.title')

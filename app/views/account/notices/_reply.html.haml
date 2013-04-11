@@ -1,0 +1,10 @@
+.notice-header
+  - unless readed
+    %span.label-important.label New
+  -#TODO 需要补全link
+  - article = comment.article
+  = raw t('notices.replied_you',
+          :someone => link_to(user.name, '#'),
+          :somewhere => "#{link_to(article.title, article_path(article))} ##{reply_to.flood}")
+.notice-body
+  = comment.summary {|content| strip_tags(content)}

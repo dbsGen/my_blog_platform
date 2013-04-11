@@ -31,23 +31,6 @@ module Account::ThirdPartiesHelper
     info.nil? ? nil : info.name
   end
 
-  def baidu_path
-    BAIDU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('baidu'))
-  end
-
-  def youku_path
-    YOUKU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('youku'))
-  end
-
-  def path_with_type(type)
-    case type
-      when 'baidu'
-        baidu_path
-      when 'youku'
-        youku_path
-    end
-  end
-
   def third_party_js
     s = <<-script
 $(document).ready(function(){
@@ -72,6 +55,8 @@ $(document).ready(function(){
         content = third_party_tag(baidu_yun_name, 'baidu', path_with_type(from))
       when 'youku'
         content = third_party_tag(youku_name, 'youku', path_with_type(from))
+      else
+        content =''
     end
     s = <<-script
 $(document).ready(function(){
@@ -84,5 +69,24 @@ $(document).ready(function(){
 });
     script
     raw "<script type='text/javascript'>#{s}</script>"
+  end
+
+  def tp_files_tag(file, tp_id)
+    file_name = file['path'][/[^\/]+$/]
+    ext = file_name[/[^\.]+$/]
+    case ext
+      when 'jpg', 'png'
+        src = '/assets/photo.png'
+      else
+        src = '/assets/document.png'
+    end
+    sub_path = file['path'].gsub BAIDU_ROOT_FOLDER, ''
+    html = <<-html
+<a class='thumbnail' style='width:85%;height:85%' onclick='select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
+  <img style='max-height:64px;max-width:64px;' src='#{src}' class='baidu_pic' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
+  <div class='caption' style='white-space: nowrap; overflow:hidden;'>#{file_name}</div>
+</a>
+    html
+    raw html
   end
 end

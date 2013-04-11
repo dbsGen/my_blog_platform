@@ -3,14 +3,7 @@ class Account::TemplatesController < ApplicationController
   before_filter :require_login
 
   def index
-    @templates = current_user.usable_templates
-    ts = CONFIG['default_templates']
-    ts.each do |t|
-      ft = @templates.first(:name => t)
-      if ft.nil?
-        @templates << Template.first(:name => t)
-      end
-    end
+    @templates = current_user.usable_templates_and_check
   end
 
   def show

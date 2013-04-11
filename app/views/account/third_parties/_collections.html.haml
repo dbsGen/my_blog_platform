@@ -1,0 +1,6 @@
+%ul.files-list{:style => 'padding: 3px'}
+  - @files.each do |file|
+    %li.file_box{:style => 'width:90px; list-style-type: none;float: left; margin-top: 10px; margin-bottom: 5px'}
+      = tp_files_tag(file, @tp_id)
+  = javascript_tag do
+    $('.baidu_pic').tp_picture();

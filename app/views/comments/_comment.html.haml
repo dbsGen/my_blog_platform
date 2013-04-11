@@ -1,0 +1,26 @@
+-# @param reply_to回复
+-# @param comment评论对象
+-# @param author作者信息
+-# @param reply_count这在同一个回复中是第几次被引用
+-#回复框
+
+- unless reply_to.nil?
+  - if @comments_index["#{reply_to.id}"]
+    .replied{:for => dom_id(reply_to), :onclick => 'extend_reply(this);'}= t('comments.replied')
+  - else
+    .reply-box{:style => "margin: #{reply_count > 10 ? '0' : '1px'};", :id => dom_id(reply_to)}
+      = simple_comment_tag(reply_to, reply_count + 1)
+
+-#评论内容
+.comment-content
+  - comment.elements.each do |element|
+    = render_element(element)
+-#评论信息
+.comment-author
+  -# TODO 需要补全url
+  = link_to(author.name, '#')
+  = comment.created_at.strftime('%F')
+  - if login?
+    = reply_tag(comment)
+  - unless comment.flood.nil?
+    %span.pull-right= "##{comment.flood}"

@@ -1,3 +1,7 @@
+= javascript_include_tag 'comments'
+= javascript_include_tag 'third_party'
+= javascript_include_tag 'jquery.baidu'
+= stylesheet_link_tag 'colorbox'
 .article.container
   .article-header
     .article-title= @article.title
@@ -10,3 +14,21 @@
   .article-body
     - @article.elements.each do |element|
       = render_element element
+  -#显示评论
+  .article-comments
+    - @comments.each do |comment|
+      = render_comment comment
+  -#发表评论
+  .article-comment
+    - if login?
+      #article-edit{:article => @article.id, :reply_to => 0}
+        #article-replay{:name => 'article-replay'}
+        = render_template_edit_nr(COMMENT_TEMPLATE)
+        %button.btn-primary.btn{:href => comments_path,:onclick => 'return post_comment(this);'}
+          = t('comments.send.label')
+    - else
+      .article-nologin
+        = raw I18n.t('need_login', :login => link_to(t('login'), login_path) ,
+                                   :register => link_to(t('signup'), signup_path))
+  = javascript_tag do
+    $('img[data-tp]').tp_picture();

@@ -13,15 +13,37 @@ module Account::TemplatesHelper
         html << javascript_include_tag(v)
       end
     end
-    html << "<div class='edit_element' template_name='#{template.name}' for='#{template.name}_#{index}'>"
+    html << "<div class='edit_element' template_name='#{template.name}' for='edit_#{template.name}_#{index}'>"
     html << render(
         :file => "#{template.file_path}/edit_model/view/content.html.haml",
         :locals => {
-            :id => "#{template.name}_#{index}",
+            :id => "edit_#{template.name}_#{index}",
             :default => content
         }
     )
     html << link_to(t('remove'), 'javascript:void(0)', :id => 'remove_tag', :onclick => 'remove_tag(this)')
+    html << '</div>'
+    raw html
+  end
+
+  def render_template_edit_nr(template, index = 0)
+    return '' if template.nil?
+    html = ''
+    if index.to_i == 0 and !template.edit_script_path.nil?
+      scripts = template.edit_script_path.split ',' || []
+      scripts.each do |v|
+        html << javascript_include_tag(v)
+      end
+    end
+    id = "edit_#{template.name}_#{index}"
+    html << "<div class='edit_element' template_name='#{template.name}' for='#{id}'>"
+    html << render(
+        :file => "#{template.file_path}/edit_model/view/content.html.haml",
+        :locals => {
+            :id => "#{id}",
+            :default => nil
+        }
+    )
     html << '</div>'
     raw html
   end

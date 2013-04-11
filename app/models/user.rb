@@ -18,6 +18,7 @@ class User
   many :sessions
   #关联的三方登录状态
   many :third_parties
+  many :notices
 
   attr_accessor :password
 
@@ -25,7 +26,9 @@ class User
   many :created_templates,  :class => Template, :foreign_key => :creater_id
   many :usable_templates,   :class => Template
 
-  before_destroy :clean_sessions
+  many :comments,           :class => Comment,  :foreign_key => :creater_id
+
+  before_destroy :on_destroy
 
   validates :name, :email, :presence => true, :uniqueness => {:case_sensitive => false}
   validates :name,  :format => {:with => /\A\w+\z/, :message => 'only A-Z, a-z, _ allowed'}, :length => {:in => 4..20}
@@ -89,10 +92,35 @@ class User
     self.third_parties.first(:type => 'youku')
   end
 
-  def clean_sessions
+  def tp_info(type)
+    type = 'baidu_yun' if type == 'baidu'
+    self.third_parties.first(:type => type)
+  end
+
+  def on_destroy
     sessions.each do |session|
       session.destroy
     end
+    third_parties.each do |tp|
+      tp.destroy
+    end
+    notices.each do |notice|
+      notice.destroy
+    end
   end
 
+  def usable_templates_and_check
+    ts = CONFIG['default_templates']
+    ts.each do |t|
+      ft = usable_templates.first(:name => t)
+      if ft.nil?
+        usable_templates << Template.first(:name => t)
+      end
+    end
+    usable_templates
+  end
+
+  def unread_notices_count
+    notices.where(:readed => false).count
+  end
 end

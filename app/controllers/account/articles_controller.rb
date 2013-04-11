@@ -5,7 +5,7 @@ class Account::ArticlesController < ApplicationController
 
   def new
     @title = t('articles.new')
-    @templates = current_user.usable_templates
+    @templates = current_user.usable_templates_and_check
     respond_to do |format|
       format.html
       format.js
@@ -17,14 +17,12 @@ class Account::ArticlesController < ApplicationController
     elements = params[:elements]
     es = []
     s = elements.size
+    notice_to = {}
     s.times do |i|
       d = elements[i.to_s]
-      tn = d['template_name']
-      c = d['content']
-      template = Template.first(:name => tn)
-      raise 'Temp not found' if template.nil?
-      element = Element.new(:content => c, :template => template)
-      es << element
+      es << Element.create_with_params(d) do |user|
+        notice_to[user.name] = user
+      end
     end
 
     article = Article.new :title => params[:title],
@@ -32,6 +30,9 @@ class Account::ArticlesController < ApplicationController
                           :created_at => Time.now,
                           :elements => es
     if article.save
+      notice_to.each do |_, v|
+        Notice.add_notice_from_refer_article(v, article)
+      end
       render_format 200, :msg => t('articles.post.success'), :redirect_url => article_path(article)
     else
       render_format 500, t('articles.post.failed')

@@ -9,6 +9,8 @@ class Article
   belongs_to :creater, :class => User
   #文章的元素
   many :elements
+  #评论
+  many :comments
 
   validates :title, :length => {:minimum => 1}
   validates :elements, :length => {:minimum => 1}
@@ -29,6 +31,16 @@ class Article
     elements.each do |element|
       element.destroy
     end
+  end
+
+  def summary
+    begin
+      fe = elements.first
+    rescue Exception => _
+      return ''
+    end
+    c = yield fe.content
+    c.length > 250 ? "#{c[0..250]}..." : c
   end
 
 end

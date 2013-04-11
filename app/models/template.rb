@@ -1,7 +1,9 @@
 class Template
   include MongoMapper::Document
 
-  key :name, String , :index => true
+  key :name,      String ,  :index => true
+  #是否引用 如果是其中的@信息会被保存
+  key :is_quote,  Boolean,  :default => true
   #显示出来的名字
   key :screen_name, Hash
   key :file_path, String

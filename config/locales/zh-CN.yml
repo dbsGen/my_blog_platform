@@ -40,6 +40,24 @@ zh:
   name: '名字'
   version: '版本'
   unknown_error: '未知错误'
+  need_login: '请先%{login},或者注册%{register},然后才能评论。'
+
+  notices:
+    label: '消息'
+    replied_you: '%{someone}回复了你的评论 %{somewhere}'
+    replied_your_article: '%{someone}回复了你的文章 %{somewhere}'
+    comment_refer_you: '%{someone}在 %{somewhere} 中提到了你'
+    article_refer_you: '%{someone}在 %{somewhere} 中提到了你'
+    system: '系统消息:%{title}'
+
+  comments:
+    send:
+      label: '发送'
+      success: '评论成功!'
+      failed: '评论失败.'
+    replied: '点击展开'
+    reply: '回复'
+
   pagination:
     loading: '载入中,请稍候。'
     over: '没有更多。'

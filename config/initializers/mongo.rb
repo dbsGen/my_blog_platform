@@ -24,3 +24,5 @@ templates.each do |template|
   end
 end
 
+#默认一个评论使用的模板
+COMMENT_TEMPLATE = Template.first(:name => 'simple_text')

@@ -1,0 +1,7 @@
+.notice-header
+  - unless readed
+    %span.label-important.label New
+  -#TODO 需要补全link
+  = raw t('notices.system', :title => title)
+.notice-body
+  = content

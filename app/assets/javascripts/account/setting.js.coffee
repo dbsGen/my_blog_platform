@@ -38,7 +38,8 @@ $(document).ready ->
     else
       $('#password_confirmation').parents('div.control-group').removeClass('error')
 
-    $(this).button 'loading'
+    btn = $(this)
+    btn.button 'loading'
     #开始请求
     request = $.ajax {
       url: "#{user_path}.json"

@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://ruby.taobao.org/'
 require 'mongo'
 
 gem 'rails', '3.2.12'
