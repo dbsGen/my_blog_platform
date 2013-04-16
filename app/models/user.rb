@@ -3,8 +3,8 @@ require 'digest'
 class User
   include MongoMapper::Document
 
-  key :name,              String, :required => true, :unique => true, :index => true
-  key :email,             String, :required => true, :unique => true, :index => true
+  key :name,              String, :required => true, :unique => true
+  key :email,             String, :required => true, :unique => true
   key :password_encrypt,  String
   key :password_plain,    String
   key :summary,           String

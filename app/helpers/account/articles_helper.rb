@@ -36,15 +36,15 @@ module Account::ArticlesHelper
 
   def render_templates_tag(templates)
     html = ''
-    html << '<ul style="list-style:none;margin:0px;padding:2px 6px 2px 6px">'
+    html << '<ul class="templates-icons">'
     templates.each do |template|
-      html << '<li style="display: inline; border: none">'
+      html << '<li>'
       html << '<div class="media-object">'
       html << link_to(
-          image_tag(template.icon_path, :size => '46x46'),
+          image_tag(template.icon_path,
+                    :size => '46x46'),
           account_template_path(template),
           :class => 'thumbnail template_icon',
-          :style => 'width: 46px; height: 46px;',
           :template_name => template.name
       )
       html << '</div>'

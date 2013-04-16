@@ -70,7 +70,7 @@ BlogSystem::Application.routes.draw do
     delete 'third_parties/:type'        => 'ThirdParties#destroy',  :as => 'TP_delete'
     get 'third_parties/upload_url/:type'  => 'ThirdParties#upload_url',     :as => 'upload_url'
     resources :articles
-    resources :templates, :only => [:index, :show]
+    resources :templates, :only => [:index, :show, :create]
     resources :notices,   :only => [:index]
     namespace :admin do
       resources :users,     :only => [:index, :show, :destroy, :update]
@@ -82,6 +82,8 @@ BlogSystem::Application.routes.draw do
       get 'search_template'    => 'Templates#search',   :as => 'search_templates'
       get 'search_user'        => 'Users#search',       :as => 'search_users'
       get 'templates/default'  => 'Templates#default',  :as => 'default_templates'
+      put 'templates/approve/:id'  => 'Templates#approve',  :as => 'approve_template'
+      get 'templates/download/:id' => 'Templates#download', :as => 'download_template'
     end
   end
 

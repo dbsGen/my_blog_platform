@@ -1,10 +1,10 @@
-templates:
-  - name: 'simple_text'
-    screen_name:
-      en: 'Simple text'
-      zh: '简单文本'
-    file_path: '/home/gen/Project/simple-text'
-#    TODO 发布时换成min
-    edit_script_path: 'third_party/advanced.js,third_party/wysihtml5-0.3.0.js'
-    icon_path: 'icon.png'
+#templates:
+#  - name: 'simple_text'
+#    screen_name:
+#      en: 'Simple text'
+#      zh: '简单文本'
+#    file_path: '/home/gen/Project/simple-text'
+##    TODO 发布时换成min
+#    edit_script_path: 'third_party/advanced.js,third_party/wysihtml5-0.3.0.js'
+#    icon_path: 'icon.png'
 

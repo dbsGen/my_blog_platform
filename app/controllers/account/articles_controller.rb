@@ -67,7 +67,7 @@ class Account::ArticlesController < ApplicationController
     articles = current_user.articles
     @total_page = articles.count / per_page.to_i + 1
     @articles = articles.paginate(
-        :order    => :created_at.asc,
+        :order    => :created_at.desc,
         :per_page => per_page,
         :page     => params[:page],
     )

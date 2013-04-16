@@ -1,3 +1,5 @@
+require 'zip/zip'
+
 class Account::Admin::TemplatesController < ApplicationController
   layout 'user_page'
   before_filter :require_admin, :enter_page
@@ -34,6 +36,62 @@ class Account::Admin::TemplatesController < ApplicationController
     respond_to do |format|
       format.js
       format.html {render :template => 'account/admin/templates/index'}
+    end
+  end
+
+  def approve
+    approve = params[:approve]
+    @template = Template.find_by_id params[:id]
+
+    if approve == 'true'
+    #  通过批准，释放zip文件部署到服务器
+      Zip::ZipFile.open @template.zip_file, Zip::ZipFile::CREATE do |zip_file|
+        zip_file.each do |entry|
+          if entry.name.match(/^(skim|edit)\/view\//).nil?
+          #  判断这些为静态文件
+            file_path = "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/#{entry.name}"
+          else
+            file_path = "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/#{entry.name}"
+          end
+          try_time = 0
+          begin
+            entry.extract(file_path) {true}
+          rescue Errno::ENOENT => e
+            unless e.message['No such file or directory'].nil?
+              FileUtils.mkdir_p e.message[/\/.+$/]
+              try_time += 1
+              retry if try_time < 3
+            end
+          end
+        end
+      end
+      @template.set(
+          dynamic_path: "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/",
+          static_path: "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/",
+          verify: true
+      )
+      @template.dynamic_path = "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/"
+      @template.static_path = "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/"
+      @template.verify = true
+    else
+    #  下架,删除部署好的文件
+      p @template.static_path
+      FileUtils.rm_r @template.static_path
+      FileUtils.rm_r @template.dynamic_path
+      @template.set(
+          verify: false
+      )
+      @template.verify = false
+    end
+  end
+
+  def download
+    id = params[:id]
+    if id.nil?
+      render_401
+    else
+      template = Template.find_by_id id
+      send_file template.zip_file
     end
   end
 

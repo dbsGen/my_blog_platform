@@ -1,0 +1,45 @@
+= javascript_include_tag 'jquery-ui'
+= javascript_include_tag 'jquery.fileupload'
+.upload
+  = upload_input_tag(ext, path, type)
+  %label
+    %input#file-shower{type:'text', disabled:true, onclick:'$("#.upload #file").click()', style:'position: relative;top: 4px'}
+    %a.btn{onclick:'$(".upload #file").click()'}= t('choose_file')
+    %button.btn#upload-button{onclick:'upload_click(this);'}= t('upload_file')
+  .progress.progress-striped#progress
+    #progress-bar.bar{style:'width:0'}
+  = javascript_tag do
+    function fileSelected(tag){
+    progress = $('.upload #progress');
+    $('#file-shower').val($('.upload #file').val());
+    console.log($('.upload #file'));
+    progress.removeClass('progress-danger');
+    progress.addClass('progress-striped active');
+    }
+    function upload_click(tag) {
+    var t = $('.upload #file'), tag = t[0], files = tag.files
+    if(files.length > 0) {
+    file = $('.upload #file');
+    progress = $('.upload #progress');
+    file.fileupload({
+    autoUpload: false,
+    url: '#{url}',
+    type: '#{method}',
+    sequentialUploads: true,
+    progressall: function(e, data) {
+    $('.upload #progress .bar').css('width', (data.loaded / data.total * 100) + "%");
+    },
+    done: function(){
+    progress.removeClass('progress-striped active');
+    progress.addClass('progress-success');
+    file.fileupload('destroy');
+    },
+    fail: function(){
+    progress.removeClass('progress-striped active');
+    progress.addClass('progress-danger');
+    file.fileupload('destroy');
+    }});
+    file.fileupload('send', {files: files});
+    }else {
+    Messenger().post({type: 'error',message: '#{t('please_select_file_first')}'});
+    }}

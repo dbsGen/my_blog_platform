@@ -4,7 +4,7 @@ class Session
   TIME_OF_YEAR = 365 * 24 * 60 * 60
 
   #登录token
-  key :login_token, String,   :required => true, :index => true
+  key :login_token, String,   :required => true
   #是否需要验证ip
   key :need_ip,     Boolean,  :default => false
   #每个session有一个ip地址的验证

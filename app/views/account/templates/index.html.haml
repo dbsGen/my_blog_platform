@@ -1,11 +1,36 @@
 = javascript_include_tag 'account/templates'
-#template_content
-  - @templates.each do |template|
-    .media-object
-      = link_to image_tag(template.icon_path, :size => '46x46'),
-                account_template_path(template),
-                :class => 'thumbnail template_icon',
-                :style => 'width: 46px; height: 46px;',
-                :template_name => template.name
+.form-horizontal
+  %section
+    %fieldset
+      %legend= "#{t('templates.label')}"
+    .navbar
+      .navbar-inner
+        = link_to raw("<i class='icon-plus'></i>#{t('templates.post')}"),
+                  '#templates-modal',
+                  'data-toggle' => 'modal',
+                  :onclick => '',
+                  :class => 'btn pull-left'
+        .search-bar
+          .navbar-search.pull-right
+            = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+            %i.icon-search.disable#search-icon
+    %ul.templates-icons
+      - for template in @usable_templates
+        %li.usable
+          = link_to(image_tag(template.icon_path, :size => '46x46'),
+            account_template_path(template),
+            :class => 'thumbnail',
+            :title => template.screen_name)
+#templates-modal.modal.hide.fade{:role => 'dialog',
+  'aria-labelledby' => 'modal-header-label', 'aria-hidden' => true}
+  .modal-header
+    %button.close{:type => 'button', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} ×
+    %h3#modal-header-label= t('templates.post')
+  .modal-body
+    = render :partial => 'layouts/upload', :locals => {ext:nil, path:nil, type:nil, url:account_templates_path, method:'POST'}
+    #message
+  .modal-footer
+    %button.btn{'data-dismiss' => 'modal', 'aria-hidden' => 'true'}= t 'close'
+    %button.btn.btn-primary= t 'post'
 
 

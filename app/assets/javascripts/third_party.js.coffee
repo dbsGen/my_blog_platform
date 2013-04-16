@@ -36,7 +36,7 @@ body_html = (title, type, ext, path, for_tag) ->
 show_tp = (type, ext, path, for_tag) ->
   url = "/account/third_parties/check_login/" + type
   $.ajax(
-#      这里的地址是写死的，请注意
+#     TODO 这里的地址是写死的，请注意
     url: url
     success: (data) ->
 #        已经有三方登陆
@@ -152,6 +152,7 @@ f_ext_not_match = (ext) ->
   files = tag.files
   if files.length
     file = files[0]
+#    TODO 这里写死了的请注意
     url = "/account/third_parties/upload_url/#{type}?path=#{path}#{file.name}"
 
     $.ajax(

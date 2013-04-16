@@ -82,9 +82,9 @@ $(document).ready(function(){
     end
     sub_path = file['path'].gsub BAIDU_ROOT_FOLDER, ''
     html = <<-html
-<a class='thumbnail' style='width:85%;height:85%' onclick='select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
-  <img style='max-height:64px;max-width:64px;' src='#{src}' class='baidu_pic' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
-  <div class='caption' style='white-space: nowrap; overflow:hidden;'>#{file_name}</div>
+<a class='thumbnail' onclick='select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
+  <img src='#{src}' class='baidu_pic' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
+  <div class='caption'>#{file_name}</div>
 </a>
     html
     raw html

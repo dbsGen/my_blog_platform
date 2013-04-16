@@ -45,6 +45,10 @@ en:
   version: 'Version'
   unknown_error: 'Unknown error'
   need_login: 'Please %{login} first, or %{register}. Then you can comment'
+  back: 'Back'
+  choose_file: 'Choose...'
+  upload_file: 'Upload'
+  please_select_file_first: 'Please select file first!'
 
   notices:
     label: 'Notices'
@@ -73,6 +77,19 @@ en:
     all: 'All templates'
     new: 'New'
     error: 'Template error'
+    name: 'Template name'
+    screen_name: 'Screen name'
+    icon: 'Template icon'
+    version: 'Version'
+    created_at: 'Created at'
+    post: 'Post template'
+    verify: 'Verify'
+    verified: 'Verified'
+    not_verified: 'Not verified'
+    approve: 'Approve'
+    reject: 'Reject'
+    reject_confirm: 'Do you reject this template?'
+    approve_confirm: 'Are you sure to approve this template?'
 
   articles:
     label: 'Articles'

@@ -8,3 +8,15 @@ db_ip: 27017
 #默认用户注册就拥有的模板
 default_templates:
   - 'simple_text'
+
+#新上传的模板放置位置
+zip_template_path: '/home/gen/www/zipfile'
+#缓存位置
+temp_zip_path: '/home/gen/www/tempfile'
+
+default_temp_icon: '/default/default_icon.png'
+pic_temp_site: 'http://static.sctab.com'
+#动态文件路径
+dynamic_file_path: '/home/gen/www/dynamic_template'
+#静态文件路径
+static_file_path: '/home/gen/www/static'

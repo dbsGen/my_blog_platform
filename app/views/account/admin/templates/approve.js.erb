@@ -1,0 +1,4 @@
+var obj = $('<%= j render(partial: 'account/admin/templates/template', locals: {header: false, object: @template}) %>');
+obj.css('display', 'none');
+obj.replaceAll('#<%= dom_id @template %>');
+obj.fadeIn();

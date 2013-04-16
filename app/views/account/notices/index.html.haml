@@ -1,6 +1,9 @@
 .form-horizontal
-  .notices-list
-    = render :partial => 'layouts/div_content',
-             :locals => {:partial => 'account/notices/notice',
-                         :objects => @notices,
-                         :url => "#{home_path}.js"}
+  %section
+    %fieldset
+      %legend= "#{t('notices.label')}"
+    .notices-list
+      = render :partial => 'layouts/div_content',
+               :locals => {:partial => 'account/notices/notice',
+                           :objects => @notices,
+                           :url => "#{home_path}.js"}

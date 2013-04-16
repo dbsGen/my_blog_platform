@@ -12,15 +12,17 @@ end
 
 #初始化系统默认的templates
 data = YAML.load(File.open('config/initializers/templates.yml'))
-templates = data['templates'] || []
-templates.each do |template|
-  name = template['name']
-  t = Template.where(:name => name).last
-  if t.nil?
-    t = Template.new(template)
-    t.save
-  else
-    t.set(template)
+if data
+  templates = data['templates'] || []
+  templates.each do |template|
+    name = template['name']
+    t = Template.where(:name => name).last
+    if t.nil?
+      t = Template.new(template)
+      t.save
+    else
+      t.set(template)
+    end
   end
 end
 

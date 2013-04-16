@@ -1,0 +1,35 @@
+.form-horizontal
+  %section
+    %fieldset
+      %legend= @template.screen_name
+    .control-group
+      .control-label
+        %label= t 'templates.icon'
+      .controls
+        .thumbnail{:style => 'width: 60px; height: 60px'}
+          = image_tag(@template.icon_path, :size => '60x60')
+    .control-group
+      .control-label
+        %label= t 'templates.screen_name'
+      .controls
+        .input-box.span6= @template.screen_name
+    .control-group
+      .control-label
+        %label= t 'templates.name'
+      .controls
+        .input-box.span6= @template.name
+    .control-group
+      .control-label
+        %label= t 'summary'
+      .controls
+        .input-box.span6= @template.summary
+    .control-group
+      .control-label
+        %label= t 'templates.created_at'
+      .controls
+        .input-box.span6
+          - unless @template.created_at.nil?
+            = @template.created_at.strftime('%F')
+    .gen-form-actions
+      = link_to t('back'), account_templates_path,
+        :class => 'btn btn-primary'

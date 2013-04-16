@@ -229,6 +229,7 @@ section {
     margin: 1px 10px 1px 10px;
 }
 
+/*文章评论*/
 .article-comment #article-edit {
 
 }
@@ -252,6 +253,11 @@ section {
     border: 1px solid rgb(210,210,210);
 }
 
+.comment-box .comment-content img {
+    max-height: 90px;
+    max-width: 120px;
+}
+
 .reply-box {
     background-color: rgb(235,235,255);
     border: 1px dotted rgb(210,210,210);
@@ -266,8 +272,9 @@ section {
     color: dodgerblue;
 }
 
+/*消息*/
 .notices-list {
-    padding: 12px;
+    padding: 0 12px 12px 12px;
 }
 
 .notice-box {
@@ -311,7 +318,55 @@ li.active>a.thumbnail {
     border-color: blue;
 }
 
-.comment-box .comment-content img {
-    max-height: 90px;
-    max-width: 120px;
+.files-box {
+    width:90px;
+    list-style-type: none;
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.files-box > a {
+    width:85%;
+    height:85%;
+}
+
+.files-box > a > img {
+    max-height: 64px;
+    max-width: 64px;
+}
+
+.files-box > a > div {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+ul.templates-icons {
+    list-style:none;
+    padding:2px;
+}
+
+ul.templates-icons > li {
+    border: none;
+    width: 46px;
+    height: 46px;
+}
+
+ul.templates-icons > li img {
+}
+
+ul.templates-icons > li.usable > a.thumbnail {
+    border-color: greenyellow;
+}
+
+ul.templates-icons > li.create > a.thumbnail {
+    border-color: blue;
+}
+
+.input-box {
+    border: 1px solid #aaaaaa;
+    min-height: 22px;
+    font-size: 14px;
+    font-weight: bolder;
+    padding: 4px;
 }
