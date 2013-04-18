@@ -90,6 +90,7 @@ en:
     reject: 'Reject'
     reject_confirm: 'Do you reject this template?'
     approve_confirm: 'Are you sure to approve this template?'
+    delete_confirm: 'Are you sure to delete this template?'
 
   articles:
     label: 'Articles'

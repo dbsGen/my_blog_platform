@@ -17,7 +17,7 @@
     %ul.templates-icons
       - for template in @usable_templates
         %li.usable
-          = link_to(image_tag(template.icon_path, :size => '46x46'),
+          = link_to(image_tag("#{CONFIG['static_temp_site']}/#{template.icon_path}", :size => '46x46'),
             account_template_path(template),
             :class => 'thumbnail',
             :title => template.screen_name)

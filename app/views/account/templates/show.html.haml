@@ -7,7 +7,7 @@
         %label= t 'templates.icon'
       .controls
         .thumbnail{:style => 'width: 60px; height: 60px'}
-          = image_tag(@template.icon_path, :size => '60x60')
+          = image_tag("#{CONFIG['static_temp_site']}/#{@template.icon_path}", :size => '60x60')
     .control-group
       .control-label
         %label= t 'templates.screen_name'

@@ -41,7 +41,7 @@ module Account::ArticlesHelper
       html << '<li>'
       html << '<div class="media-object">'
       html << link_to(
-          image_tag(template.icon_path,
+          image_tag("#{CONFIG['static_temp_site']}/#{template.icon_path}",
                     :size => '46x46'),
           account_template_path(template),
           :class => 'thumbnail template_icon',

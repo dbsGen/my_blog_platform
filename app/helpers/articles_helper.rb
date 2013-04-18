@@ -7,16 +7,26 @@ module ArticlesHelper
     @index ||= {}
     now = @index[template.name] || 0
     html = ''
-    if now == 0 and !template.skim_script_path.nil?
-      scripts = template.skim_script_path.split ',' || []
-      scripts.each do |v|
-        html << javascript_include_tag(v)
+    if now == 0 and
+      template.paths('skim_path') do |js, css|
+        js.each do |v|
+          html << javascript_include_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+        end
+        css.each do |v|
+          html << stylesheet_link_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+        end
       end
     end
-    #'/home/gen/Project/simple-text/skim_model/view/content.html.haml'
-    html << render(:file => "#{template.file_path}/skim_model/view/content" ,
+
+    file_path = "#{template.dynamic_path}skim/view"
+    cf = get_view file_path
+    html << render(:file => "#{template.dynamic_path}/skim/view/#{cf}" ,
                    :locals => {:id => "#{template.name}_#{now}",
-                               :element => element})
+                               :element => element,
+                               :dynamic_path => template.dynamic_path,
+                               :static_path => template.static_path,
+                               :template_info => template.description
+                   })
     @index[template.name] = now + 1
     raw html
   end

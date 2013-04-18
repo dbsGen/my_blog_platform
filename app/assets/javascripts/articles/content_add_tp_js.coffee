@@ -26,5 +26,5 @@ $.extend(
                 path = kv[1]
         if tp_id and path
           nc = nc.replace(img, img.replace(src, "data-tp='baidu' data-tp-id='#{tp_id}' data-path='#{path}'"))
-      nc
+    nc
 )

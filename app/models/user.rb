@@ -114,7 +114,7 @@ class User
     ts.each do |t|
       ft = usable_templates.first(:name => t)
       if ft.nil?
-        usable_templates << Template.first(:name => t)
+        usable_templates << Template.last_with_name(t)
       end
     end
     usable_templates

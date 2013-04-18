@@ -18,7 +18,7 @@ class Template
 
   key :created_at, Time
 
-  key :version, Fixnum
+  key :version, Float
 
   belongs_to :creater, :class => User
 
@@ -45,7 +45,7 @@ class Template
   end
 
   def self.last_with_name(name)
-    templates = self.where name:name
+    templates = self.where name:name, verify:true
     templates.first :order => :version.desc
   end
 
@@ -62,8 +62,35 @@ class Template
   end
 
   def icon_path
-    icon_path = description['icon_path']
-    icon_path = CONFIG['default_temp_icon'] if icon_path.nil? or !verify
-    "#{CONFIG['pic_temp_site']}#{icon_path}"
+    verify ? (description['icon_path'] || CONFIG['default_temp_icon']) : CONFIG['default_temp_icon']
+  end
+
+  def paths(key = 'edit_path')
+    if block_given?
+      ps = description[key]
+      js = []
+      css = []
+      ps.each do |v|
+        p = Path.new v
+        if p.type == 'css'
+          css << p
+        elsif p.type == 'js'
+          js << p
+        end
+      end unless ps.nil?
+      yield js, css
+    else
+      ps = description['edit_path']
+      s = []
+      ps.each do |v|
+        p = Path.new v
+        s << p
+      end
+      s
+    end
+  end
+
+  def folder_name
+    "#{name}-#{version}"
   end
 end

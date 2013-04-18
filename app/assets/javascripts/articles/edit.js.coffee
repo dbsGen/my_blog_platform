@@ -18,7 +18,6 @@ $(document).ready ->
       data: "index=#{index}"
       success: (data) ->
         eval(data)
-        console.log(str)
         if s == 0
           $('#edit_content').html(str)
         else

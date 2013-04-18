@@ -1,0 +1,13 @@
+<script type="text/javascript">
+(function() {
+    load_script = function() {
+        if(<%= raw check_code %>) {
+            console.log('Checker not loaded, retry in 2sec.');
+            setTimeout('load_script()', 2000);
+        }else {
+            <%= render file: "#{insert_content_path}", locals: options %>
+        }
+    };
+    load_script();
+})();
+</script>

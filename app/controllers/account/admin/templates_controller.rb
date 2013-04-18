@@ -49,15 +49,16 @@ class Account::Admin::TemplatesController < ApplicationController
         zip_file.each do |entry|
           if entry.name.match(/^(skim|edit)\/view\//).nil?
           #  判断这些为静态文件
-            file_path = "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/#{entry.name}"
+            file_path = "#{CONFIG['static_file_path']}/#{@template.folder_name}/#{entry.name}"
           else
-            file_path = "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/#{entry.name}"
+            file_path = "#{CONFIG['dynamic_file_path']}/#{@template.folder_name}/#{entry.name}"
           end
           try_time = 0
           begin
             entry.extract(file_path) {true}
           rescue Errno::ENOENT => e
             unless e.message['No such file or directory'].nil?
+              p e.message[/\/.+$/]
               FileUtils.mkdir_p e.message[/\/.+$/]
               try_time += 1
               retry if try_time < 3
@@ -75,7 +76,6 @@ class Account::Admin::TemplatesController < ApplicationController
       @template.verify = true
     else
     #  下架,删除部署好的文件
-      p @template.static_path
       FileUtils.rm_r @template.static_path
       FileUtils.rm_r @template.dynamic_path
       @template.set(
@@ -104,7 +104,17 @@ class Account::Admin::TemplatesController < ApplicationController
 
   def destroy
     @key = dom_id(@template)
+    zip_file = "#{CONFIG['zip_template_path']}/#{@template.name}-#{@template.version}.zip"
+    sp = @template.static_path
+    dp = @template.dynamic_path
     if @template.destroy
+      begin
+        FileUtils.rm_f zip_file
+        FileUtils.rm_f sp
+        FileUtils.rm_f dp
+      rescue Exception => e
+        logger.warn "Can't remove the file #{e}"
+      end
       respond_to do |format|
         format.js
       end

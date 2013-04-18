@@ -1,17 +1,24 @@
 #  ajax queue 部分
 #  document.ajax_loading 标志是否在loading
 
+
+dequeue = ->
+  return if document.ajax_loading or document.ajax_queue.length == 0
+  document.ajax_loading = true
+  ops = document.ajax_queue.shift()
+  if typeof(ops) == 'function'
+    ops.apply()
+    document.ajax_loading = false
+    dequeue()
+  else
+    $.ajax(ops).complete ->
+      document.ajax_loading = false
+      dequeue()
+
 $.extend(
   ajax_q: (options) ->
     if !document.ajax_queue
       document.ajax_queue = []
-    dequeue = ->
-      return if document.ajax_loading or document.ajax_queue.length == 0
-      document.ajax_loading = true
-      ops = document.ajax_queue.shift()
-      $.ajax(ops).complete ->
-        document.ajax_loading = false
-        dequeue()
 
     document.ajax_queue.push(options)
     dequeue()

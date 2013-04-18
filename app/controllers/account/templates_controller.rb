@@ -58,6 +58,7 @@ class Account::TemplatesController < ApplicationController
     template.zip_file = zip_path
     template.creater = current_user
     template.save
+    p template
     FileUtils.mv temp_path, zip_path
     render_format 200, 'success'
   end

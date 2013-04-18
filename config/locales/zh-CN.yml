@@ -85,6 +85,7 @@ zh:
     reject: '驳回'
     reject_confirm: '是否驳回这个模板?'
     approve_confirm: '你确定通过这个模板的审批?'
+    delete_confirm: '你确定要删除这个模板?'
 
   articles:
     label: '文章'
