@@ -1,0 +1,8 @@
+.tags-group
+  %h4
+    %span.icon-bookmark
+    标签
+  %ul
+    - @tags.each do |tag|
+      %li.tag
+        %a.button{href: tag_path(tag)}= tag.label

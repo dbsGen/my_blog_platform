@@ -74,6 +74,7 @@ class Account::Admin::TemplatesController < ApplicationController
       @template.dynamic_path = "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/"
       @template.static_path = "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/"
       @template.verify = true
+      @template.creater.usable_templates << @template
     else
     #  下架,删除部署好的文件
       FileUtils.rm_r @template.static_path

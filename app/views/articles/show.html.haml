@@ -1,17 +1,16 @@
 = javascript_include_tag 'comments'
-= javascript_include_tag 'third_party'
-= javascript_include_tag 'jquery.baidu'
-= stylesheet_link_tag 'colorbox'
-.article.container
-  .article-header
-    .article-title= @article.title
-    .article-subtitle
+= stylesheet_link_tag 'vender/colorbox'
+.article
+  .a-header
+    .title= @article.title
+    .subtitle
       -#TODO 这里的链接需要补全
-      = link_to @article.creater.name, ''
+      = name_tag @article.creater
       = "#{t('articles.created_at')}:#{@article.created_at.strftime('%F')}"
       - unless @article.edited_at != @article.creater
         = "#{t('articles.edited_at')}:#{@article.edited_at.strftime('%F')}"
-  .article-body
+  .body
+    = tags_tag
     - @article.elements.each do |element|
       = render_element element
   -#显示评论
@@ -24,11 +23,9 @@
       #article-edit{:article => @article.id, :reply_to => 0}
         #article-replay{:name => 'article-replay'}
         = render_template_edit_nr(COMMENT_TEMPLATE)
-        %button.btn-primary.btn{:href => comments_path,:onclick => 'return post_comment(this);'}
+        %button.btn-primary.btn{:href => comments_path('js'),:onclick => 'return post_comment(this);'}
           = t('comments.send.label')
     - else
       .article-nologin
         = raw I18n.t('need_login', :login => link_to(t('login'), login_path) ,
                                    :register => link_to(t('signup'), signup_path))
-  = javascript_tag do
-    $('img[data-tp]').tp_picture();

@@ -1,6 +1,8 @@
 zh:
+  domain: '域名'
   login: '登录'
   ID: '用户名'
+  nickname: '昵称'
   password: '密码'
   or: '&emsp;'
   signup: '注册'
@@ -12,7 +14,7 @@ zh:
   logout_success: '已注销'
   logout: '注销'
   profiles: '用户页面'
-  settings: '设置'
+  settings: '用户信息'
   name_card: '名片'
   edit: '编辑'
   summary: '简介'
@@ -45,6 +47,10 @@ zh:
   choose_file: '浏览...'
   upload_file: '上传'
   please_select_file_first: '请先选择文件!'
+  set_domain: '设置域名'
+  tags: '标签'
+  like:
+    label: '赞'
 
   notices:
     label: '消息'
@@ -61,6 +67,7 @@ zh:
       failed: '评论失败.'
     replied: '点击展开'
     reply: '回复'
+    label: '评论'
 
   pagination:
     loading: '载入中,请稍候。'
@@ -171,3 +178,4 @@ zh:
               password:
                 too_short: '密码太短'
   no_element: "现在还没有模板，你可以从下边选择一个。"
+  avatar: "头像"

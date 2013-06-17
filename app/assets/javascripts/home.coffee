@@ -1,0 +1,12 @@
+#= require jquery
+#= require jquery_ujs
+#= require underscore-1.4.4
+#= require backbone-0.9.10
+#= require messenger
+#= require messenger-theme-future
+#= require search/main_search
+#= require tools/extend
+#= require iCheck/jquery.icheck.min
+#= require iCheck/do
+#= require tools/tools
+#= require main/tags

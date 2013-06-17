@@ -12,7 +12,7 @@
     %td= object.id
     %td= link_to object.title, article_path(object)
     %td= object.created_at.strftime('%F')
-    %td= object.creater.name
+    %td= admin_name_tag(object.creater)
     %td
       = link_to t('edit'), account_admin_article_path(object)
       = link_to t('delete'), account_admin_article_path(object),

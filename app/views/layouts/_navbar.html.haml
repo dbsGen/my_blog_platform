@@ -1,33 +1,45 @@
-.navbar.navbar-fixed-top.navbar-inverse
-  .navbar-inner
-    .container
-      %ul.nav.nav-pills
-        -#TODO 暂时只显示最新
-        -#= navbar_li_tag link_to(t('.home'), root_url), home?
-        -#= navbar_li_tag link_to(t('.popular'), popular_url), popular?
-        -#= navbar_li_tag link_to(t('.recommend'), recommend_url), recommend?
-        -#= navbar_li_tag link_to(t('.last'), last_url), last?
+.header
+  .logo
+    = image_tag '/images/logo_200.png', title: '我的博卡'
+  .navbar
+    .bg
+    %a.navitem{href: root_path, class: @page_index == :hot ? 'active': nil}
+      %span 热门
+    %a.navitem{href: time_line_path, class: @page_index == :time_line ? 'active' : nil}
+      %span 广场
+    %a.navitem-last{href: recommend_path, class: @page_index == :recommend ? 'active':nil}
+      %span 推荐
+  .search
+    %button.helper.hidden
+    %input#main-search{placeholder: raw('&#xe041;搜索...'), 'data-url' => main_search_path}
+    .result.hidden
+      .search-content
+      .search-footer
+        %button.baidu{'data-url' => request.domain}
+          %img{src: '/images/baidu.png'}
+        %button.google{'data-url' => request.domain}
+          %img{src: '/images/google.png'}
 
-      %ul.nav.nav-pills.pull-right
-        - if login?
-          %li.dropdown
-            %a.dropdown-toggle{:href => '#', 'data-toggle' => 'dropdown'}
-              = image_tag current_user.portrait_path, :size => "21x21"
-              %b.caret
-            %ul.dropdown-menu{:role => "menu"}
-              %li
-                = link_to current_user.name, account_settings_path
-              -#%li
-              -#  = link_to t('.settings'), settings_account_path
-              -#- if current_user.admin?
-              -#  %li.divider
-              -#  %li
-              -#    = link_to t('.admin_dashboard'), admin_dashboard_path
-              %li.divider
-              %li
-                = link_to t("logout"), logout_path, :method => :delete, :class => "delete"
-        - else
-          %li
-            = link_to t('signup'), signup_path
-          %li
-            = link_to t('login'), login_path
+-#%ul.nav.nav-pills.pull-right
+-#  - if login?
+-#    %li.dropdown
+-#      %a.dropdown-toggle{:href => '#', 'data-toggle' => 'dropdown'}
+-#        = image_tag avatar_url(current_user), :size => "21x21"
+-#        %b.caret
+-#      %ul.dropdown-menu{:role => "menu"}
+-#        %li
+-#          = link_to current_user.name, account_settings_path
+-#        -#%li
+-#        -#  = link_to t('.settings'), settings_account_path
+-#        -#- if current_user.admin?
+-#        -#  %li.divider
+-#        -#  %li
+-#        -#    = link_to t('.admin_dashboard'), admin_dashboard_path
+-#        %li.divider
+-#        %li
+-#          = link_to t("logout"), logout_path, :method => :delete, :class => "delete"
+-#  - else
+-#    %li
+-#      = link_to t('signup'), signup_path
+-#    %li
+-#      = link_to t('login'), login_path

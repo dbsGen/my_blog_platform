@@ -1,34 +1,33 @@
 = javascript_include_tag 'sessions'
-.container
-  .row
-    .span6.offset3.form-horizontal
-      %section.box
-        = form_tag sessions_path, :id => 'login_form',:method => 'post' do
-          %fieldset
-            #legend
-              %legend= t 'login'
-              .control-group
-                %label.control-label{:for => 'user_name'}= t 'ID'
-                .controls
-                  = text_field_tag 'user_name', '',
-                                   :class => 'input-xlarge span4',
-                                   :placeholder => t('.ID_placeholder'),
-                                   :tabIndex => 1
-              .control-group
-                %label.control-label{:for => 'user_password'}= t 'password'
-                .controls
-                  = password_field_tag 'user_password', '',
-                                       :placeholder => "#{t '.pwd_placeholder'}",
-                                       :class => 'span4',
-                                       :tabIndex => 2
-              .control-group
-                .controls
-                  .checkbox
-                    = check_box_tag 'remember_me', nil, remember_me?
-                    = t 'remember_me'
-              .gen-form-actions
-                = submit_tag t('login'),
-                             :class => 'btn primary',
-                             :tabIndex => 3
-                = raw t('or')
-                = link_to t('.not_signup_yet'), signup_path
+.row
+  .span4.offset3
+    %h2= t('login')
+    .radius-box
+      = form_tag sessions_path, :id => 'login_form',:method => 'post' do
+        .control-row
+          .control-label= t 'ID'
+          .control
+            = text_field_tag 'user_name', '',
+                             :placeholder => t('.ID_placeholder'),
+                             :tabIndex => 1
+        .control-row
+          .control-label= t 'password'
+          .control
+            = password_field_tag 'user_password', '',
+                                 :placeholder => "#{t '.pwd_placeholder'}",
+                                 :tabIndex => 2,
+                                 class: 'password'
+            = link_to '忘记密码', find_back_path, style: 'font-size: 12px'
+        .control-row
+          .control{style: 'margin-left: 50px'}
+            .checkbox
+              = check_box_tag 'remember_me', nil, remember_me?
+              %label{style: 'display:inline'}= t 'remember_me'
+        .control-row
+          .submit-row
+            = submit_tag t('login'),
+                         :class => 'button login-button',
+                         :tabIndex => 3
+            = raw t('or')
+            = link_to t('.not_signup_yet'), signup_path
+            = raw t('or')

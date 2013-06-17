@@ -111,4 +111,27 @@ $(document).ready(function(){
   def hidden_footer?
     @hidden_footer
   end
+
+  def hidden_navbar
+    @hidden_navbar = true
+  end
+
+  def hidden_footer
+    @hidden_footer = true
+  end
+
+#  SEO
+  def seo_meta
+    html = ''
+    unless @keys.nil?
+      unless @keys.is_a? Array
+        @keys = [@keys.to_s]
+      end
+      html << "<meta name='keywords' content='#{@keys * ','}'>"
+    end
+    unless @summary.nil?
+      html << "<meta name='description' content='#{@summary}'>"
+    end
+    raw html
+  end
 end

@@ -1,0 +1,6 @@
+= javascript_include_tag 'mingp-0.1'
+.container
+  = render :partial => 'layouts/div_content',
+           :locals => {:partial => 'main/article',
+                       :objects => @articles,
+                       :url => "#{blog_pagination_path}.js"}

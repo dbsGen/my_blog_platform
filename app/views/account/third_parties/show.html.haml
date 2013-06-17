@@ -1,5 +1,5 @@
-= stylesheet_link_tag 'colorbox'
-= javascript_include_tag 'jquery.colorbox-min'
+= stylesheet_link_tag 'vender/colorbox'
+= javascript_include_tag 'verder/jquery.colorbox-min'
 = third_party_js
 
 .form-horizontal
@@ -14,3 +14,7 @@
         %label.control-label= t('third_parties.youku')
         .controls
           = third_party_tag(youku_name, 'youku', youku_path)
+      .control-group
+        %label.control-label MingP
+        .controls
+          = third_party_tag(mingp_name, 'mingp', mingp_path)

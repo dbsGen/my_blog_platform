@@ -8,15 +8,13 @@ window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = 
 #
 #    jQuery('label.message[for="' + element.attr('id') + '"]').text(message);
 #      alert "add : \nelement is : #{typeof(element)}\nsettings is : #{typeof(settings)}\nmessage is #{typeof(message)}"
-    sup = element.parents('div.control-group')
-    sup.addClass('error')
-    sup.find('span.help-inline').remove()
-    element.after("<span class='help-inline'>#{message}</span>")
+    sup = element.parents('div.control')
+    sup.find('span.help-block').remove()
+    element.after("<span class='help-block'>#{message}</span>")
   remove: (element, settings) ->
 #    jQuery('label[for="' + element.attr('id') + '"].message').remove();
-    sup = element.parents('div.control-group')
-    sup.removeClass('error')
-    sup.find('span.help-inline').remove()
+    sup = element.parents('div.control')
+    sup.find('span.help-block').remove()
 }
 #window.ClientSideValidations.validators.local['email'] = (element, options) ->
 #  # Your validator code goes in here

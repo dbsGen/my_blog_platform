@@ -2,10 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 #= require sha256
+#= require third_party/show_authorize
+#= require verder/jquery.colorbox-min
 
 $(document).ready ->
   $('#modify-password-button').click ->
-    $('#loading-button').button('reset')
+    $('#password-modal #loading-button').button('reset')
 #    重置输入框
     $('#old_password').val('')
     $('#old_password').parents('div.control-group').removeClass('error')
@@ -13,7 +15,7 @@ $(document).ready ->
     $('#new_password').parents('div.control-group').removeClass('error')
     $('#password_confirmation').val('')
     $('#password_confirmation').parents('div.control-group').removeClass('error')
-  $('#loading-button').click ->
+  $('#password-modal #loading-button').click ->
     op = $('#old_password').val()
     np = $('#new_password').val()
     cp = $('#password_confirmation').val()
@@ -49,12 +51,12 @@ $(document).ready ->
         new_password: encrypt_password($('#new_password').val())
       }
       success: (data) ->
-        $('#loading-button').button('reset')
+        $('#password-modal #loading-button').button('reset')
         $('#password-modal').modal('hide')
         show_information data.msg
       error: (request, code, error) ->
         response = eval("(#{request.responseText})")
-        $('#loading-button').button('reset')
+        $('#password-modal #loading-button').button('reset')
         $('#old_password').val('')
         $('#new_password').val('')
         show_error_information response.msg
@@ -62,6 +64,7 @@ $(document).ready ->
 
   $('#summary-area').change ->
     icon = $('#loading-icon')
+    icon.removeClass('icon-ok icon-remove').addClass('spin icon-refresh')
     icon.fadeIn()
     rmi = ->
       icon.fadeOut()
@@ -80,3 +83,48 @@ $(document).ready ->
         icon.removeClass('spin icon-refresh').addClass('icon-remove')
         setTimeout(rmi, 1500)
     }
+
+  $('#nickname-text').change ->
+    icon = $('#loading-icon2')
+    icon.removeClass('icon-ok icon-remove').addClass('spin icon-refresh')
+    icon.fadeIn()
+    rmi = ->
+      icon.fadeOut()
+    request = $.ajax {
+      url: "#{user_path}.json"
+      type: 'PUT'
+      data: {
+        nickname: $('#nickname-text').val()
+      }
+      success: (data) ->
+        icon.removeClass('spin icon-refresh').addClass('icon-ok')
+        div = $('#nickname')
+        div.html("<strong>#{$('#nickname-text').val()}</strong>")
+        setTimeout(rmi, 1500)
+      error: (request, code, error) ->
+        icon.removeClass('spin icon-refresh').addClass('icon-remove')
+        setTimeout(rmi, 1500)
+    }
+
+  $('#domain-button').click ->
+    $('#domain-modal #loading-button').button('reset')
+  $('#domain-modal #loading-button').click ->
+    $('#domain-modal #loading-button').button('loading')
+    $.ajax(
+      url: "#{host_domain_path}.json"
+      type: 'POST'
+      data: {
+        subdomain: $('#host_domain').val()
+      }
+      complete: ->
+        $('#domain-modal #loading-button').button('reset')
+      success: (data) ->
+        $('#domain-modal').modal('hide')
+        $('#domain-control').html(data.msg)
+      error: (r) ->
+        data = JSON.parse(r.responseText)
+        Messenger().post(
+          type: 'error'
+          message: data.msg
+        )
+    )

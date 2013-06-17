@@ -7,6 +7,9 @@ class Template
   key :verify,    Boolean, :default => false
   #是否引用 如果是其中的@信息会被保存
   key :is_quote,  Boolean, :default => true
+
+  #类型content or blog
+  key :type,  String
   #压缩文件路径
   key :zip_file, String
   #静态文件路径
@@ -55,6 +58,7 @@ class Template
         name: template['name'],
         version: template['version'],
         is_quote: template['is_quote'],
+        type: template['type'],
         description: template,
         created_at: Time.now
     }

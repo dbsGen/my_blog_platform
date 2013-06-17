@@ -2,16 +2,18 @@
 %html
   %head
     %title= @title.nil? ? "BlogSystem" : @title
-    = stylesheet_link_tag    "application", :media => "all"
-    = javascript_include_tag "application"
+    = stylesheet_link_tag    "home", :media => "all"
+    = javascript_include_tag "home"
     = csrf_meta_tags
-    = check_information
-
+    = favicon_link_tag '/favicon.ico', rel: 'bookmark', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', rel: 'icon', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', type: 'image/x-icon'
+    = seo_meta
+    %meta{'http-equiv'=>'Content-type', content:'text/rhtml; charset=utf8'}
   %body
-    - unless hidden_navbar?
-      = render :partial => 'layouts/navbar'
-      .skip{:style => 'height:48px'}
-    = yield
-    - unless hidden_footer?
-      = render :partial => 'layouts/footer'
-    = new_notice_tag
+    .myboka
+      - unless hidden_navbar?
+        = render :partial => 'layouts/navbar'
+      = yield
+      - unless hidden_footer?
+        = render :partial => 'layouts/footer'

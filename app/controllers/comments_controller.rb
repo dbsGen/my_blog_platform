@@ -36,7 +36,11 @@ class CommentsController < ApplicationController
       else
         Notice.add_notice_from_reply_comment(reply_to.creater, comment)
       end
-      render_format 200, t('comments.send.success')
+      @comment = comment
+      respond_to do |format|
+        format.js
+        format.html {render_format 200, t('comments.send.success')}
+      end
     else
       render_format 500, t('comments.send.failed')
     end

@@ -1,5 +1,5 @@
 module Account::ThirdPartiesHelper
-  def third_party_tag(value, type, path)
+  def third_party_tag(value, type, path = nil)
     path ||= '#'
     html = "<div id='#{type}'>"
     if !value.nil? and value.length > 0
@@ -28,6 +28,11 @@ module Account::ThirdPartiesHelper
 
   def youku_name
     info = current_user.youku_info
+    info.nil? ? nil : info.name
+  end
+
+  def mingp_name
+    info = current_user.mingp_info
     info.nil? ? nil : info.name
   end
 
@@ -61,7 +66,7 @@ $(document).ready(function(){
     s = <<-script
 $(document).ready(function(){
   setTimeout(function(){
-    parent.document.auth_over(
+    parent.auth_over(
     '#{j content}',
     '#{j from}'
     )
@@ -82,7 +87,7 @@ $(document).ready(function(){
     end
     sub_path = file['path'].gsub BAIDU_ROOT_FOLDER, ''
     html = <<-html
-<a class='thumbnail' onclick='select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
+<a class='thumbnail' onclick='console.log(select_file);select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
   <img src='#{src}' class='baidu_pic' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
   <div class='caption'>#{file_name}</div>
 </a>

@@ -1,6 +1,6 @@
+#= require jquery
 #= require articles/content_add_tp_js
-#= require jquery.baidu
-#= require third_party
+#= require third_party/third_party
 
 $(document).ready ->
   this.add_template = (btn) ->
@@ -11,7 +11,6 @@ $(document).ready ->
     for elm in elms
       if $(elm).attr('template_name') == tn
         index += 1
-
     $.ajax(
       url: btn.attr('href') + '.js'
       type: 'get'
@@ -61,8 +60,9 @@ $(document).ready ->
       url: btn.attr('href')
       type: method
       data: {
-      title: $('#title').val()
-      elements: d
+        title: $('#title').val()
+        elements: d
+        tags: $('#tags').val()
       }
       success: success
       error: error

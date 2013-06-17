@@ -1,0 +1,6 @@
+<%- if @expire == 0 %>
+Messenger().post('发送成功，请前往邮箱确认。');
+<%- else %>
+Messenger().post({message: '发送失败,<%= (@expire / 60).to_i + 1 %>分钟后再次发送。', type: 'error'});
+<%- end %>
+$('#submit-button').removeAttr('disabled');

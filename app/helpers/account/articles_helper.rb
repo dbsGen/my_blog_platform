@@ -38,11 +38,13 @@ module Account::ArticlesHelper
     html = ''
     html << '<ul class="templates-icons">'
     templates.each do |template|
-      html << '<li>'
+      html << '<li style="float:left">'
       html << '<div class="media-object">'
       html << link_to(
           image_tag("#{CONFIG['static_temp_site']}/#{template.icon_path}",
-                    :size => '46x46'),
+                    :size => '46x46',
+                    title: template.screen_name,
+                    alt: template.screen_name),
           account_template_path(template),
           :class => 'thumbnail template_icon',
           :template_name => template.name

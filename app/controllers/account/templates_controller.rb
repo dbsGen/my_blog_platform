@@ -2,7 +2,7 @@ require 'zip/zip'
 
 class Account::TemplatesController < ApplicationController
   layout 'user_page'
-  before_filter :require_login, :enter_page
+  before_filter :require_confirm, :enter_page
 
   def index
     @usable_templates = current_user.usable_templates_and_check
@@ -40,19 +40,19 @@ class Account::TemplatesController < ApplicationController
     name = template_info['template']['name']
     version = template_info['template']['version']
     if name.nil? or version.nil?
-      FileUtils.rm_f temp_path
       zip_file.close
+      FileUtils.rm_f temp_path
       return render_format 500, 'The template is upload, yet!'
     end
 
     test = Template.first name:name, version:version
     unless test.nil?
-      FileUtils.rm_f temp_path
       zip_file.close
-      return render_500
+      FileUtils.rm_f temp_path
+      return render_format 500, '这个名称和版本已经上传过了。'
     end
 
-    zip_file.close()
+    zip_file.close
     zip_path = "#{CONFIG['zip_template_path']}/#{name}-#{version}.zip"
     template = Template.create_with_params template_info
     template.zip_file = zip_path

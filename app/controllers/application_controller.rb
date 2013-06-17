@@ -1,8 +1,17 @@
+require 'errors'
+#  所有controller的父类
+#  @title String 页面的标题
+#  @keys  Array  关键字
+#  @summary String 内容简介
 
 class ApplicationController < ActionController::Base
+  rescue_from SaveError, :with => :get_save_error
+  rescue_from MongoMapper::DocumentNotValid, :with => :get_save_error
+  before_filter :set_page_info, :page_code
+
   protect_from_forgery
 
-  helper_method :login?, :current_user, :saved_session, :remember_me?, :admin?
+  helper_method :login?, :current_user, :saved_session, :remember_me?, :admin?, :user_with_domain
 
   def redis
     if @redis.nil?
@@ -102,12 +111,30 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def hidden_navbar
-    @hidden_navbar = true
+  def require_confirm
+    if login?
+      redirect_to confirm_path unless current_user.confirm
+    else
+      store_location
+      flash[:information] = {message: t('must_login'),
+                             type: 'error',
+                             showCloseButton: true}
+      redirect_to login_url
+    end
   end
 
-  def hidden_footer
-    @hidden_footer = true
+  def require_no_confirm
+    if login?
+      if current_user.confirm
+        redirect_to root_path
+      end
+    else
+      store_location
+      flash[:information] = {message: t('must_login'),
+                             type: 'error',
+                             showCloseButton: true}
+      redirect_to login_url
+    end
   end
 
   def render_format(status, msg = '')
@@ -134,5 +161,37 @@ class ApplicationController < ActionController::Base
 
   def render_500
     render :file => "public/500.html", :status => 500, :layout => false
+  end
+
+  def user_with_domain
+    domain = request.domain
+    return nil if domain.nil?
+    subdomain = nil
+    if CONFIG['home_domain'].include? request.domain
+      subdomain = request.subdomain
+    end
+
+    d = Domain.find_by_word subdomain.nil? ? domain : "#{subdomain}.#{domain}"
+    d.nil? ? nil : d.user
+  end
+
+  protected
+  def set_page_info
+    @title = '我的博卡--MyBoKa'
+  end
+
+  def get_save_error(e)
+    case
+      when e.is_a?(SaveError)
+        render_format(500, e.message)
+      when e.is_a?(MongoMapper::DocumentNotValid)
+        render_format(500, e.message)
+      else
+
+    end
+  end
+
+  def page_code
+    headers['Content-Type']  = 'text/html; charset=utf-8'
   end
 end

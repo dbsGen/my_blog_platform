@@ -1,0 +1,7 @@
+var html = '<div class="tag"><a class="button" href="<%= tag_path(@tag) %>"><%= @tag.label %></a>';
+<%- if current_user == @article.creater %>
+html += '<img class="remove" src="/images/cancel20.png" alt="移除标签" title="移除标签" onclick="removeTag(this, \'<%= @article.id %>\')"/>';
+<%- end %>
+html += '</div>'
+$(html).insertBefore('.tags .new-tag');
+if($('.tags .tag').size() > 10) $('.tags .new-tag').fadeOut();

@@ -47,6 +47,8 @@ GEM
       multi_json (~> 1.0)
     faraday (0.8.6)
       multipart-post (~> 1.1)
+    google-search (1.0.3)
+      json
     haml (4.0.0)
       tilt
     hike (1.2.1)
@@ -65,7 +67,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.21)
-    mongo (1.8.3)
+    mongo (1.8.5)
       bson (~> 1.8.3)
     mongo_mapper (0.12.0)
       activemodel (~> 3.0)
@@ -74,6 +76,7 @@ GEM
     multi_json (1.6.1)
     multi_xml (0.5.3)
     multipart-post (1.2.0)
+    nokogiri (1.5.9)
     oauth2 (0.9.1)
       faraday (~> 0.8)
       httpauth (~> 0.1)
@@ -111,6 +114,8 @@ GEM
       json (~> 1.4)
     redis (3.0.3)
     rubyzip (0.9.9)
+    rufus-scheduler (2.0.19)
+      tzinfo (>= 0.3.23)
     sass (3.2.6)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -139,14 +144,18 @@ DEPENDENCIES
   client_side_validations
   client_side_validations-mongo_mapper
   coffee-rails (~> 3.2.1)
+  google-search
   haml (= 4.0.0)
   httpclient
   jquery-rails
   mongo_mapper
+  nokogiri
   oauth2
   rails (= 3.2.12)
   redis (= 3.0.3)
   rubyzip
+  rufus-scheduler
+  sass
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
   uuidtools

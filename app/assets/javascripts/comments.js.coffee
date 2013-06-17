@@ -2,14 +2,18 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 #= require articles/content_add_tp_js
+#= require third_party/third_party
+#= require verder/jquery.colorbox-min
+#= require mingp-0.1
+#= require articles/tags
 
 @post_comment = (tag)->
   try
     btn = $(tag)
     btn.attr('disabled', true)
-    console.log(btn.attr('href'))
     el = $('#article-edit')
     ed = $('#article-edit .edit_element:first')
+    e = $("##{ed.attr('for')}")
     $.ajax(
       type: 'post'
       url: btn.attr('href')
@@ -18,13 +22,13 @@
         reply_to: el.attr('reply_to')
         elements: [{
                    template_name: ed.attr('template_name')
-                   content: $.add_tp($("##{ed.attr('for')}").val())
+                   content: $.add_tp(e.val())
                    }]
       }
 
       success: (data)->
-        Messenger().post(data.msg)
         btn.attr('disabled', false)
+        e.data("wysihtml5").clear()
       error: (request)->
         data = eval("(#{request.responseText})")
         Messenger().post(

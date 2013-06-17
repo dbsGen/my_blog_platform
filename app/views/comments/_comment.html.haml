@@ -8,17 +8,17 @@
   - if @comments_index["#{reply_to.id}"]
     .replied{:for => dom_id(reply_to), :onclick => 'extend_reply(this);'}= t('comments.replied')
   - else
-    .reply-box{:style => "margin: #{reply_count > 10 ? '0' : '1px'};", :id => dom_id(reply_to)}
+    .r-box{:style => "margin: #{reply_count > 10 ? '0' : '1px'};", :id => dom_id(reply_to)}
       = simple_comment_tag(reply_to, reply_count + 1)
 
 -#评论内容
-.comment-content
+.content
   - comment.elements.each do |element|
     = render_element(element)
 -#评论信息
-.comment-author
+.author
   -# TODO 需要补全url
-  = link_to(author.name, '#')
+  = name_tag(author)
   = comment.created_at.strftime('%F')
   - if login?
     = reply_tag(comment)

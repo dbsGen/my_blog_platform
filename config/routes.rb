@@ -13,13 +13,22 @@ BlogSystem::Application.routes.draw do
   delete  'logout'    => 'Sessions#destroy',    :as => 'logout'
 
   match   'home'      => 'Main#home_page',      :as => 'home'
-  get     'popular'   => 'Main#popular_page',   :as => 'popular'
-  get     'recommend' => 'Main#recommend_page', :as => 'recommend'
-  get     'last'      => 'Main#last_page',      :as => 'last'
+  get     'time_line' => 'Main#time_line',      :as => 'time_line'
+  get     'recommend' => 'Main#recommend',      :as => 'recommend'
 
   get     'signup'    => 'Users#new',           :as => 'signup'
   put     'user'      => 'Users#update',        :as => 'user'
   get     'third_parties/tp_url/:type'  => 'ThirdParties#tp_url', :as => 'tp_url'
+  get     'confirm'   => 'Users#confirm',       :as => 'confirm'
+  get     'confirm/send' => 'Users#send_confirm', :as => 'send_confirm'
+  get     'confirm/t/:token' => 'Users#get_confirm', :as => 'get_confirm'
+  get     'findback' => 'Users#find_back',        :as => 'find_back'
+  post    'findback/submit' => 'Users#submit_find_back',    :as => 'submit_find_back'
+  get     'findback/t/:token' => 'Users#get_find_back',     :as => 'get_find_back'
+  post    'findback/complete' => 'Users#complete_find_back',:as => 'complete_find_back'
+  post    'blog/pagination'   => 'Main#blog',               :as => 'blog_pagination'
+  match   'search'  => 'Main#search', :as => 'main_search'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
@@ -38,6 +47,7 @@ BlogSystem::Application.routes.draw do
   resources :sessions,  :only => [:create]
   resources :articles,  :only => [:show]
   resources :comments,  :only => [:create]
+  resources :tags,      :only => [:show, :create, :destroy, :index]
 
   # Sample resource route with sub-resources:
   #   resources :products do
@@ -69,6 +79,9 @@ BlogSystem::Application.routes.draw do
     get 'third_parties/collections/:type' => 'ThirdParties#collections',    :as => 'collections'
     delete 'third_parties/:type'        => 'ThirdParties#destroy',  :as => 'TP_delete'
     get 'third_parties/upload_url/:type'  => 'ThirdParties#upload_url',     :as => 'upload_url'
+    post 'domain/host/set'        => 'Settings#set_host_domain',    :as => 'set_host_domain'
+    post 'notices'                => 'Notices#index'
+
     resources :articles
     resources :templates, :only => [:index, :show, :create]
     resources :notices,   :only => [:index]
@@ -90,7 +103,7 @@ BlogSystem::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-  root to:'Main#home_page'
+  root to:'Main#remote_app'
 
   # See how all your routes lay out with "rake routes"
 

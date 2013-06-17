@@ -1,23 +1,40 @@
+require 'third_parties_api/mingp_api'
+
 class UsersController < ApplicationController
   before_filter :require_no_login, :only => [:create, :new]
-  before_filter :require_login, :only => [:update]
+  before_filter :require_login, :only => [:update, :confirm]
+  before_filter :require_no_confirm, only: [:confirm]
+  before_filter :check_find_back, only: [:get_find_back]
 
+  caches_page :find_back, :new, expires_in: 1.day
+  #caches_action :confirm, :get_find_back
   #注册页面
   def new
     @user = User.new
-    store_location request.referrer if request.referrer.present?
   end
 
   #创建用户
   def create
     logger.info "Get the create event, User #{params} want to signup"
     #用户密码的加密方式是sha256 5次
-    @user = User.create_user params
+    @user = User.create_user params do |user|
+      begin
+        #  开始获取用户数据
+        body = MingpApi.user_info(user.email)
+        json = JSON(body)
+        user.nickname = json['user']['name']
+        user.summary = json['user']['description']
+      rescue Exception => e
+        logger.warn("Can't get #{user.name}'s user info. #{e}")
+      end
+    end
     if @user
       #注册成功
+      @user.goto_confirm(get_confirm_url(''))
+      flash[:information] = {message: '注册成功，请前往邮箱认证以完成注册。'}
       session = Session.create_with_user @user, :ip_address => request.remote_ip
       save_session session
-      redirect_back_or_default root_url
+      redirect_back_or_default root_path
     else
       flash[:information] = {message: t('register_failed'),
                                 type: 'error'}
@@ -55,10 +72,79 @@ class UsersController < ApplicationController
     end
 
     summary = params[:summary]
-    unless summary.nil?
-      user.set :summary => summary
+    h = {}
+    h_p = {}
+    h[:summary] = h_p[:description] = summary unless summary.nil?
+    nickname = params[:nickname]
+    h[:nickname] = h_p[:name] = nickname unless nickname.nil?
+
+    if h.size > 0
+      MingpApi.edit_user_info(user.mingp_info.token, h_p)
+      user.set h
     end
 
     render_format 200, t('modify_password.success')
+  end
+
+  def confirm
+  end
+
+  def send_confirm
+    email = params[:email]
+    u = User.find_by_email email
+    return render_404 if u.nil?
+    @expire = u.goto_confirm(get_confirm_url(''))
+    if @expire > 0
+      render_format 500, "#{(@expire / 60).to_i}分钟后才能再次发送。"
+    else
+      render_format 200, '发送成功,请前往邮箱查看。'
+    end
+  end
+
+  def get_confirm
+    success = Confirm.confirm_token(params[:token])
+    if success
+      flash[:information] = {message: '验证成功！'}
+      redirect_to account_settings_path
+    else
+      flash[:information] = {message: '验证失败！',
+                             type: 'error'}
+      redirect_to confirm_path
+    end
+  end
+
+  def find_back
+
+  end
+
+  def submit_find_back
+    user = User.user_with_name(params[:user_name])
+    return render template: 'users/no_user' if user.nil?
+    @expire = user.goto_findback(get_find_back_url(''))
+  end
+
+  def get_find_back
+  end
+
+  def complete_find_back
+    u = Findback.confirm_token(params[:token])
+    @success = !u.nil?
+    u.password_encrypt = params[:password]
+    u.password = 'password'
+    if @success
+      if u.save
+        #删除掉
+        Findback.confirm_token(params[:token], true)
+      else
+        raise SaveError.new(u)
+      end
+
+    end
+  end
+
+  protected
+  def check_find_back
+    @user = Findback.confirm_token(params[:token])
+    render_404 if @user.nil?
   end
 end

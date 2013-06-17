@@ -1,0 +1,2 @@
+$('<%= j render_comment(@comment) %>').prependTo('.article.container .article-comments');
+Messenger().post('<%= j t('comments.send.success') %>');

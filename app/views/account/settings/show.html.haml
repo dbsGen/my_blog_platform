@@ -1,41 +1,56 @@
 = javascript_tag do
   this.user_path = "#{user_path}"
+  this.host_domain_path = "#{account_set_host_domain_path}"
   this.short_password = "#{t('modify_password.too_short')}"
   this.confirmation_failed = "#{t('modify_password.confirmation_failed')}"
 = javascript_include_tag 'account/setting'
+= stylesheet_link_tag 'account/settings'
 .form-horizontal
   %section
     %fieldset
       %legend= t('settings')
       .control-group
         %label.control-label{:for => 'name_card'}
-          = t 'name_card'
+          = t 'nickname'
         .controls
-          #name_card
-            %a.thumbnail#name-card-thumbnail{:href => '#'}
-              = image_tag current_user.portrait_path, :size => '60x60'
-              = t('edit')
+          - if current_user.mingp_info.nil?
+            %input#nickname-text{type: 'text', value: current_user.nickname, disabled: true}
+            %button.show-authorize.btn-primary.btn{'data-type' => 'mingp', 'data-url' => account_TP_check_login_url('mingp')} 修改昵称
+          - else
+            %input#nickname-text{type: 'text', value: current_user.nickname}
+          %i#loading-icon2.icon-refresh.spin{:style => 'display:none;'}
       .control-group
         %label.control-label
           = t 'email'
         .controls
-          %input{:type => 'text', :disabled => true, :value => current_user.email}
+          .uneditable-input= current_user.email
+      .control-group
+        %label.control-label
+          = t 'domain'
+        .controls#domain-control
+          = domain_tag
+          .help-block 设置域名后就能访问你的博客了。
       .control-group
         %label.control-label
           = t 'summary'
         .controls
-          %textarea#summary-area= current_user.summary
+          - if current_user.mingp_info.nil?
+            %textarea#summary-area{disabled: true}= current_user.summary
+            %button.show-authorize.btn-primary.btn{'data-type' => 'mingp', 'data-url' => account_TP_check_login_url('mingp')} 修改简介
+          - else
+            %textarea#summary-area= current_user.summary
           %i#loading-icon.icon-refresh.spin{:style => 'display:none;'}
       .control-group
         %label.control-label
           = t 'password'
         .controls
-          %a#modify-password-button.btn{:href => "#password-modal", :role => 'button', 'data-toggle' => 'modal'}
+          %a#modify-password-button.btn{:href => '#password-modal', :role => 'button', 'data-toggle' => 'modal'}
             = t 'modify_password.title'
       .control-group
         %label.control-label
           = t 'register_at'
         .controls
-          %input{:type => 'text', :disabled => true, :value => current_user.register_time.strftime('%F')}
+          .uneditable-input= current_user.register_time.strftime('%F')
 
-= render :partial => 'account/settings/modify_password'
+= render partial: 'account/settings/modify_password'
+= render partial: 'account/settings/domain'

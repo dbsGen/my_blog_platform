@@ -12,9 +12,9 @@ $(document).ready ->
       no
 
 login_submit = ->
-  if !($('#user_name').val().length in [6..14])
+  if !($('#user_name').val().length >= 4)
     Messenger().post
-      message: '帐号必须是4-16字符!'
+      message: '帐号必须不少于4个字符!'
       type: 'error'
       showCloseButton: true
     return no

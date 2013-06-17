@@ -17,6 +17,8 @@ class ThirdParty
       when 'baidu_yun'
         expire = Time.at token['expires_at'].to_i
         Time.now > expire
+      when 'mingp'
+        false
       else
         false
     end

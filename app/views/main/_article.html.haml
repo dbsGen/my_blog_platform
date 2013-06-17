@@ -1,4 +1,18 @@
 - if !header
-  .article-box{'pagination-key' => object.created_at}
-    = home_title_tag object
+  .artice-item{'pagination-key' => object.created_at}
+    %a.more{href: article_path(object)} More
+    %a.title{href: article_path(object)}
+      = object.title
+    %br/
+    .description
+      = t('author') + ':'
+      %span.author= name_tag(object.creater)
+      &nbsp;
+      = t('articles.created_at') + ':'
+      = object.created_at.strftime('%Y-%m-%d %H:%M')
+      &nbsp;
+      = object.comments.count
+      = t('comments.label').downcase
+      = object.like_count.nil? ? 0 : object.like_count
+      = t('like.label')
     = home_summary_tag object

@@ -2,8 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  domain: 'Domain'
   login: 'Login'
   ID: 'Username'
+  nickname: 'Nickname'
   password: 'Password'
   or: 'or'
   signup: 'Signup'
@@ -16,7 +18,7 @@ en:
   logout: 'Logout'
   profiles: 'Profiles'
   articles: 'Articles'
-  settings: 'Settings'
+  settings: 'User info'
   name_card: 'Name card'
   edit: 'Edit'
   summary: 'Summary'
@@ -49,6 +51,10 @@ en:
   choose_file: 'Choose...'
   upload_file: 'Upload'
   please_select_file_first: 'Please select file first!'
+  set_domain: 'Set domain'
+  tags: 'Tags'
+  like:
+    label: 'Likes'
 
   notices:
     label: 'Notices'
@@ -66,6 +72,7 @@ en:
       failed: 'Comment send failed.'
     replied: 'Click to extend'
     reply: 'Reply'
+    label: 'Comments'
 
   pagination:
     loading: 'Loading more, please wait...'
@@ -177,3 +184,4 @@ en:
             password:
                 too_short: 'Password is too short'
   no_element: "No element, you can select one."
+  avatar: "Avatar"

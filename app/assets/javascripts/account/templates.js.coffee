@@ -2,5 +2,13 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-@upload_click = (tag) ->
+@uploadDone = (request) ->
+  Messenger().post('模板发布成功');
+  $('#templates-modal').model('hide');
+
+@uploadFail = (request) ->
+  Messenger().post(
+    type: 'error'
+    message: JSON.parse(request.responseText).msg
+  )
 

@@ -1,0 +1,585 @@
+$page-width: 900px
+$main-color: #0099CC
+$black-color: #212121
+$shadow-color: #b3b3b3
+$gray-color: #8c8c8c
+$hover-color: mediumvioletred
+
+
+@mixin spin
+  -moz-animation: spin 2s infinite linear
+  -o-animation: spin 2s infinite linear
+  -webkit-animation: spin 2s infinite linear
+  animation: spin 2s infinite linear
+
+@-moz-keyframes spin
+  0%
+    -moz-transform: rotate(0deg)
+  100%
+    -moz-transform: rotate(359deg)
+@-webkit-keyframes spin
+  0%
+    -moz-transform: rotate(0deg)
+  100%
+    -moz-transform: rotate(359deg)
+@-o-keyframes spin
+  0%
+    -moz-transform: rotate(0deg)
+  100%
+    -moz-transform: rotate(359deg)
+@keyframes spin
+  0%
+    -moz-transform: rotate(0deg)
+  100%
+    -moz-transform: rotate(359deg)
+
+@-ms-keyframes spin
+  0%
+    -moz-transform: rotate(0deg)
+  100%
+    -moz-transform: rotate(359deg)
+
+@mixin transition
+  -moz-transition: all 400ms
+  -o-transition: all 400ms
+  -webkit-transition: all 400ms
+  transition: all 400ms
+
+@mixin alpha($value)
+  filter: alpha(opacity=$value * 100)
+  opacity: $value
+  -moz-opacity: $value
+
+@mixin button-hover($color)
+  &:hover
+    border: none
+    background-color: $color
+    box-shadow: 0 0 2px $color
+    -moz-box-shadow: 0 0 2px $color
+  &:active
+    border: none
+    box-shadow: none
+    -moz-box-shadow: none
+
+@mixin bottom-border
+  border-bottom: 1px solid $shadow-color
+  box-shadow: 0 1px 0 white
+  -moz-box-shadow: 0 1px 0 white
+
+@mixin row
+  clear: both
+
+@mixin pull-left
+  float: left
+@mixin pull-right
+  float: right
+@mixin nav-style
+  @include pull-left
+  position: relative
+  padding: 10px 30px 10px 30px
+  //font-weight: bolder
+  //font-size: 12px
+  text-shadow: 0 1px 0 white
+  &:hover, &.active
+    @include alpha(1)
+    color: white
+    background-color: $main-color
+    text-shadow: none
+
+.myboka
+  max-width: $page-width
+  width: 100%
+  margin: 0 auto
+  color: $black-color
+
+  .hidden
+    display: none
+  input
+    font-family: iconFont, sans-serif
+    border: 1px solid #b3b3b3
+    font-size: 12px
+    border-radius: 2px
+    padding: 5px 8px
+    @include transition
+    &:hover
+      border: 1px solid $main-color
+      box-shadow: 0 0 2px $main-color
+      -moz-box-shadow: 0 0 2px $main-color
+
+  .helper
+    font-family: iconFont
+    border: none
+    background-color: transparent
+    font-size: 12px
+
+  a
+    color: $main-color
+    text-decoration: none
+
+  .row
+    @include row
+    &:after
+      content: "."
+      display: block
+      height: 0
+      clear: both
+      visibility: hidden
+  .header
+    @include row
+    @include bottom-border
+    height: 100px
+    margin: 10px
+    padding: 5px
+  .logo
+    @include pull-left
+    img
+      max-width: 200px
+      max-height: 100px
+
+  .navbar
+    @include pull-left
+    position: relative
+    margin: 20px 5px 5px 10px
+    .bg
+      position: absolute
+      width: 100%
+      height: 100%
+      @include alpha(0.6)
+      background-color: white
+      box-shadow: 0 0 5px white
+      -moz-box-shadow: 0 0 5px white
+    a.navitem
+      @include nav-style
+      border-right: 1px solid $shadow-color
+      box-shadow: 1px 0 0 white
+    a.navitem-last
+      @include nav-style
+
+  .search
+    @include pull-right
+    position: relative
+    margin: 20px 10px
+    button.helper
+      position: absolute
+      right: 2px
+      top: 5px
+      &:before
+        content: '\e089'
+    button.helper.active
+      @include spin
+      &:before
+        content: '\e040'
+      &:hover
+        -moz-animation: none
+        -o-animation: none
+        -webkit-animation: none
+        animation: none
+        &:before
+          content: '\e089'
+    >input
+      width: 230px
+      &:hover
+        border: 1px solid $main-color
+        box-shadow: 0 0 3px $main-color
+        -moz-box-shadow: 0 0 3px $main-color
+      &:active
+        border: 1px solid $gray-color
+    .result
+      position: absolute
+      z-index: 20
+      top: 36px
+      background-color: white
+      width: 250px
+      border-radius: 2px
+      box-shadow: 0 3px 4px $black-color
+      -moz-box-shadow: 0 3px 4px $black-color
+      overflow: hidden
+      background-color: #fafafa
+      .nothing
+        padding: 10px
+        text-align: center
+        font-size: 12px
+        color: $gray-color
+      .title
+        background-color: #149bdf
+        color: white
+        font-size: 12px
+        font-weight: bolder
+        padding: 2px 5px
+        text-shadow: $black-color 0 1px 0
+        border-bottom: 1px solid grey-color
+      .object
+        @include bottom-border
+        padding: 2px 5px
+        max-height: 64px
+        min-height: 34px
+        color: $gray-color
+        font-size: 13px
+        text-overflow: ellipsis
+        @include transition
+        .keyword
+          color: #5bc0de
+          font-style: italic
+        img
+          width: 30px
+          height: 30px
+          @include pull-left
+          margin-right: 5px
+          @include transition
+        &:hover
+          color: $black-color
+          .keyword
+            color: $main-color
+          img
+            box-shadow: 1px 1px 2px $gray-color
+            -moz-box-shadow: 1px 1px 2px $gray-color
+      .search-footer
+        background-color: #eeeeee
+        height: 30px
+        .baidu
+          background-color: transparent
+          border: none
+          @include pull-left
+          margin: 4px 14px
+          img
+            height: 18px
+        .google
+          background-color: transparent
+          border: none
+          @include pull-right
+          margin: 3px 14px
+          img
+            height: 20px
+
+
+  .content
+    @include row
+    display: inline-block
+    width: 100%
+    .artice-item
+      @include bottom-border
+      color: $gray-color
+      margin: 10px
+      overflow: hidden
+      min-height: 40px
+      max-height: 120px
+      @include transition
+      .content
+        padding: 10px
+      .more
+        background-color: $gray-color
+        color: white
+        @include pull-right
+        margin-top: 0
+        margin-right: 0
+        padding: 2px 8px 2px 8px
+        font-size: 20px
+        font-weight: bolder
+        font-family: 'Yellowtail',cursive
+        @include transition
+      .title
+        font-size: 24px
+        font-style: italic
+        font-weight: bolder
+        @include transition
+        &:hover
+          color: $hover-color
+      .description
+        font-size: 12px
+        color: grey
+        font-style: italic
+      .author
+        color: grey
+        a
+          color: grey
+      img
+        max-height: 100px
+        min-width: 100px
+      &:hover
+        color: $black-color
+        max-height: 300px
+        .more
+          background-color: $main-color
+          &:hover
+            background-color: $hover-color
+
+  @mixin span
+    display: block
+  .span1
+    @include pull-left
+    @include span
+    width: 10%
+  .span2
+    @include pull-left
+    @include span
+    width: 20%
+  .span3
+    @include pull-left
+    @include span
+    width: 30%
+  .span4
+    @include pull-left
+    @include span
+    width: 40%
+  .span5
+    @include pull-left
+    @include span
+    width: 50%
+  .span6
+    @include pull-left
+    @include span
+    width: 60%
+  .span7
+    @include pull-left
+    @include span
+    width: 70%
+  .span8
+    @include pull-left
+    @include span
+    width: 80%
+  .span9
+    @include pull-left
+    display: table-column
+    width: 90%
+  .span10
+    @include pull-left
+    @include span
+    width: 100%
+  .offset1
+    margin-left: 10%
+  .offset2
+    margin-left: 20%
+  .offset3
+    margin-left: 30%
+  .offset4
+    margin-left: 40%
+  .offset5
+    margin-left: 50%
+  .offset6
+    margin-left: 60%
+  .offset7
+    margin-left: 70%
+  .offset8
+    margin-left: 80%
+  .offset9
+    margin-left: 90%
+  .padding10
+    padding: 10px
+
+  $radius-size: 5px
+  .button
+    border-radius: $radius-size
+    -moz-border-radius: $radius-size
+    -webkit-border-radius: $radius-size
+    background-color: $main-color
+    color: white
+    padding: 5px 8px
+    border: none
+    font-weight: bolder
+    font-size: 14px
+    @include transition
+    @include button-hover($hover-color)
+    &[disabled]
+      background-color: $gray-color
+      &:hover
+        box-shadow: none
+        -moz-box-shadow: none
+    &:active
+      box-shadow: none
+      -moz-box-shadow: none
+  .icon-button
+    padding: 2px
+  .sign-up
+    height: 110px
+    margin: 10px
+    .register-button
+      margin: 5px auto
+      width: 160px
+      display: block
+      font-size: 20px
+      text-align: center
+      @include button-hover(red)
+    .login-button
+      margin: 5px auto
+      width: 160px
+      display: block
+      font-size: 20px
+      text-align: center
+      @include button-hover(green)
+
+
+  .footer
+    margin: 10px
+    border-top: 1px solid $gray-color
+    background-color: #e8e8e8
+    text-align: center
+    color: #515151
+    font-size: 12px
+    padding: 10px 10px 20px 10px
+  .main-tail
+    font-size: 12px
+    font-weight: bold
+    width: 200px
+    text-align: center
+    padding: 5px 20px
+    margin: 2px auto
+    background-color: white
+    border-radius: 5px
+    box-shadow: 1px 1px 2px $gray-color
+    -moz-box-shadow: 1px 1px 2px $gray-color
+
+  .extend
+    position: relative
+    .extend-list
+      display: none
+      position: absolute
+      list-style: none
+  .user-info
+    padding: 10px
+    .avatar
+      float: left
+      width: 46px
+      height: 46px
+      padding: 2px
+      border: 1px solid $gray-color
+      margin-right: 10px
+      img
+        width: 46px
+        height: 46px
+        box-shadow: 1px 1px 2px $gray-color
+        -moz-box-shadow: 1px 1px 2px $gray-color
+    .extend
+      font-size: 12px
+      display: inline
+      ul.extend-list
+        background-color: white
+        border: 1px solid $gray-color
+        left: 0
+        top: 10px
+        padding: 0
+        width: 70px
+        li
+          a
+            width: 100%
+          margin: 3px
+          &:hover
+            background-color: $main-color
+            a
+              color: white
+    .username
+      font-size: 16px
+      font-weight: bold
+      font-style: italic
+    .description
+      font-size: 12px
+      min-height: 32px
+      max-height: 46px
+      text-overflow: ellipsis
+      display: block
+    .public-button
+      margin: 15px auto
+      width: 160px
+      display: block
+      font-size: 20px
+      text-align: center
+  .radius-box
+    border-radius: 3px
+    box-shadow: 0 1px 2px $gray-color
+    background-color: white
+    padding: 10px
+    margin-bottom: 100px
+  .control-row
+    @include row
+    font-size: 12px
+    margin: 5px
+    height: 30px
+    vertical-align: middle
+    .control-label
+      float: left
+      width: 50px
+      color: $gray-color
+      height: 100%
+      padding: 5px
+    .control
+      float: left
+      .help-block
+        display: block
+        color: red
+      input
+        max-width: 220px
+      .password
+        width: 150px
+    .login-button
+      width: 100px
+      height: 34px
+    .checkbox
+      padding: 5px
+      .icheckbox_flat-blue
+        position: absolute
+      label
+        color: $gray-color
+        margin-left: 26px
+        margin-top: 6px
+    .submit-row
+      margin: 30px auto
+      width: 220px
+  //tags
+  .tags
+    padding: 10px
+    text-shadow: none
+    @include row
+    .label
+      font-weight: bolder
+      display: inline
+      font-size: 12px
+    .tag
+      min-height: 30px
+      margin-left: 5px
+      display: inline
+      font-size: 12px
+      position: relative
+      .remove
+        right: -2px
+        top: -10px
+        width: 15px
+        height: 15px
+        color: white
+        font-size: 10px
+        border: none
+        position: absolute
+        background-color: transparent
+        padding: 0
+        cursor: pointer
+        z-index: 10
+    .new-tag
+      display: inline
+      position: relative
+      .new-tag-content
+        display: none
+        position: absolute
+        left: 3px
+        top: -3px
+        width: 300px
+      >button
+        margin-left: 5px
+      button
+        font-size: 12px
+        padding: 2px
+  .tags-group
+    clear: both
+    padding: 10px
+    ul
+      list-style: none
+      padding: 0
+    &:after
+      content: "."
+      height: 0
+      visibility: hidden
+      display: block
+      clear: both
+    .tag
+      float: left
+      margin: 5px
+      %a.button
+        font-size: 14px
+        padding: 10px 20px

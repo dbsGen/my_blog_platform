@@ -1,0 +1,17 @@
+= javascript_include_tag 'find_back'
+
+.row
+  .span4.offset3
+    %h2 找回密码
+    .radius-box
+      .control-row
+        .control-label= t 'ID'
+        .control
+          = text_field_tag 'user_name', '',
+                           :placeholder => t('sessions.new.ID_placeholder'),
+                           :tabIndex => 1
+      .control-row
+        .submit-row
+          %button.button#submit-button{type: 'submit', tabIndex: 3,
+          href: submit_find_back_path('js'), onclick: 'formSubmit(this)'} 找回
+          %button.button{type: 'button',onclick: 'history.go(-1)', style: 'margin-left: 16px', tabIndex: 4}= t('back')

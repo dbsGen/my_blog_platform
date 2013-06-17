@@ -1,11 +1,12 @@
 class SessionsController < ApplicationController
-  before_filter :require_no_login, :except => [:destroy]
+  before_filter :require_no_login, :except => [:destroy, :new]
+  caches_page :new, expires_in: 1.day
 
   #login页面
   #创建一个session
   def new
+    @title = '登陆'
     @session = Session.new
-    store_location request.referrer if request.referrer.present?
   end
 
   #REST的创建接口=>登录
@@ -15,18 +16,18 @@ class SessionsController < ApplicationController
     password = params[:user_password]
 
     user = User.find_user_with_login user_name, password
-    unless user.nil?
+    if user.nil?
+      #登录失败，帐号或密码错误
+      flash[:information] = {message: t('login_failed'),
+                             type: 'error'}
+      redirect_to login_path
+    else
       #登录成功创建session
       remember_me = params[:remember_me]
       set_remember_me(remember_me)
       session = Session.create_with_user(user, :ip_address => request.remote_ip)
       save_session session
       redirect_back_or_default root_url
-    else
-      #登录失败，帐号或密码错误
-      flash[:information] = {message: t('login_failed'),
-                                type: 'error'}
-      redirect_to login_path
     end
   end
 

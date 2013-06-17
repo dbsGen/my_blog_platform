@@ -11,6 +11,7 @@
 # GO AFTER THE REQUIRES BELOW.
 #
 #= require jquery
+#= require jquery-ui
 #= require jquery_ujs
 #= require bootstrap.min
 #= require underscore-1.4.4

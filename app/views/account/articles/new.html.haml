@@ -9,6 +9,11 @@
         .controls
           = text_field_tag 'title', '', :placeholder => t('articles.title.placeholder'), :class => 'span8'
       .control-group
+        %label.control-label= t('tags')
+        .controls
+          = text_field_tag 'tags', '', class: 'span8'
+          %span.help-block 单个标签不能超过10个字符，可以写入多个标签，中间以‘,’分开，不能超过10个
+      .control-group
         %label.control-label= t('articles.content.label')
         .controls
           = render_edits(nil)

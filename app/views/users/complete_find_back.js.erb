@@ -1,0 +1,7 @@
+<%- if @success %>
+Messenger().post('修改密码成功，请用新的密码登陆!');
+setTimeout(function(){window.location.href='<%= login_path %>'}, 2000);
+<%- else %>
+Messenger().post({message:'密码修改失败，请重新找回密码。',type: 'error'});
+<%- end %>
+$('#submit-button').removeAttr('disabled');

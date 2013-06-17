@@ -1,7 +1,7 @@
 #需要使用的话需要在按钮上加上data-tp属性（baidu or youku），也可一加上data-tp-ext(文件类型). data-tp-path(文件夹目录)
-#= require jquery.colorbox-min
+#= require jquery
 #= require jquery-ui
-#= require jquery.fileupload
+#= require verder/jquery.colorbox-min
 
 body_html = (title, type, ext, path, for_tag) ->
   for_tag = for_tag.replace(/"/g, '\'')
@@ -53,13 +53,13 @@ show_tp = (type, ext, path, for_tag) ->
       f_open_modal(data.url, ext, path)
     error: (r)->
 #        没有三方登陆
-      data = eval("(#{r.responseText})")
-      $.colorbox({
-                 iframe: true
-                 href: data.msg
-                 width: '80%'
-                 height: '80%'
-                 })
+      data = JSON.parse(r.responseText)
+      $.colorbox(
+        iframe: true
+        href: data.msg
+        width: '80%'
+        height: '80%'
+      )
   )
 
 f_open_modal = (url, ext, path) ->
@@ -106,7 +106,8 @@ f_ext_not_match = (ext) ->
   no
 
 @select_click = ->
-  src = $('ul.files-list li.file_box.active a.thumbnail img[data-src]').attr('data-src')
+  console.log($('ul.files-list li.files-box.active a.thumbnail'))
+  src = $('ul.files-list li.files-box.active a.thumbnail img[data-src]').attr('data-src')
   modal = $('#tp-modal')
   tag = modal.attr('data-for-tag')
   $(tag).val(src)
@@ -115,8 +116,9 @@ f_ext_not_match = (ext) ->
   no
 
 @select_file = (tag) ->
-  $('ul.files-list li.file_box.active').removeClass('active')
-  $(tag).parents('li.file_box').addClass('active')
+  console.log($(tag).parents('li.files-box'))
+  $('ul.files-list li.files-box.active').removeClass('active')
+  $(tag).parents('li.files-box').addClass('active')
   no
 
 @fileSelected = (tag) ->

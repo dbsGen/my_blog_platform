@@ -1,6 +1,6 @@
 class Account::NoticesController < ApplicationController
   layout 'user_page'
-  before_filter :require_login, :enter_page
+  before_filter :require_confirm, :enter_page
 
   def index
     per_page = params[:per_page] || 25

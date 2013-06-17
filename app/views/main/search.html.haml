@@ -1,0 +1,30 @@
+- k = 0
+- if !@articles.nil? and @articles.size > 0
+  .title= t('articles.label')
+  - @articles.each do |article|
+    %a{href: article_path(article)}
+      .object
+        .keyword= article.title
+        - if article.creater.nil?
+          %span 没有这个用户
+        - else
+          %img.avatar{src: avatar_url(article.creater)}
+          %span.keyword= article.creater.name
+        %br/
+        = article.creater.nil? ? '' : article.creater.summary
+- else k = k + 1
+- if !@users.nil? and @users.size > 0
+  .title= t('admin.users')
+  - @users.each do |user|
+    %a{href: '#'}
+      .object
+        %img.avatar{src: avatar_url(user)}
+        %span.keyword= user.name
+        %br/
+        = user.summary
+- else k = k + 1
+- if k == 2
+  .nothing
+    没有搜索到相关内容，
+    %br/
+    可以尝试点击下边的专业搜索。

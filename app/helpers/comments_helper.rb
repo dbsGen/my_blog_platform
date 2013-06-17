@@ -16,7 +16,7 @@ module CommentsHelper
     html = ''
     @comments_index ||= {}
 
-    html << "<div class='comment-box'>"
+    html << "<div class='box'>"
     html << simple_comment_tag(comment, reply_count)
     html << '</div>'
 

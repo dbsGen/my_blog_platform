@@ -1,11 +1,11 @@
 class Account::ArticlesController < ApplicationController
   layout 'user_page'
-  before_filter :require_login, :enter_page
+  before_filter :require_confirm, :enter_page
   before_filter :get_article, :only => [:destroy, :update, :show]
 
   def new
     @title = t('articles.new')
-    @templates = current_user.usable_templates_and_check
+    @templates = current_user.content_templates
     respond_to do |format|
       format.html
       format.js
@@ -13,7 +13,6 @@ class Account::ArticlesController < ApplicationController
   end
 
   def create
-
     elements = params[:elements]
     es = []
     s = elements.size
@@ -25,21 +24,52 @@ class Account::ArticlesController < ApplicationController
       end
     end
 
+    #tags
+    tag_string = params[:tags] || ''
+    tags = []
+    tag_ids = []
+    tag_string.split(',').each do |string|
+      tag = Tag.find_or_create_by_label string
+      tag.creater = current_user
+      tag.save
+      tags << tag
+      tag_ids << tag.id
+    end
+
     article = Article.new :title => params[:title],
                           :creater => current_user,
                           :created_at => Time.now,
-                          :elements => es
+                          :elements => es,
+                          :tag_ids => tag_ids
+
+    tags.each do |tag|
+      tag.articles << article
+      tag.save
+    end
+
+    current_user.insert_article article
     if article.save
       notice_to.each do |_, v|
         Notice.add_notice_from_refer_article(v, article)
       end
       render_format 200, :msg => t('articles.post.success'), :redirect_url => article_path(article)
     else
-      render_format 500, t('articles.post.failed')
+      logger.error "#### Post Article failed, #{article.errors}"
+      response_string = ''
+      article.errors.messages[:tags].each do |v|
+        response_string << v
+        response_string << "\r\n"
+      end
+      render_format 500, response_string
     end
 
   rescue Exception => e
-    render_format 500, t('articles.post.failed')
+    logger.error "#### Public article failed, #{e}"
+    if e.is_a? SaveError
+      render_format 500, e.message
+    else
+      render_format 500, t('articles.post.failed')
+    end
   end
 
   def show

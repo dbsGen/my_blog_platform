@@ -1,0 +1,64 @@
+// define
+$page-width: 900px
+$main-color: #0099CC
+$black-color: #212121
+$shadow-color: #b3b3b3
+$gray-color: #8c8c8c
+$hover-color: mediumvioletred
+
+@mixin bottom-border
+  border-bottom: 1px solid $gray-color
+  box-shadow: 0 1px 0 white
+  -moz-box-shadow: 0 1px 0 white
+
+.myboka
+  .article
+    padding: 10px
+    img
+      max-width: 600px
+    .a-header
+      @include bottom-border
+      text-align: center
+      padding-bottom: 5px
+      .title
+        font-size: 25px
+        font-weight: bolder
+      .subtitle
+        font-size: 12px
+        font-weight: normal
+        color: $gray-color
+    .body
+      padding: 10px
+      text-shadow: 1px 1px 0 white
+      @include bottom-border
+    .article-comments
+      padding: 5px
+      @include bottom-border
+      .box
+        margin: 5px
+        border: 1px dashed $gray-color
+        padding: 4px
+        background-color: white
+        .content
+          padding: 2px 5px
+          font-size: 13px
+        .author
+          font-size: 12px
+          color: $gray-color
+          font-style: italic
+        .r-box
+          border: 1px dashed $gray-color
+          background-color: #faf2cc
+        .replied
+          border: 1px dashed $gray-color
+          color: $gray-color
+          background-color: #eeeeee
+          font-size: 12px
+          padding: 2px 4px
+          cursor: pointer
+
+    .article-nologin
+      padding: 20px
+      height: 60px
+      color: $gray-color
+      font-size: 13px

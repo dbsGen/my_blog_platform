@@ -223,6 +223,11 @@ section {
     text-overflow: ellipsis;
 }
 
+.article-box .article-summary img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
 .article-comment {
     border-top: 1px solid black;
     padding: 15px 10px 3px 10px;
@@ -341,6 +346,10 @@ li.active>a.thumbnail {
     overflow: hidden;
 }
 
+.files-box.active {
+    border: 1px solid blue;
+}
+
 ul.templates-icons {
     list-style:none;
     padding:2px;
@@ -350,6 +359,7 @@ ul.templates-icons > li {
     border: none;
     width: 46px;
     height: 46px;
+    margin: 2px;
 }
 
 ul.templates-icons > li img {
@@ -369,4 +379,8 @@ ul.templates-icons > li.create > a.thumbnail {
     font-size: 14px;
     font-weight: bolder;
     padding: 4px;
+}
+
+.margin10{
+    margin: 10px;
 }

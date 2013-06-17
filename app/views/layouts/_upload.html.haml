@@ -1,7 +1,9 @@
 = javascript_include_tag 'jquery-ui'
-= javascript_include_tag 'jquery.fileupload'
+= javascript_include_tag 'verder/jquery'
 .upload
   = upload_input_tag(ext, path, type)
+  .content
+    = description
   %label
     %input#file-shower{type:'text', disabled:true, onclick:'$("#.upload #file").click()', style:'position: relative;top: 4px'}
     %a.btn{onclick:'$(".upload #file").click()'}= t('choose_file')
@@ -15,6 +17,7 @@
     console.log($('.upload #file'));
     progress.removeClass('progress-danger');
     progress.addClass('progress-striped active');
+    progress.children('.bar').css('width', 0);
     }
     function upload_click(tag) {
     var t = $('.upload #file'), tag = t[0], files = tag.files
@@ -29,15 +32,17 @@
     progressall: function(e, data) {
     $('.upload #progress .bar').css('width', (data.loaded / data.total * 100) + "%");
     },
-    done: function(){
+    done: function(o, r){
     progress.removeClass('progress-striped active');
     progress.addClass('progress-success');
     file.fileupload('destroy');
+    uploadDone(r.jqXHR);
     },
-    fail: function(){
+    fail: function(o, r){
     progress.removeClass('progress-striped active');
     progress.addClass('progress-danger');
     file.fileupload('destroy');
+    uploadFail(r.jqXHR);
     }});
     file.fileupload('send', {files: files});
     }else {

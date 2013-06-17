@@ -1,0 +1,17 @@
+#domain-modal.modal.hide.fade{:tabindex => -1, :role => 'dialog', 'aria-labelledby' => 'title-label', 'aria-hidden' => true}
+  .modal-header
+    %button.close{:type => 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true} ×
+    %h3.title-label= t 'set_domain'
+  .modal-body
+    %form#modify-form.modal-form.form-horizontal
+      .control-group
+        %label.control-label= t 'domain'
+        .controls
+          = text_field_tag 'host_domain', '', class: 'span2'
+          %span .sctab.com
+      .control-group
+        .controls
+          %div 二级域名只能由字母数字以及下划线注册
+  .modal-footer
+    %button.btn{'data-dismiss' => 'modal', 'aria-hidden' => true}= t 'close'
+    %button#loading-button.btn.btn-primary{'data-loading-text' => "#{t('loading')}"}= t 'OK'

@@ -1,5 +1,5 @@
-.container
-  = render :partial => 'layouts/div_content',
-           :locals => {:partial => 'main/article',
-                       :objects => @articles,
-                       :url => "#{home_path}.js"}
+= javascript_include_tag 'mingp-0.1'
+= render :partial => 'layouts/div_content',
+         :locals => {:partial => 'main/article',
+                     :objects => @articles,
+                     :url => "#{home_path}.js"}

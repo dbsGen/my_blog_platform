@@ -23,3 +23,14 @@ YOUKU_CLIENT = OAuth2::Client.new(YOUKU_CLIENT_ID,
                                   :authorize_url => '/v2/oauth2/authorize',
                                   :token_url => '/v2/oauth2/token'
 )
+
+MINGP_SITE = 'http://namecard.sctab.com'
+MINGP_CLIENT_ID = '5192f6956b04f76e39000085'
+MINGP_USER_INFO = '/api/user_info.json'
+MINGP_P_USER_INFO = '/public/user_info'
+
+MINGP_CLIENT = OAuth2::Client.new(MINGP_CLIENT_ID,
+                                  '2ce1dce650972b55fbe5755373666c009387a71f24a5d842037ff75afc856dd0',
+                                  :site => MINGP_SITE,
+                                  :token_url => '/oauth/access_token')
+

@@ -1,0 +1,11 @@
+= javascript_include_tag 'confirm'
+
+.row
+  .span4.offset3
+    %h2 邮箱验证
+    .radius-box
+      .label 你的帐号没有通过验证，请查看邮箱是否收到验证邮件。
+      %br/
+      = button_tag '重新发送', class: 'button',
+      onclick: 'button_click(this)',
+      href: send_confirm_path(email: current_user.email)

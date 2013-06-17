@@ -3,9 +3,9 @@ require 'third_parties_api/baidu_api'
 
 class Account::ThirdPartiesController < ApplicationController
   layout 'user_page'
-  before_filter :require_login, :enter_page
+  before_filter :require_confirm, :enter_page
 
-  helper_method :baidu_path, :youku_path, :path_with_type
+  helper_method :baidu_path, :youku_path, :mingp_path, :path_with_type
 
   def show
 
@@ -72,6 +72,23 @@ class Account::ThirdPartiesController < ApplicationController
               :other => user_info.body
           )
         end
+      when 'mingp'
+        token = MINGP_CLIENT.auth_code.get_token(code, :redirect_uri => account_TP_callback_url(from))
+        mingp = current_user.mingp_info
+        if mingp.nil?
+          mingp = ThirdParty.create(
+              :type => 'mingp',
+              :token => token.to_hash,
+              :name => current_user.nickname
+          )
+          current_user.third_parties << mingp
+          mingp.save
+        else
+          mingp.set(
+              :token => token.to_hash,
+              :name => current_user.nickname
+          )
+        end
       else
 
     end
@@ -83,6 +100,14 @@ class Account::ThirdPartiesController < ApplicationController
     case @type
       when 'baidu'
         tp = current_user.baidu_yun_info
+        return render_404 if tp.nil?
+        tp.destroy
+      when 'youku'
+        tp = current_user.youku_info
+        return render_404 if tp.nil?
+        tp.destroy
+      when 'mingp'
+        tp = current_user.mingp_info
         return render_404 if tp.nil?
         tp.destroy
       else
@@ -101,7 +126,9 @@ class Account::ThirdPartiesController < ApplicationController
     if info.nil?
       render_format 404, path_with_type(type)
     else
-      render_format 200, :url => account_collections_path, :title => t('third_parties.baidu_yun')
+      hash = {url: account_collections_path}
+      hash[:title] = t('third_parties.baidu_yun') if type == 'baidu'
+      render_format 200, hash
     end
   end
 
@@ -160,12 +187,18 @@ class Account::ThirdPartiesController < ApplicationController
     YOUKU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('youku'))
   end
 
+  def mingp_path
+    MINGP_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('mingp'))
+  end
+
   def path_with_type(type)
     case type
       when 'baidu'
         baidu_path
       when 'youku'
         youku_path
+      when 'mingp'
+        mingp_path
       else
     end
   end

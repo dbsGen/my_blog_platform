@@ -1,0 +1,48 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? "BlogSystem" : @title
+    = stylesheet_link_tag    'home', :media => "all"
+    = javascript_include_tag 'home'
+    = csrf_meta_tags
+    = check_information
+    = favicon_link_tag '/favicon.ico', rel: 'bookmark', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', rel: 'icon', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', type: 'image/x-icon'
+    = seo_meta
+    %meta{'http-equiv'=>'Content-type', content:'text/rhtml; charset=utf8'}
+  %body
+    .row{style: 'height: 7px;background-color: #D3D3D3;margin:0;padding:0'}
+      %div{style: 'max-width: 900px;width: 100%;margin: 0 auto;background-color: black;height:100%'}
+    .myboka
+      - unless hidden_navbar?
+        = render :partial => 'layouts/navbar'
+      .content
+        .span7
+          .padding10
+            = yield
+        .span3
+          - if login?
+            .user-info
+              %a.avatar{href: account_settings_path}
+                %img{src: avatar_url(current_user)}
+              %a.username{href: account_settings_path}= current_user.nickname
+              .extend
+                %a.button.extend-button{style: 'padding: 3px 3px 1px 3px'}
+                  %span.icon.icon-plus-2
+                %ul.extend-list
+                  %li
+                    %a{href: account_settings_path}= t('profiles')
+                  %li
+                    = link_to(t('logout'), logout_path, method: 'delete')
+              %br/
+              %span.description= current_user.summary
+              %a.button.public-button{href: new_account_article_path}= t('articles.new')
+          - else
+            .sign-up
+              %a.button.login-button{href: login_path}= t('login')
+              %a.button.register-button{href: signup_path}= t('signup')
+          #tags{src: tags_path, style: 'min-height: 80px'}
+          = render :partial => 'layouts/footer'
+      - if login?
+        = new_notice_tag

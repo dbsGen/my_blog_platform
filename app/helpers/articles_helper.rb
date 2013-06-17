@@ -1,6 +1,8 @@
 module ArticlesHelper
   def render_element(element)
     template = element.template
+    element = Element_copy.new element
+    element.content = replace_tp_tag(element.content)
     #如果模板丢失就显示默认样式
     return raw("<p title='#{t('templates.error')}' style='background-color: red'>#{element.content}</p>") if template.nil?
 
@@ -30,5 +32,4 @@ module ArticlesHelper
     @index[template.name] = now + 1
     raw html
   end
-
 end

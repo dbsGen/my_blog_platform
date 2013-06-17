@@ -1,6 +1,6 @@
 class Account::Admin::ArticlesController < ApplicationController
   layout 'user_page'
-  before_filter :enter_page
+  before_filter :require_admin ,:enter_page
   before_filter :find_article, :only => [:destroy, :show, :update]
 
   def search

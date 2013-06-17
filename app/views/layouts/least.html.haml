@@ -5,5 +5,10 @@
     = stylesheet_link_tag    "least", :media => "all"
     = javascript_include_tag "least"
     = csrf_meta_tags
+    = favicon_link_tag '/favicon.ico', rel: 'bookmark', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', rel: 'icon', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', type: 'image/x-icon'
+    = seo_meta
+    %meta{'http-equiv'=>'Content-type', content:'text/rhtml; charset=utf8'}
   %body
     = yield

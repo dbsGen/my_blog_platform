@@ -1,0 +1,23 @@
+= javascript_include_tag 'get_find_back'
+.row
+  .span4.offset3
+    %h2 找回密码
+    .radius-box
+      .control-row
+        .control-label= t 'password'
+        .controls
+          = password_field_tag 'password', '',
+                               :placeholder => t('users.new.pwd_placeholder'),
+                               :tabIndex => 1,
+                               style: 'width:220px'
+
+      .control-row
+        .control-label= t 'password_confirmation'
+        .control
+          %input#password_confirmation{type: 'password', style: 'width:220px',
+          :placeholder => t('input_password_confirmation'), :tabIndex => 2}
+
+      .control-row
+        .submit-row
+          %button.button.login-button#submit-button{href: complete_find_back_path,
+          tabIndex: 3, onclick: "formSubmit(this, '#{params[:token]}')"} 找回

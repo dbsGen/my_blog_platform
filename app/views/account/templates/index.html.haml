@@ -14,20 +14,22 @@
           .navbar-search.pull-right
             = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
             %i.icon-search.disable#search-icon
-    %ul.templates-icons
+    %ul.templates-icons.tabbable
       - for template in @usable_templates
-        %li.usable
-          = link_to(image_tag("#{CONFIG['static_temp_site']}/#{template.icon_path}", :size => '46x46'),
+        %li.usable.pull-left{style: 'margin:5px'}
+          = link_to(image_tag("#{CONFIG['static_temp_site']}/#{template.icon_path}", :size => '46x46', alt: "#{template.screen_name}  #{template.version}"),
             account_template_path(template),
             :class => 'thumbnail',
-            :title => template.screen_name)
+            :title => "#{template.screen_name}  #{template.version}")
 #templates-modal.modal.hide.fade{:role => 'dialog',
   'aria-labelledby' => 'modal-header-label', 'aria-hidden' => true}
   .modal-header
     %button.close{:type => 'button', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} ×
     %h3#modal-header-label= t('templates.post')
   .modal-body
-    = render :partial => 'layouts/upload', :locals => {ext:nil, path:nil, type:nil, url:account_templates_path, method:'POST'}
+    = render :partial => 'layouts/upload',
+    :locals => {ext:nil, path:nil, type:nil, url:account_templates_path, method:'POST',
+    description: '请上传你打包好的模板，模板必须是.zip格式。'}
     #message
   .modal-footer
     %button.btn{'data-dismiss' => 'modal', 'aria-hidden' => 'true'}= t 'close'

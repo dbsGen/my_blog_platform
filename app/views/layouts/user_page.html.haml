@@ -5,8 +5,14 @@
     = stylesheet_link_tag    "application", :media => "all"
     = stylesheet_link_tag 'account/settings'
     = javascript_include_tag "application"
+    %meta{name: 'viewport', content: 'width=device-width,maximum-scale=1.0'}
     = csrf_meta_tags
     = check_information
+    = favicon_link_tag '/favicon.ico', rel: 'bookmark', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', rel: 'icon', type: 'image/x-icon'
+    = favicon_link_tag '/favicon.ico', type: 'image/x-icon'
+    = seo_meta
+    %meta{'http-equiv'=>'Content-type', content:'text/rhtml; charset=utf8'}
   %body
     .row
       = render :partial => 'layouts/sidebar'

@@ -1,39 +1,33 @@
 = javascript_include_tag 'users'
-.container
-  .row
-    .span6.offset3.form-horizontal
-      %section#signup-form.box
-        = form_for @user, :url => users_path, :validate => true do |f|
-          %fieldset
-            %legend= t('signup')
-            .control-group
-              .control-label
-                = f.label t('ID')
-              .controls
-                .full-input-wrap
-                  = f.text_field :name,
-                                 :tabIndex => 1,
-                                 :placeholder => t('.ID_placeholder'),
-                                 :class => 'span4'
-            .control-group
-              .control-label
-                = f.label t('email')
-              .controls
-                .full-input-wrap
-                  = f.text_field :email,
-                                 :tabIndex => 2,
-                                 :placeholder => t('.email_placeholder'),
-                                 :class => 'span4'
-            .control-group
-              .control-label
-                = f.label t('password')
-              .controls
-                .full-input-wrap
-                  = f.password_field :password,
-                                     :tabIndex => 3,
-                                     :placeholder => t('.pwd_placeholder'),
-                                     :class => 'span4'
-            .gen-form-actions
-              = f.submit t('signup'), :class => 'btn primary', :tabIndex => 4
-              = raw t('or')
-              = link_to t('.already_have_account'), login_path
+.row
+  .span4.offset3
+    %h2= t('signup')
+    .radius-box
+      = form_for @user, :url => users_path, :validate => true do |f|
+        .control-row
+          .control-label
+            = f.label t('ID')
+          .control
+            = f.text_field :name,
+                           :tabIndex => 1,
+                           :placeholder => t('.ID_placeholder'),
+                           size: 20
+        .control-row
+          .control-label
+            = f.label t('email')
+          .control
+            = f.text_field :email,
+                           :tabIndex => 2,
+                           :placeholder => t('.email_placeholder')
+        .control-row
+          .control-label
+            = f.label t('password')
+          .control
+            = f.password_field :password,
+                               :tabIndex => 3,
+                               :placeholder => t('.pwd_placeholder')
+        .control-row
+          .submit-row
+            = f.submit t('signup'), :class => 'button login-button', :tabIndex => 4
+            = raw t('or')
+            = link_to t('.already_have_account'), login_path
