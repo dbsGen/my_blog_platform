@@ -1,3 +1,4 @@
-/.idea/
-/temp/
-/.sass-cache/
+.idea/
+temp/
+.sass-cache/
+log/
