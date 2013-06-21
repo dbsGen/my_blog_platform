@@ -21,7 +21,13 @@ class Comment
     rescue Exception => _
       return ''
     end
-    c = yield fe.content
+    begin
+      json = JSON(fe.content)
+      content = json['content']
+    rescue StandardError => _
+      content = fe.content
+    end
+    c = yield content
     c.length > 250 ? "#{c[0..245]}..." : c
   end
 
