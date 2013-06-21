@@ -10,3 +10,4 @@
 #= require iCheck/do
 #= require tools/tools
 #= require main/tags
+#= require main/initialization

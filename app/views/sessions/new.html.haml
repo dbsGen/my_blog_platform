@@ -4,6 +4,7 @@
     %h2= t('login')
     .radius-box
       = form_tag sessions_path, :id => 'login_form',:method => 'post' do
+        =text_field_tag 'redirect', '', style: 'display:none'
         .control-row
           .control-label= t 'ID'
           .control

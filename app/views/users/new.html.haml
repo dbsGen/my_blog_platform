@@ -4,6 +4,7 @@
     %h2= t('signup')
     .radius-box
       = form_for @user, :url => users_path, :validate => true do |f|
+        =text_field_tag 'redirect', '', style: 'display:none'
         .control-row
           .control-label
             = f.label t('ID')

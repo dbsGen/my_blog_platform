@@ -18,16 +18,19 @@ class SessionsController < ApplicationController
     user = User.find_user_with_login user_name, password
     if user.nil?
       #登录失败，帐号或密码错误
-      flash[:information] = {message: t('login_failed'),
-                             type: 'error'}
-      redirect_to login_path
+      redirect_to login_path(err: t('login_failed'))
     else
       #登录成功创建session
       remember_me = params[:remember_me]
       set_remember_me(remember_me)
       session = Session.create_with_user(user, :ip_address => request.remote_ip)
       save_session session
-      redirect_back_or_default root_url
+      redirect = params[:redirect]
+      if redirect.nil? or redirect.size == 0
+        redirect_back_or_default root_url
+      else
+        redirect_to redirect
+      end
     end
   end
 

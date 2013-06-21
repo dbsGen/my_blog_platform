@@ -34,11 +34,14 @@ class UsersController < ApplicationController
       flash[:information] = {message: '注册成功，请前往邮箱认证以完成注册。'}
       session = Session.create_with_user @user, :ip_address => request.remote_ip
       save_session session
-      redirect_back_or_default root_path
+      redirect = params[:redirect]
+      if redirect.nil? or redirect.size == 0
+        redirect_back_or_default root_url
+      else
+        redirect_to redirect
+      end
     else
-      flash[:information] = {message: t('register_failed'),
-                                type: 'error'}
-      redirect_to signup_path
+      redirect_to signup_path(err: t('register_failed'))
     end
   end
 
