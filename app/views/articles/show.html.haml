@@ -23,7 +23,7 @@
       #article-edit{:article => @article.id, :reply_to => 0}
         #article-replay{:name => 'article-replay'}
         = render_template_edit_nr(COMMENT_TEMPLATE)
-        %button.btn-primary.btn{:href => comments_path('js'),:onclick => 'return post_comment(this);'}
+        %button.btn-primary.btn#send-button{:href => comments_path('js'),:onclick => 'return post_comment(this);', style: 'display: none'}
           = t('comments.send.label')
     - else
       .article-nologin

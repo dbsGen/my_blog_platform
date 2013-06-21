@@ -10,12 +10,6 @@ class Template
 
   #类型content or blog
   key :type,  String
-  #压缩文件路径
-  key :zip_file, String
-  #静态文件路径
-  key :static_path, String
-  #动态文件路径
-  key :dynamic_path, String
   #描述文件内容
   key :description, Hash
 
@@ -25,7 +19,7 @@ class Template
 
   belongs_to :creater, :class => User
 
-  validates :name, :creater, :presence => true
+  validates :name, :presence => {with:true, message: '名称不存在'}
 
   def screen_name
     h = description['screen_name']
@@ -53,13 +47,12 @@ class Template
   end
 
   def self.create_with_params(params)
-    template = params['template']
     hash = {
-        name: template['name'],
-        version: template['version'],
-        is_quote: template['is_quote'],
-        type: template['type'],
-        description: template,
+        name: params['name'],
+        version: params['version'],
+        is_quote: params['is_quote'],
+        type: params['type'],
+        description: params,
         created_at: Time.now
     }
     self.new hash

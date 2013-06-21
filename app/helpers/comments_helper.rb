@@ -31,9 +31,13 @@ module CommentsHelper
     raw html
   end
 
-  def add_quote(element)
-    content = element.content
-    quote_info = element.quote_info
+  def add_quote(element, quote_info = nil)
+    if element.is_a? String
+      content = element
+    else
+      content = element.content
+      quote_info = element.quote_info
+    end
     nc = String.new(content)
     content.scan(ID_REGEXP) do |match|
       name = match[1..-1]

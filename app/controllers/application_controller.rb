@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
       when e.is_a?(SaveError)
         render_format(500, e.message)
       when e.is_a?(MongoMapper::DocumentNotValid)
-        render_format(500, e.message)
+        render_format(500, e.message.gsub('Validation failed: ', ''))
       else
 
     end

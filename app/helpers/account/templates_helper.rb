@@ -1,3 +1,5 @@
+require 'template_path'
+
 module Account::TemplatesHelper
   def render_template_edit(template, index = 0)
     return '' if template.nil?
@@ -11,23 +13,20 @@ module Account::TemplatesHelper
       folder_name = template.folder_name
       template.paths do |js, css|
         js.each do |v|
-          html << javascript_include_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_javascript_include_tag("#{folder_name}/#{v.path}")
         end
         css.each do |v|
-          html << stylesheet_link_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_stylesheet_link_tag("#{folder_name}/#{v.path}")
         end
       end
     end
     html << "<div class='edit_element' template_name='#{template.name}' for='edit_#{template.name}_#{index}'>"
-    file_path = "#{template.dynamic_path}edit/view"
-    cf = get_view file_path
     html << render(
-        :file => "#{template.dynamic_path}edit/view/#{cf}",
+        :file => TemplatePath.edit_content(template),
         :locals => {
             :id => "edit_#{template.name}_#{index}",
-            :dynamic_path => template.dynamic_path,
-            :static_path => template.static_path,
-            :template_info => template.description,
+            :dynamic_path => TemplatePath.path(template),
+            :template_info => Hashie::Mash.new(template.description),
             :default => content
         }
     )
@@ -50,23 +49,20 @@ module Account::TemplatesHelper
       folder_name = template.folder_name
       template.paths do |js, css|
         js.each do |v|
-          html << javascript_include_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_javascript_include_tag("#{folder_name}/#{v.path}")
         end
         css.each do |v|
-          html << stylesheet_link_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_stylesheet_link_tag("#{folder_name}/#{v.path}")
         end
       end
     end
     html << "<div class='edit_element' template_name='#{template.name}' for='edit_#{template.name}_#{index}'>"
-    file_path = "#{template.dynamic_path}edit/view"
-    cf = get_view file_path
     html << render(
-        :file => "#{template.dynamic_path}edit/view/#{cf}",
+        :file => TemplatePath.edit_content(template),
         :locals => {
             :id => "edit_#{template.name}_#{index}",
-            :dynamic_path => template.dynamic_path,
-            :static_path => template.static_path,
-            :template_info => template.description,
+            :dynamic_path => TemplatePath.path(template),
+            :template_info => Hashie::Mash.new(template.description),
             :default => ''
         }
     )
@@ -80,5 +76,9 @@ module Account::TemplatesHelper
         insert_content_path:path,
         check_code:check_code
     }
+  end
+
+  def assets_path(template, path)
+    "#{CONFIG.static_temp_site}/#{template.name}-#{template.version}/#{path}"
   end
 end

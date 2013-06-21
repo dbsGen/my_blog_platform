@@ -45,44 +45,15 @@ class Account::Admin::TemplatesController < ApplicationController
 
     if approve == 'true'
     #  通过批准，释放zip文件部署到服务器
-      Zip::ZipFile.open @template.zip_file, Zip::ZipFile::CREATE do |zip_file|
-        zip_file.each do |entry|
-          if entry.name.match(/^(skim|edit)\/view\//).nil?
-          #  判断这些为静态文件
-            file_path = "#{CONFIG['static_file_path']}/#{@template.folder_name}/#{entry.name}"
-          else
-            file_path = "#{CONFIG['dynamic_file_path']}/#{@template.folder_name}/#{entry.name}"
-          end
-          try_time = 0
-          begin
-            entry.extract(file_path) {true}
-          rescue Errno::ENOENT => e
-            unless e.message['No such file or directory'].nil?
-              p e.message[/\/.+$/]
-              FileUtils.mkdir_p e.message[/\/.+$/]
-              try_time += 1
-              retry if try_time < 3
-            end
-          end
-        end
-      end
-      @template.set(
-          dynamic_path: "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/",
-          static_path: "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/",
-          verify: true
-      )
-      @template.dynamic_path = "#{CONFIG['dynamic_file_path']}/#{@template.name}-#{@template.version}/"
-      @template.static_path = "#{CONFIG['static_file_path']}/#{@template.name}-#{@template.version}/"
+      T_MANAGER.extend_static @template.name, @template.version
+      logger.info "#### The static files path is #{"#{T_MANAGER.zip_path}/#{@template.name}-#{@template.version}.zip"} but got #{T_MANAGER.get @template.name, @template.version} The zip_path = #{T_MANAGER.zip_path}"
       @template.verify = true
-      @template.creater.usable_templates << @template
+      @template.save!
     else
     #  下架,删除部署好的文件
-      FileUtils.rm_r @template.static_path
-      FileUtils.rm_r @template.dynamic_path
-      @template.set(
-          verify: false
-      )
+      T_MANAGER.remove_static @template.name, @template.version
       @template.verify = false
+      @template.save!
     end
   end
 
@@ -92,7 +63,7 @@ class Account::Admin::TemplatesController < ApplicationController
       render_401
     else
       template = Template.find_by_id id
-      send_file template.zip_file
+      send_file T_MANAGER.get template.name, template.version
     end
   end
 

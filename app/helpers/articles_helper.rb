@@ -1,3 +1,5 @@
+require 'template_path'
+
 module ArticlesHelper
   def render_element(element)
     template = element.template
@@ -12,21 +14,17 @@ module ArticlesHelper
     if now == 0 and
       template.paths('skim_path') do |js, css|
         js.each do |v|
-          html << javascript_include_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_javascript_include_tag("#{template.folder_name}/#{v.path}")
         end
         css.each do |v|
-          html << stylesheet_link_tag("#{CONFIG['static_temp_site']}/#{folder_name}/#{v.path}")
+          html << bk_stylesheet_link_tag("#{template.folder_name}/#{v.path}")
         end
       end
     end
-
-    file_path = "#{template.dynamic_path}skim/view"
-    cf = get_view file_path
-    html << render(:file => "#{template.dynamic_path}/skim/view/#{cf}" ,
+    html << render(:file => TemplatePath.skim_content(template) ,
                    :locals => {:id => "#{template.name}_#{now}",
                                :element => element,
-                               :dynamic_path => template.dynamic_path,
-                               :static_path => template.static_path,
+                               :dynamic_path => TemplatePath.path(template),
                                :template_info => template.description
                    })
     @index[template.name] = now + 1

@@ -1,6 +1,4 @@
 #需要使用的话需要在按钮上加上data-tp属性（baidu or youku），也可一加上data-tp-ext(文件类型). data-tp-path(文件夹目录)
-#= require jquery
-#= require jquery-ui
 #= require verder/jquery.colorbox-min
 
 body_html = (title, type, ext, path, for_tag) ->

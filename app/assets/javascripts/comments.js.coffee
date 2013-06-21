@@ -6,6 +6,7 @@
 #= require verder/jquery.colorbox-min
 #= require mingp-0.1
 #= require articles/tags
+#= require template/support
 
 @post_comment = (tag)->
   try
@@ -16,7 +17,7 @@
     e = $("##{ed.attr('for')}")
     $.ajax(
       type: 'post'
-      url: btn.attr('href')
+      url: $('#send-button').attr('href')
       data: {
         article: el.attr('article')
         reply_to: el.attr('reply_to')
@@ -27,6 +28,7 @@
       }
 
       success: (data)->
+        eval(data)
         btn.attr('disabled', false)
         e.data("wysihtml5").clear()
       error: (request)->

@@ -23,7 +23,7 @@
                   confirm: t('templates.reject_confirm')
       - else
         = link_to t('templates.approve'),
-                  account_admin_approve_template_path(object, approve:true),
+                  account_admin_approve_template_path(object, :js, approve:true),
                   method: 'put',
                   remote: true,
                   confirm: t('templates.approve_confirm')
