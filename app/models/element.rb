@@ -14,9 +14,12 @@ class Element
 
   #block 传出一个user
   def self.create_with_params(params)
-    tn = params['template_name']
+    tn = params['template']
     c = params['content']
-    template = Template.first(:name => tn)
+    arr = tn.split(',')
+    name = arr.first
+    version = arr.last.to_f
+    template = Template.first(name: name, version: version)
     raise 'Temp not found' if template.nil?
     hash = {:content => c, :template => template}
     if template.is_quote

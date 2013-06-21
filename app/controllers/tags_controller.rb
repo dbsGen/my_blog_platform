@@ -32,12 +32,14 @@ class TagsController < ApplicationController
     label = params[:label]
     @article = Article.find_by_id params[:article_id]
     @tag = Tag.add_tag_on_article label, @article, current_user
+    expire_page controller: 'tags', action: 'index'
   end
 
   def destroy
     label = params[:id]
     @article = Article.find_by_id params[:article_id]
     Tag.remove_tag_from_article label, @article
+    expire_page controller: 'tags', action: 'index'
     render_format 200, '删除成功'
   rescue SaveError => e
     logger.warn("#### Delete tag failed, #{e}")

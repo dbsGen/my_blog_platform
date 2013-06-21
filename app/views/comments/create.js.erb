@@ -1,2 +1,3 @@
-$('<%= j render_comment(@comment) %>').prependTo('.article.container .article-comments');
+$('<%= j render_comment(@comment) %>').prependTo('.article-comments');
+console.log($('.article-comments'));
 Messenger().post('<%= j t('comments.send.success') %>');

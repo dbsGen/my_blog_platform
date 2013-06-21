@@ -22,7 +22,7 @@
         article: el.attr('article')
         reply_to: el.attr('reply_to')
         elements: [{
-                   template_name: ed.attr('template_name')
+                   template: ed.attr('template')
                    content: $.add_tp(e.val())
                    }]
       }
@@ -32,11 +32,14 @@
         btn.attr('disabled', false)
         e.data("wysihtml5").clear()
       error: (request)->
-        data = eval("(#{request.responseText})")
-        Messenger().post(
-          message: data.msg
-          type: 'error'
-        )
+        try
+          data = eval("(#{request.responseText})")
+          Messenger().post(
+            message: data.msg
+            type: 'error'
+          )
+        catch e
+          console.error(e)
         btn.attr('disabled', false)
     )
   catch e

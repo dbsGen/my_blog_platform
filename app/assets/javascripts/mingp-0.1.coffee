@@ -2,7 +2,7 @@
 
 #显示名片
 HTML = "<div id=\'mingpian-layer\' style=\'border: 2px solid black; display: none; position: absolute;z-index: 1000\' >\n    <div id=\'cover\' style=\'background-color: white; z-index: 2; position: absolute; width: 100%; height: 100%\'>\n        <img src=\"http://name_card.sctab.com/image/preloader-w8-cycle-black.gif\" style=\"left: 118px; top: 58px; position: absolute\">\n    </div>\n    <iframe scrolling=\'no\' style=\'border: none;width: 300px; height: 180px; z-index: 1;position: absolute; overflow: hidden\'></iframe>\n</div>\n<img id=\"mingpian-over-image\" src=\"\" style=\"display: none; position: absolute;z-index: 1001\">"
-url = 'http://namecard.sctab.com/public/mingpian?email='
+url = 'http://www.mingp.net/public/mingpian?email='
 
 pluginName = 'MingP'
 

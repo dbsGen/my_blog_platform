@@ -56,7 +56,7 @@ module Account::TemplatesHelper
         end
       end
     end
-    html << "<div class='edit_element' template_name='#{template.name}' for='edit_#{template.name}_#{index}'>"
+    html << "<div class='edit_element' template='#{template.name},#{template.version}' for='edit_#{template.name}_#{index}'>"
     html << render(
         :file => TemplatePath.edit_content(template),
         :locals => {
