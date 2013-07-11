@@ -240,7 +240,6 @@ section {
 }
 
 .article-comments {
-    border-top: 1px solid black;
     padding: 15px 10px 3px 10px;
     margin: 1px 10px 1px 10px;
 }
@@ -383,4 +382,8 @@ ul.templates-icons > li.create > a.thumbnail {
 
 .margin10{
     margin: 10px;
+}
+
+.edit-content {
+    margin-left: 20px;
 }

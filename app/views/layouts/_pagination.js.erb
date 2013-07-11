@@ -1,0 +1,36 @@
+$(document).ready(function(){
+    document.last = $('[pagination-key]').last().attr('pagination-key');
+    var that =  $("#<%= id %>");
+    that.scrollPagination({
+        'contentPage': '<%= url %>',
+        'contentData': {
+            last: document.last
+        },
+        'scrollTarget': $(<%= scroll_target %>),
+        'heightOffset': 10,
+        'beforeLoad': function(){
+            console.log(that.data('data-start'));
+            that.data('data-start')();
+        },
+        'afterLoad': function(data){
+            if (data.length == 0) {
+                that.data('data-over')();
+                that.stopScrollPagination();
+            }else {
+                that.data('data-success')(data);
+                document.last = $('[pagination-key]').last().attr('pagination-key');
+            }
+        },
+        'loadError': function(request){
+            try {
+                if(request.status == 403 && eval('('+request.responseText+')').code == 403) {
+                    that.data('data-over')();
+                }else
+                    that.data('data-fail')(request);
+            }catch(e) {
+                console.error(e);
+                that.data('data-fail')(request);
+            }
+        }
+    });
+});

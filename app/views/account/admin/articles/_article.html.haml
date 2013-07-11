@@ -14,6 +14,10 @@
     %td= object.created_at.strftime('%F')
     %td= admin_name_tag(object.creater)
     %td
+      - r = object.in_group? recommend_group
+      = link_to r ? '取消推荐':'推荐', account_admin_recommend_path(object),
+                :method => r ? 'delete':'post',
+                :remote => true
       = link_to t('edit'), account_admin_article_path(object)
       = link_to t('delete'), account_admin_article_path(object),
                 :method => 'delete',

@@ -37,7 +37,7 @@ class Account::ThirdPartiesController < ApplicationController
           current_user.third_parties << baidu
           baidu.save
         else
-          baidu.set(
+          baidu.update_attributes!(
               :token => h_token,
               :name => name,
               :other => params
@@ -66,7 +66,7 @@ class Account::ThirdPartiesController < ApplicationController
           current_user.third_parties << youku
           youku.save
         else
-          youku.set(
+          youku.update_attributes!(
               :token => token.to_hash,
               :name => name,
               :other => user_info.body
@@ -84,7 +84,7 @@ class Account::ThirdPartiesController < ApplicationController
           current_user.third_parties << mingp
           mingp.save
         else
-          mingp.set(
+          mingp.update_attributes!(
               :token => token.to_hash,
               :name => current_user.nickname
           )
@@ -180,7 +180,7 @@ class Account::ThirdPartiesController < ApplicationController
   end
 
   def baidu_path
-    BAIDU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('baidu'))
+    BAIDU_CLIENT.auth_code.authorize_url(:redirect_uri => account_TP_callback_url('baidu'), :scope => 'basic,netdisk')
   end
 
   def youku_path

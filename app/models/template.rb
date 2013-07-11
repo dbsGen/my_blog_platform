@@ -1,32 +1,37 @@
 class Template
-  include MongoMapper::Document
+  include Mongoid::Document
+  class << self
+    include WillPaginate::Mongoid::CriteriaMethods
+  end
 
   #作为模板的标识
-  key :name,      String
+  field :name, type: String
   #是否通过审核,未通过审核的不能上架使用
-  key :verify,    Boolean, :default => false
+  field :verify, type: Boolean, :default => false
   #是否引用 如果是其中的@信息会被保存
-  key :is_quote,  Boolean, :default => true
+  field :is_quote, type: Boolean, :default => true
 
   #类型content or blog
-  key :type,  String
+  field :type, type: String
   #描述文件内容
-  key :description, Hash
+  field :description, type: Hash
 
-  key :created_at, Time
+  field :created_at, type: Time
 
-  key :version, Float
+  field :version, type: Float
 
-  belongs_to :creater, :class => User
+  belongs_to :creater, class_name: 'User', inverse_of: :created_templates
 
   validates :name, :presence => {with:true, message: '名称不存在'}
 
+  index 'name' => 1
+
   def screen_name
     h = description['screen_name']
-    n = h[I18n.default_locale]
+    n = h[I18n.default_locale.to_s]
     h.each_value do |value|
       n = value
-      return
+      break
     end if n.nil?
     n
   end
@@ -42,8 +47,7 @@ class Template
   end
 
   def self.last_with_name(name)
-    templates = self.where name:name, verify:true
-    templates.first :order => :version.desc
+    self.where(name:name, verify:true).order_by(:version.desc).first
   end
 
   def self.create_with_params(params)
@@ -59,7 +63,7 @@ class Template
   end
 
   def icon_path
-    verify ? (description['icon_path'] || CONFIG['default_temp_icon']) : CONFIG['default_temp_icon']
+    verify ? (description['icon_path'] || "#{folder_name}/icon/icon.png") : CONFIG['default_temp_icon']
   end
 
   def paths(key = 'edit_path')
@@ -89,5 +93,10 @@ class Template
 
   def folder_name
     "#{name}-#{version}"
+  end
+
+  def settings
+    raise 'This template is not a blog template.' if type != 'blog'
+    Hashie::Mash.new(description).settings || []
   end
 end

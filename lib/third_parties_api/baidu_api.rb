@@ -2,7 +2,7 @@ require 'customer'
 class BaiduApi
   def self.user_info(token)
     client = HTTPClient.new()
-    user_info = client.post(BAIDU_SITE + BAIDU_USER_PATH, 'access_token' => token[:access_token])
+    user_info = client.post(BAIDU_SITE + BAIDU_USER_PATH, 'access_token' => token[:access_token] || token['access_token'])
     JSON(user_info.body)
   end
 
@@ -20,7 +20,7 @@ class BaiduApi
     client = HTTPClient.new()
     params = {
         :method => 'list',
-        :access_token => token[:access_token],
+        :access_token => token[:access_token] || token['access_token'],
         :path => "#{BAIDU_ROOT_FOLDER}#{folder}",
         :by => 'time',
         :order => 'desc',
@@ -36,7 +36,7 @@ class BaiduApi
     path = "#{BAIDU_ROOT_FOLDER}#{path}"
     params = {
         :method => 'upload',
-        :access_token => token[:access_token],
+        :access_token => token[:access_token] || token['access_token'],
         :path => path,
         :ondup => ondup
     }
@@ -51,7 +51,7 @@ class BaiduApi
     path = "#{BAIDU_ROOT_FOLDER}#{path}"
     params = {
         :method => 'download',
-        :access_token => token[:access_token],
+        :access_token => token[:access_token] || token['access_token'],
         :path => path
     }
     p = URI::Parser.new

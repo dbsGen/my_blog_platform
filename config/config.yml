@@ -1,3 +1,4 @@
+main_domain: myboka.com
 name: 'blog'
 title: '我的博卡-MyBoKa'
 system: ''
@@ -40,3 +41,5 @@ host_domain:
   - 'myboka.com'
   - 'myboka.net'
   - 'myboka.cn'
+ban_domains:
+  - 'static'

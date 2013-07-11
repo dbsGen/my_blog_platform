@@ -1,0 +1,49 @@
+= javascript_include_tag 'account/blog'
+.row.full
+  .span3.full
+    = form_tag preview_url, method: 'put', id: 'edit-form' do
+      %div{style: 'height: 35px'}
+        .btn-group.pull-right
+          %button.btn-primary.btn#submit-button{type: 'button', href: account_submit_blog_path}= t('OK')
+          %button.btn#check-button{type: 'button', href: preview_url} 查看
+          %a.btn-primary.btn 复原
+          %a.btn 返回
+      -# 选择模板
+      .edit-header
+        %h4 选择模板
+      .edit-content
+        = select_tag 'template',
+        options_myboka(current_user.templates_of_type('blog'), current_user.blog_template.id)
+      -# 渲染公共设置
+      -# 先写死到这里
+      -# TODO 已到Helper里面去
+      .edit-header
+        %h4 标题
+      .edit-content
+        = text_field_tag 'public_settings[title]', public_settings['title'], placeholder: '请不要超过14个字'
+      .edit-header
+        %h4 描述
+      .edit-content
+        = text_field_tag 'public_settings[description]', public_settings['description'], placeholder: '请不要超过100个字'
+      .edit-header
+        %h4 页面
+      .edit-content
+        .checkbox
+          = check_box_tag 'public_settings[home]', '显示主页', (public_settings['home'] || 'on') == 'on'
+          显示主页
+        %span.help-block 主页会显示所有文章。在没有其他页面的时候一定会显示主页。
+        - (public_settings.pages || []).each do |page|
+          = render partial: 'account/blog/page', object: page
+        %button.btn-primary.btn#add-page{type: 'button'}
+          %i.icon-plus.icon-white
+          添加页面
+          = render partial: 'account/blog/page', object: nil
+        .help-block 可以设置多个标签，中间用','隔开。
+      -# 渲染当前模板的设置
+      - @template.settings.each do |setting|
+        .edit-header
+          %h4= setting.name
+        .edit-content
+          = setting_tag setting
+  .span9.full
+    %iframe#shower{src: preview_url, name: 'shower'}

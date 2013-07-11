@@ -11,7 +11,7 @@ class Account::TemplatesController < ApplicationController
   def show
     id = params[:id]
     @index = params[:index]
-    @template = Template.find_by_id id
+    @template = Template.find id
     return render_404 if @template.nil?
     respond_to do |format|
       format.js
@@ -22,7 +22,7 @@ class Account::TemplatesController < ApplicationController
   def create
     info = T_MANAGER << params[:file]
 
-    test = Template.first name:info.name, version:info.version
+    test = Template.where(name:info.name, version:info.version).first
     return render_format 500, '这个名称和版本已经上传过了。' unless test.nil?
 
     template = Template.create_with_params info

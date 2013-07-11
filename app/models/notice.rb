@@ -1,15 +1,17 @@
 class Notice
-  include MongoMapper::Document
+  include Mongoid::Document
 
-  key :type,    String
+  field :type, type: String
   #数据
-  key :params,  Hash
+  field :params, type: Hash
   #已读
-  key :readed,  Boolean, :default => false
+  field :readed, type: Boolean, :default => false
   #创建时间
-  key :created_at,  Time
+  field :created_at, type: Time
 
-  belongs_to :user
+  embedded_in :user
+
+  index 'created_at' => 1
 
   #type:
   # system 系统消息

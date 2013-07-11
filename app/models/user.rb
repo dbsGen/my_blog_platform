@@ -1,45 +1,52 @@
 require 'digest'
 
 class User
-  include MongoMapper::Document
+  include Mongoid::Document
+  class << self
+    include WillPaginate::Mongoid::CriteriaMethods
+  end
   EXPIRE_TIME = 24 * 3600
 
-  key :name,              String, :required => true, :unique => true
-  key :nickname,          String
-  key :email,             String, :required => true, :unique => true
-  key :password_encrypt,  String
-  key :password_plain,    String
-  key :summary,           String
-  key :last_login_time,   Time
-  key :register_time,     Time
-  key :resend_time,       Time
-  key :portrait_path,     String, :default => '/default_portrait.png'
-  key :privileges,        Integer, :default => 0
-  key :confirm,           Boolean, default: false
+  field :name, type: String
+  field :nickname, type: String
+  field :email, type: String
+  field :password_encrypt, type: String
+  field :password_plain, type: String
+  field :summary, type: String
+  field :last_login_time, type: Time
+  field :register_time, type: Time
+  field :resend_time, type: Time
+  field :portrait_path, type: String, :default => '/default_portrait.png'
+  field :privileges, type: Integer, :default => 0
+  field :confirm, type: Boolean, default: false
+  field :blog_settings, type: Hash, :default => {}
 
-  one :confirm_item,    class: Confirm
-  one :findback_item,   class: Findback
-  one :using_template,  class: Template
+  index 'name' => 1
+  index 'email' => 1
+
+  has_one :confirm_item, class_name: 'Confirm'
+  has_one :findback_item, class_name: 'Findback'
+  has_one :using_template, class_name: 'Template'
 
   #关联的sessions
   #有多少个sessions就说明有多少个登录可以删除
-  many :sessions
+  has_many :sessions, inverse_of: :user
   #关联的三方登录状态
-  many :third_parties
-  many :notices
-  many :domains
+  has_many :third_parties
+  has_many :domains
+  embeds_many :notices
 
   attr_accessor :password
 
-  many :articles,           :class => Article,  :foreign_key => :creater_id
-  many :show_articles,      :class => Article
-  many :created_templates,  :class => Template, :foreign_key => :creater_id
+  has_many :articles, inverse_of: :creater
+  has_many :created_templates,  class_name: 'Template', inverse_of: :creater
 
-  key  :usable_template_ids, Array
-  many :usable_templates,   :class => Template, :in => :usable_template_ids
+  has_and_belongs_to_many :show_articles, class_name: 'Article'
 
-  many :comments,           :class => Comment,  :foreign_key => :creater_id
-  belongs_to :using_blog_template, class: Template
+  has_and_belongs_to_many :usable_templates, class_name: 'Template'
+
+  has_many :comments, class_name: 'Comment', inverse_of: :creater
+  has_one :using_blog_template, class_name: 'Template'
 
   before_destroy :on_destroy
 
@@ -59,7 +66,7 @@ class User
       5.times do
         pwd = Digest.hexencode sha256.digest(pwd)
       end
-      self.set :password_encrypt => pwd
+      self.update_attributes! :password_encrypt => pwd
       self.unset :password_plain
     end
     self.password_encrypt
@@ -93,7 +100,7 @@ class User
                     :password => 'this is password'
     user.register_time = Time.now
     yield(user) if block_given?
-    user.save ? user: nil
+    user.save ? user : nil
   end
 
   def baidu_yun_info
@@ -110,7 +117,7 @@ class User
 
   def tp_info(type)
     type = 'baidu_yun' if type == 'baidu'
-    tp = self.third_parties.first(:type => type)
+    tp = self.third_parties.where(:type => type).first
     return nil if tp.nil?
     if tp.expire?
       tp.destroy
@@ -138,34 +145,7 @@ class User
   end
 
   def usable_templates_and_check
-
-    begin
-      ts = CONFIG['default_templates']['content_templates']
-    rescue Exception => _
-      ts = []
-    end
-
-    ts.each do |t|
-      ft = usable_templates.first(:name => t)
-      if ft.nil?
-        temp = Template.last_with_name(t)
-        usable_templates << temp unless temp.nil?
-      end
-    end
-
-    begin
-      blog_temp = CONFIG['default_templates']['blog_template']['first']
-    rescue Exception => _
-      blog_temp = nil
-    end
-
-    t = usable_templates.first(:name => blog_temp)
-    if t.nil?
-      t = Template.last_with_name(blog_temp)
-      usable_templates << t unless t.nil?
-    end unless blog_temp.nil?
-
-    usable_templates
+    usable_templates.all.concat DEFAULT_TEMPLATES
   end
 
   def content_templates
@@ -178,7 +158,7 @@ class User
   end
 
   def blog_template
-    using_blog_template.nil? ? usable_templates_and_check.first(type: 'blog') : using_blog_template
+    using_blog_template.nil? ? Template.last_with_name(CONFIG.default_templates.blog_template['first']) : using_blog_template
   end
 
   def comment_template
@@ -190,8 +170,8 @@ class User
   end
 
   def self.user_with_name(email_or_name)
-    u = self.find_by_name(email_or_name)
-    u = self.find_by_email(email_or_name) if u.nil?
+    u = self.where(name: email_or_name).first
+    u = self.where(email: email_or_name).first if u.nil?
     return nil if u.nil?
     if !u.confirm and u.register_time + EXPIRE_TIME < Time.now
       u.destroy
@@ -207,7 +187,7 @@ class User
       c = self.confirm_item
       c = Confirm.rand_token(self) if c.nil?
       Email.confirm(email, '邮箱验证', url + c.token).deliver
-      self.set resend_time: Time.now + 5 * 60
+      self.set :resend_time, Time.now + 5 * 60
     end
   end
 
@@ -217,7 +197,7 @@ class User
       c = self.findback_item
       c = Findback.rand_token(self) if c.nil?
       Email.confirm(email, '找回密码', url + c.token).deliver
-      self.set resend_time: Time.now + 5 * 60
+      self.set :resend_time, Time.now + 5 * 60
       0
     else
       resend_time - Time.now
@@ -243,5 +223,10 @@ class User
   def insert_article(article)
     articles << article
     show_articles << article
+  end
+
+  def templates_of_type(type)
+    templates = usable_templates_and_check
+    templates.reject{|t| t.type != type}
   end
 end

@@ -21,8 +21,9 @@ $(document).ready ->
       url: '/tags/' + label
       type: 'DELETE'
       data: {article_id: article_id}
-      success: ->
+      success: (data) ->
         tag.remove()
+        Messenger().post(JSON.parse(data).msg)
       error: (r) ->
         msg = JSON.parse(r.responseText).msg || '删除失败'
         Messenger().post(

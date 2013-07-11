@@ -10,7 +10,8 @@
           .control
             = text_field_tag 'user_name', '',
                              :placeholder => t('.ID_placeholder'),
-                             :tabIndex => 1
+                             :tabIndex => 1,
+                             style: 'width:220px'
         .control-row
           .control-label= t 'password'
           .control
@@ -19,11 +20,6 @@
                                  :tabIndex => 2,
                                  class: 'password'
             = link_to '忘记密码', find_back_path, style: 'font-size: 12px'
-        .control-row
-          .control{style: 'margin-left: 50px'}
-            .checkbox
-              = check_box_tag 'remember_me', nil, remember_me?
-              %label{style: 'display:inline'}= t 'remember_me'
         .control-row
           .submit-row
             = submit_tag t('login'),

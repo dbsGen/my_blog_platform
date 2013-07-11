@@ -7,7 +7,7 @@ class Account::NoticesController < ApplicationController
     last = params[:last]
     notices = current_user.notices
     q = last.nil? ? notices : notices.where(:created_at.lte => params[:last])
-    @notices = q.sort(:created_at.desc).limit(per_page)
+    @notices = q.order_by(:created_at.desc).limit(per_page)
     respond_to do |format|
       format.js
       format.html

@@ -2,7 +2,6 @@ source 'http://ruby.taobao.org/'
 require 'mongo'
 
 gem 'rails', '3.2.12'
-gem "mongo_mapper"
 gem 'redis', '3.0.3'
 gem 'uuidtools'
 gem 'oauth2'
@@ -15,12 +14,16 @@ gem 'sass'
 gem 'template_manager'
 gem 'hashie'
 
+gem 'mongoid'
+gem 'bson_ext'
+gem 'will_paginate-myboka'
+
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
 gem 'haml', '4.0.0'
 
 gem 'client_side_validations'
-gem 'client_side_validations-mongo_mapper'
+gem 'client_side_validations-mongoid'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

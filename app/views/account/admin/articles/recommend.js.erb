@@ -1,0 +1,4 @@
+var obj = $('<%= j render(:partial => 'account/admin/articles/article', :locals => {:header => false, :object => @article}) %>');
+obj.hide().replaceAll('#<%= dom_id @article %>');
+obj.fadeIn();
+

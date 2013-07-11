@@ -1,15 +1,23 @@
+require 'errors'
+
 class Account::Admin::ArticlesController < ApplicationController
   layout 'user_page'
   before_filter :require_admin ,:enter_page
   before_filter :find_article, :only => [:destroy, :show, :update]
 
+  helper_method :recommend_group
+
   def search
     per_page = params[:per_page] || 25
-    articles = Article.where :title => /#{params[:key]}/
+    page = params[:page] || 1
+    Article.all.each do |a|
+      p a.key_word
+    end
+    articles = Article.where :key_word => /#{params[:key]}/
     @articles = articles.paginate(
-        :order    => :created_at.asc,
+        :sort     => :created_at.asc,
         :per_page => per_page,
-        :page     => params[:page],
+        :page     => page,
     )
     @total_page = articles.count / per_page + 1
     respond_to do |format|
@@ -23,9 +31,9 @@ class Account::Admin::ArticlesController < ApplicationController
     per_page = params[:per_page] || 25
     @total_page = Article.all().count / per_page.to_i + 1
     @articles = Article.paginate(
-        :order    => :created_at.asc,
+        :sort     => :created_at.desc,
         :per_page => per_page,
-        :page     => params[:page],
+        :page     => params[:page] || 1,
     )
     respond_to do |format|
       format.html
@@ -56,7 +64,7 @@ class Account::Admin::ArticlesController < ApplicationController
       d = elements[i.to_s]
       tn = d['template_name']
       c = d['content']
-      template = Template.first(:name => tn)
+      template = Template.where(:name => tn).first
       raise 'Temp not found' if template.nil?
       element = Element.new(:content => c, :template => template)
       es << element
@@ -78,15 +86,51 @@ class Account::Admin::ArticlesController < ApplicationController
     render_format 500, t('articles.update.failed')
   end
 
+  #推荐
+  def recommend
+    method = request.request_method_symbol
+    a_id = params[:a_id]
+    @article = Article.find a_id
+    case method
+      when :delete
+        recommend_group >> @article
+      when :post
+        recommend_group << @article
+      else
+        raise Errors::MessageError.new("不能匹配#{method.to_s}方法。")
+    end
+  end
+
+  def recommend_articles
+    page = params[:page] || 1
+    per_page = params[:per_page] || 25
+    keyword = params[:key]
+
+    @total_page = recommend_group.articles.count / per_page.to_i + 1
+    if recommend_group.articles.nil?
+      @articles = []
+    else
+      as = keyword.nil? ? recommend_group.articles : recommend_group.articles.where(key_word: /#{keyword}/)
+      @articles = as.paginate sort: :created_at.desc,
+                              page: page,
+                              per_page: per_page
+    end
+    respond_to do |format|
+      format.html {render :template => 'account/admin/articles/index'}
+      format.js {render :template => 'account/admin/articles/search'}
+    end
+  end
+
+  def recommend_group
+    @recommend_group ||= ArticleGroup.recommend_group
+  end
+
   protected
   def enter_page
     @page_index = :admin_articles
   end
 
   def find_article
-    @article = Article.first(:id => params[:id])
-    if @article.nil?
-      render_404
-    end
+    @article = Article.find(params[:id])
   end
 end

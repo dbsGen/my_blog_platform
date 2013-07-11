@@ -1,16 +1,22 @@
 = javascript_tag do
-  this.search_path = "#{account_admin_search_articles_path}"
-  this.source_url = "#{request.url}"
-= javascript_include_tag 'search'
+  this.all_search_path = this.search_path = "#{account_admin_search_articles_path}";
+  this.all_url = this.source_url = "#{request.url}";
+  this.recommend_url = "#{account_admin_recommend_articles_url}"
+  this.recommend_search_path = "#{account_admin_recommend_articles_path}"
+= javascript_include_tag 'account/admin/articles'
 .form-horizontal
   %section
     %fieldset
       %legend= "#{t('articles.title.label')}"
       .navbar
         .navbar-inner
-          = link_to raw("<i class='icon-plus'></i>#{t('articles.new')}"),
-                    new_account_article_path,
-                    :class => 'btn pull-left'
+          .btn-group.pull-left
+            = link_to raw("<i class='icon-plus'></i>#{t('articles.new')}"),
+                      new_account_article_path,
+                      :class => 'btn'
+            %button.btn#recommend
+              %i.icon-thumbs-up
+              推荐的
           .search-bar
             .navbar-search.pull-right
               = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'

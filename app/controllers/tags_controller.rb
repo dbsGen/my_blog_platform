@@ -1,16 +1,17 @@
 class TagsController < ApplicationController
+
   before_filter :require_login, only: [:create, :destroy]
   layout 'home'
 
-  caches_page :index, expires_in: 1.hour
+  caches_action :index, expires_in: 1.hour
 
   def index
-    @tags = Tag.paginate(per_page: 40, order: :index_score.asc, page: 0)
+    @tags = Tag.paginate(per_page: 40, sort: :index_score.asc, page: 1)
     render layout: false
   end
 
   def show
-    @tag = Tag.find_by_id params[:id]
+    @tag = Tag.find params[:id]
     @title = "Tag: #{@tag.label}"
     if @tag.nil?
       @articles = []
@@ -30,18 +31,19 @@ class TagsController < ApplicationController
 
   def create
     label = params[:label]
-    @article = Article.find_by_id params[:article_id]
+    @article = Article.find params[:article_id]
     @tag = Tag.add_tag_on_article label, @article, current_user
-    expire_page controller: 'tags', action: 'index'
+    expire_action controller: 'tags', action: 'index'
+    render template: 'tags/create.js', layout: nil
   end
 
   def destroy
     label = params[:id]
-    @article = Article.find_by_id params[:article_id]
+    @article = Article.find params[:article_id]
     Tag.remove_tag_from_article label, @article
-    expire_page controller: 'tags', action: 'index'
+    expire_action controller: 'tags', action: 'index'
     render_format 200, '删除成功'
-  rescue SaveError => e
+  rescue Errors::SaveError => e
     logger.warn("#### Delete tag failed, #{e}")
     render_format 500, e.message
   rescue StandardError => e

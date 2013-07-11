@@ -17,6 +17,7 @@
   .article-comments
     - @comments.each do |comment|
       = render_comment comment
+  = comments_pagination_tag(@article.comments.count / 10 + 1, 1)
   -#发表评论
   .article-comment
     - if login?

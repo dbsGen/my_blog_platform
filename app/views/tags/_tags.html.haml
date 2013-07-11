@@ -10,7 +10,7 @@
     %button.button
       %span.icon-plus-2
     .new-tag-content
-      = form_tag tags_path, method: 'POST', remote: true do
+      = form_tag tags_path('json'), method: 'POST', remote: true do
         = text_field_tag 'label', nil, placeholder: '10个字符以内', 'maxlength' => 10, size: 10
         = text_field_tag 'article_id', @article.id, style: 'display:none'
         %button.icon-button.button#submit{type: 'submit'}

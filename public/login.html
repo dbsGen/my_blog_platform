@@ -2,10 +2,10 @@
 <html>
 <head>
 <title>登陆</title>
-<link href="/assets/home-9993e379d93bb9bb49f35c07a7de5f30.css" media="all" rel="stylesheet" type="text/css" />
-<script src="/assets/home-8ff0d5f41d8803f872f3a10274d456cf.js" type="text/javascript"></script>
+<link href="/assets/home-8ca9bd4d4ded6421d944bdb23ab2b4bc.css" media="all" rel="stylesheet" type="text/css" />
+<script src="/assets/home-0fd24aa553fb397858d8939b924cfd3a.js" type="text/javascript"></script>
 <meta content="authenticity_token" name="csrf-param" />
-<meta content="zrhdhOjmk7gDgumdOpoJzXlMTtuwP6smuNoHo4Opu24=" name="csrf-token" />
+<meta content="rKuPpPz5mSsl0iw9IArnZipO1G4cT+sR4m55+8vCnuw=" name="csrf-token" />
 <link href="/favicon.ico" rel="bookmark" type="image/x-icon" />
 <link href="/favicon.ico" rel="icon" type="image/x-icon" />
 <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -16,15 +16,18 @@
 <div class='myboka'>
 <div class='header'>
 <div class='logo'>
-<img alt="Logo_200" src="/images/logo_200.png" />
+<img alt="Logo_200" src="/images/logo_200.png" title="我的博卡" />
 </div>
 <div class='navbar'>
 <div class='bg'></div>
 <a class='navitem' href='/'>
-<span>主页</span>
+<span>热门</span>
 </a>
-<a class='navitem-last' href='/'>
-<span>标签2</span>
+<a class='navitem' href='/time_line'>
+<span>广场</span>
+</a>
+<a class='navitem-last' href='/recommend'>
+<span>推荐</span>
 </a>
 </div>
 <div class='search'>
@@ -44,16 +47,17 @@
 </div>
 </div>
 
-<script src="/assets/sessions-295b75f5d7f244f3f89f5b7da63105ba.js" type="text/javascript"></script>
+<script src="/assets/sessions-8bc2bf8b5c3d853bbd62a9876c4ec438.js" type="text/javascript"></script>
 <div class='row'>
 <div class='span4 offset3'>
 <h2>登录</h2>
 <div class='radius-box'>
-<form accept-charset="UTF-8" action="/sessions" id="login_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="zrhdhOjmk7gDgumdOpoJzXlMTtuwP6smuNoHo4Opu24=" /></div>
+<form accept-charset="UTF-8" action="/sessions" id="login_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="rKuPpPz5mSsl0iw9IArnZipO1G4cT+sR4m55+8vCnuw=" /></div>
+<input id="redirect" name="redirect" style="display:none" type="text" value="" />
 <div class='control-row'>
 <div class='control-label'>用户名</div>
 <div class='control'>
-<input id="user_name" name="user_name" placeholder="用户名或邮箱" tabIndex="1" type="text" value="" />
+<input id="user_name" name="user_name" placeholder="用户名或邮箱" style="width:220px" tabIndex="1" type="text" value="" />
 </div>
 </div>
 <div class='control-row'>
@@ -61,14 +65,6 @@
 <div class='control'>
 <input class="password" id="user_password" name="user_password" placeholder="不小于4个字符" tabIndex="2" type="password" value="" />
 <a href="/findback" style="font-size: 12px">忘记密码</a>
-</div>
-</div>
-<div class='control-row'>
-<div class='control' style='margin-left: 50px'>
-<div class='checkbox'>
-<input id="remember_me" name="remember_me" type="checkbox" />
-<label style='display:inline'>记住我</label>
-</div>
 </div>
 </div>
 <div class='control-row'>

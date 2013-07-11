@@ -1,0 +1,10 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? 'MyBoKa-我的博卡' : @title
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'account/blog'
+    = csrf_meta_tags
+  %body
+    = yield

@@ -1,0 +1,4 @@
+.page.well.well-small{style: 'display:none'}
+  = text_field_tag 'public_settings[pages][][id]', page.nil? ? '' : page.id, placeholder: 'ID', class: 'span1'
+  = text_field_tag 'public_settings[pages][][title]', page.nil? ? '' : page.title, placeholder: '标题', class: 'span1'
+  = text_field_tag 'public_settings[pages][][objects]', page.nil? ? '' : page.objects, placeholder: '标签', class: 'span2'

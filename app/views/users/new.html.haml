@@ -12,21 +12,24 @@
             = f.text_field :name,
                            :tabIndex => 1,
                            :placeholder => t('.ID_placeholder'),
-                           size: 20
+                           size: 20,
+                           style: 'width:190px'
         .control-row
           .control-label
             = f.label t('email')
           .control
             = f.text_field :email,
                            :tabIndex => 2,
-                           :placeholder => t('.email_placeholder')
+                           :placeholder => t('.email_placeholder'),
+                           style: 'width:190px'
         .control-row
           .control-label
             = f.label t('password')
           .control
             = f.password_field :password,
                                :tabIndex => 3,
-                               :placeholder => t('.pwd_placeholder')
+                               :placeholder => t('.pwd_placeholder'),
+                               style: 'width:190px'
         .control-row
           .submit-row
             = f.submit t('signup'), :class => 'button login-button', :tabIndex => 4

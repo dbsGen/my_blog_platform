@@ -8,7 +8,7 @@ class Account::Admin::UsersController < ApplicationController
     per_page = params[:per_page] || 25
     @total_page = User.all().count / per_page + 1
     @users = User.paginate(
-        :order    => :register_time.asc,
+        :sort     => :register_time.asc,
         :per_page => per_page,
         :page     => params[:page]
     )
@@ -23,7 +23,7 @@ class Account::Admin::UsersController < ApplicationController
     per_page = params[:per_page] || 25
     users = User.where :name => /#{params[:key]}/
     @users = users.paginate(
-      :order    => :register_time.asc,
+      :sort     => :register_time.asc,
       :per_page => per_page,
       :page     => params[:page],
     )
@@ -50,7 +50,7 @@ class Account::Admin::UsersController < ApplicationController
     if !password.nil? and password.length > 0
       hash[:password_plain] = password
     end
-    @ret = @user.set(hash)
+    @ret = @user.update_attributes!(hash)
     respond_to do |format|
       format.html {render_404}
       format.js

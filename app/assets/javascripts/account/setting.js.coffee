@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 #= require sha256
 #= require third_party/show_authorize
-#= require verder/jquery.colorbox-min
+#= require vender/jquery.colorbox-min
 
 $(document).ready ->
   $('#modify-password-button').click ->
@@ -119,6 +119,7 @@ $(document).ready ->
       complete: ->
         $('#domain-modal #loading-button').button('reset')
       success: (data) ->
+        data = JSON.parse(data)
         $('#domain-modal').modal('hide')
         $('#domain-control').html(data.msg)
       error: (r) ->

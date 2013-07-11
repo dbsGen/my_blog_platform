@@ -1,7 +1,7 @@
 module MainHelper
-  def auto_pagination_tag(url)
+  def auto_pagination_tag2(url)
     html = ''
-    html << javascript_include_tag('scrollpagination')
+    html << javascript_include_tag('vender/scrollpagination_myboka')
     scr = <<-script
 $(function(){
     document.last = $('[pagination-key]').last().attr('pagination-key');
@@ -78,7 +78,7 @@ $(function(){
       raw <<-script
 function start_count(){
   $.ajax({
-    url:'#{account_unread_count_path}.json',
+    url:'#{account_unread_count_path('json')}',
     success: function(data){
       if (data.count > 0) {
         $('#notice-count').fadeIn();

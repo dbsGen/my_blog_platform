@@ -12,7 +12,7 @@ BlogSystem::Application.routes.draw do
   get     'login'     => 'Sessions#new',        :as => 'login'
   delete  'logout'    => 'Sessions#destroy',    :as => 'logout'
 
-  match   'home'      => 'Main#home_page',      :as => 'home'
+  match   'home'      => 'Main#hot',            :as => 'home'
   get     'time_line' => 'Main#time_line',      :as => 'time_line'
   get     'recommend' => 'Main#recommend',      :as => 'recommend'
 
@@ -46,7 +46,7 @@ BlogSystem::Application.routes.draw do
   resources :users,     :only => [:create]
   resources :sessions,  :only => [:create]
   resources :articles,  :only => [:show]
-  resources :comments,  :only => [:create]
+  resources :comments,  :only => [:create, :index]
   resources :tags,      :only => [:show, :create, :destroy, :index]
 
   # Sample resource route with sub-resources:
@@ -81,6 +81,8 @@ BlogSystem::Application.routes.draw do
     get 'third_parties/upload_url/:type'  => 'ThirdParties#upload_url',     :as => 'upload_url'
     post 'domain/host/set'        => 'Settings#set_host_domain',    :as => 'set_host_domain'
     post 'notices'                => 'Notices#index'
+    get 'blog/edit'       => 'Blog#edit',     :as => 'edit_blog'
+    post 'blog/submit'     => 'Blog#submit',  :as => 'submit_blog'
 
     resources :articles
     resources :templates, :only => [:index, :show, :create]
@@ -97,13 +99,15 @@ BlogSystem::Application.routes.draw do
       get 'templates/default'  => 'Templates#default',  :as => 'default_templates'
       put 'templates/approve/:id'  => 'Templates#approve',  :as => 'approve_template'
       get 'templates/download/:id' => 'Templates#download', :as => 'download_template'
+      match 'recommend/set/:a_id'  => 'Articles#recommend', :as => 'recommend'
+      get 'recommend/articles'     => 'Articles#recommend_articles', :as => 'recommend_articles'
     end
   end
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-  root to:'Main#remote_app'
+  root to:'Main#hot'
 
   # See how all your routes lay out with "rake routes"
 

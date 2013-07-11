@@ -1,15 +1,9 @@
 #初始化MongoDB
-
+Mongoid.load!("#{Rails.root}/config/mongoid.yml")
+Mongoid.logger = Rails.logger
+#Moped.logger = Rails.logger
+require 'will_paginate/mongoid'
 #这里到时候换成正式的服务器
-MongoMapper.connection = Mongo::Connection.new(CONFIG['db_address'], CONFIG['db_ip'])
-MongoMapper.database = "#{CONFIG['name']}_#{Rails.env}"
-
-if defined?(PhusionPassenger)
-  PhusionPassenger.on_event(:starting_worker_process) do |forked|
-    MongoMapper.connection.connect if forked
-  end
-end
-require "#{Rails.root}/db/indexes"
 
 #Not need now
 #初始化系统默认的templates
@@ -30,6 +24,7 @@ require "#{Rails.root}/db/indexes"
 
 #默认一个评论使用的模板
 COMMENT_TEMPLATE = Template.last_with_name(CONFIG['comment_template'])
+DEFAULT_TEMPLATES = Template.in(name: CONFIG.default_templates.content_templates.concat([CONFIG.default_templates.blog_template['first']]))
 
 T_MANAGER = TemplateManager::Manager.new path: CONFIG.zip_template_path,
                                          temp_path: CONFIG.temp_zip_path,
@@ -39,7 +34,7 @@ Dir.foreach tp do |file|
   unless ['.', '..'].include? file
     file_path = "#{tp}/#{file}"
     T_MANAGER.check file_path do |info, zip_file|
-      test = Template.find_by_name_and_version(info.name, info.version.to_f)
+      test = Template.where(name: info.name,version: info.version.to_f).first
       if test.nil?
         path = "#{T_MANAGER.zip_path}/#{info.name}-#{info.version}.zip"
         T_MANAGER.check_path path

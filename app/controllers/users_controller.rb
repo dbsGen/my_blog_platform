@@ -68,7 +68,7 @@ class UsersController < ApplicationController
       old_password = params[:old_password]
       p "old is : #{old_password}, saved is : #{user.password_encrypt}"
       if user.password_encrypt == old_password
-        user.set :password_encrypt => new_password
+        user.set :password_encrypt, new_password
       else
         return render_format 401, t('modify_password.invalid')
       end
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
 
     if h.size > 0
       MingpApi.edit_user_info(user.mingp_info.token, h_p)
-      user.set h
+      user.update_attributes! h
     end
 
     render_format 200, t('modify_password.success')
@@ -94,7 +94,7 @@ class UsersController < ApplicationController
 
   def send_confirm
     email = params[:email]
-    u = User.find_by_email email
+    u = User.find_by email: email
     return render_404 if u.nil?
     @expire = u.goto_confirm(get_confirm_url(''))
     if @expire > 0

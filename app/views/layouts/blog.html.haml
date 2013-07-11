@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title= @title.nil? ? 'MyBoKa-我的博卡' : @title
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'account/blog'
+    - @template.paths 'skim_path' do |js, css|
+      - js.each do |jf|
+        = bk_javascript_include_tag "#{@template.folder_name}/#{jf.path}"
+      - css.each do |cf|
+        = bk_stylesheet_link_tag "#{@template.folder_name}/#{cf.path}"
+    = javascript_include_tag search_js_url(:js)
+    = csrf_meta_tags
+  %body
+    = yield

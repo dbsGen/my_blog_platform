@@ -30,4 +30,13 @@ module ArticlesHelper
     @index[template.name] = now + 1
     raw html
   end
+
+  def comments_pagination_tag(total, index)
+    return '' if total == 1
+    start = [1, index - 4].max
+    stop = [total, index + 4].min
+    a_id = @article.id
+    render partial: 'articles/comments_pagination',
+           locals: {total: total, index: index, start: start, stop: stop, a_id: a_id}
+  end
 end

@@ -33,7 +33,6 @@ $hover-color: mediumvioletred
       @include bottom-border
     .article-comments
       padding: 5px
-      @include bottom-border
       .box
         margin: 5px
         border: 1px dashed $gray-color
@@ -42,6 +41,9 @@ $hover-color: mediumvioletred
         .content
           padding: 2px 5px
           font-size: 13px
+          img
+            max-width: 64px
+            max-height: 64px
         .author
           font-size: 12px
           color: $gray-color
@@ -62,3 +64,18 @@ $hover-color: mediumvioletred
       height: 60px
       color: $gray-color
       font-size: 13px
+
+    ul.pagination
+      list-style: none
+      clear: both
+      margin: 0 10px 5px 10px
+      padding: 0
+      &:after
+        content: "."
+        display: block
+        height: 0
+        clear: both
+        visibility: hidden
+      li
+        margin: 1px
+        float: left

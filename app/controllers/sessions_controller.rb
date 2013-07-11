@@ -21,8 +21,6 @@ class SessionsController < ApplicationController
       redirect_to login_path(err: t('login_failed'))
     else
       #登录成功创建session
-      remember_me = params[:remember_me]
-      set_remember_me(remember_me)
       session = Session.create_with_user(user, :ip_address => request.remote_ip)
       save_session session
       redirect = params[:redirect]

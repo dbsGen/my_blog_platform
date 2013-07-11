@@ -1,16 +1,18 @@
 class ThirdParty
-  include MongoMapper::Document
+  include Mongoid::Document
 
   #类型，用于站内识别
-  key :type,    String
+  field :type, type: String
   #三方token,比如access_token
-  key :token,   Hash
+  field :token, type: Hash
   #显示名字
-  key :name,    String
+  field :name, type: String
   #备用
-  key :others,  String
+  field :others, type: String
   #绑定的用户
   belongs_to :user
+
+  index 'token' => 1
 
   def expire?
     case type

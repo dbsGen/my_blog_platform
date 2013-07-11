@@ -44,7 +44,7 @@ $(document).ready(function(){
     width:'80%',
     height:'80%'
   });
-  this.auth_over = function(value, type){
+  auth_over = function(value, type){
     $(value).replaceAll('#' + type);
     $.fn.colorbox.close();
   };
@@ -54,7 +54,7 @@ $(document).ready(function(){
   end
 
   def third_party_callback_js
-    from = params[:from]
+    from = params[:type]
     case from
       when 'baidu'
         content = third_party_tag(baidu_yun_name, 'baidu', path_with_type(from))
@@ -88,7 +88,7 @@ $(document).ready(function(){
     sub_path = file['path'].gsub BAIDU_ROOT_FOLDER, ''
     html = <<-html
 <a class='thumbnail' onclick='console.log(select_file);select_file(this)' title='#{file_name}' data-tp-id='#{tp_id}' data-path='#{sub_path}'>
-  <img src='#{src}' class='baidu_pic' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
+  <img src='#{src}' class='baidu_pic' data-tp='baidu' data-tp-id='#{tp_id}' data-path='#{sub_path}'></img>
   <div class='caption'>#{file_name}</div>
 </a>
     html

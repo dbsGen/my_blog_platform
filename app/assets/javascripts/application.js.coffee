@@ -17,6 +17,8 @@
 #= require backbone-0.9.10
 #= require messenger
 #= require messenger-theme-future
+#= require tools/autoExec
+#= require third_party/jquery_extend
 
 
 try

@@ -4,15 +4,7 @@ $.extend(
     nc = new String(content)
     if imgs and imgs.length > 0
       for img in imgs
-        src = img.match(/src='[^']+'/)
-        if src
-          url = src[0].match(/'[^']+'/)[0]
-          url = eval(url)
-        else
-          src = img.match(/src="[^"]+"/)
-          if src
-            url = src[0].match(/"[^"]+"/)[0]
-            url = eval(url)
+        url = $(img).attr('src')
         index = url.indexOf('?')
 #        TODO 请注意这里是写死了的
         if index != -1 and url.indexOf('https://pcs.baidu.com/rest/2.0/pcs/file') != -1
@@ -28,3 +20,4 @@ $.extend(
           nc = nc.replace(img, img.replace(src, "data-tp='baidu' data-tp-id='#{tp_id}' data-path='#{path}'"))
     nc
 )
+match_src = (str) ->

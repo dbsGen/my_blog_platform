@@ -1,0 +1,13 @@
+%ul.pagination
+  - if start != 1
+    %li
+      %button.button{href: comments_path(a_id: a_id, page: 1), onclick: 'goPage(this)', type: 'button'} <<
+  - (start..stop).each do |n|
+    %li
+      - if n == index
+        %button.button{disabled: true, href: comments_path(a_id: a_id, page: n), onclick: 'goPage(this)', type: 'button'}= n
+      - else
+        %button.button{href: comments_path(a_id: a_id, page: n ), onclick: 'goPage(this)', type: 'button'}= n
+  - if stop != total
+    %li
+      %button.button{href: comments_path(a_id: a_id, page: total), onclick: 'goPage(this)', type: 'button'} >>

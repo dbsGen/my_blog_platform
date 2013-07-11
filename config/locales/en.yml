@@ -53,6 +53,7 @@ en:
   please_select_file_first: 'Please select file first!'
   set_domain: 'Set domain'
   tags: 'Tags'
+  back_home: 'Home'
   like:
     label: 'Likes'
 
@@ -167,7 +168,7 @@ en:
       pwd_placeholder: '4 characters or more'
       email_placeholder: 'Used to retrieve the password'
 
-  mongo_mapper:
+  mongoid:
     errors:
       models:
         user:

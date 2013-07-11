@@ -1,9 +1,11 @@
 class Confirm
-  include MongoMapper::Document
+  include Mongoid::Document
   EXPIRE_TIME = 24*3600
 
-  key :token, String
-  key :expire, Time
+  field :token, type: String
+  field :expire, type: Time
+
+  index :token => 1
   belongs_to :user
 
   def self.rand_token(user)
@@ -14,7 +16,7 @@ class Confirm
   end
 
   def self.confirm_token(token)
-    c = self.find_by_token token
+    c = self.find_by token: token
     if c.nil?
       false
     else
@@ -22,8 +24,10 @@ class Confirm
         c.destroy
         false
       else
+        c.user.confirm = true
+        c.user.password = 'password'
+        c.user.save!
         c.destroy
-        c.user.set confirm: true
         true
       end
     end

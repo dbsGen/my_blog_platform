@@ -1,3 +1,5 @@
+require 'errors'
+
 class Account::SettingsController < ApplicationController
   layout 'user_page'
   before_filter :require_confirm
@@ -19,6 +21,7 @@ class Account::SettingsController < ApplicationController
   def set_host_domain
     domain = current_user.host_domain
     subdomain = params[:subdomain]
+    raise Errors::MessageError.new('不能使用这个域名。') if CONFIG.ban_domains.include? subdomain
     if domain.nil?
       domain = Domain.new(word: subdomain, host: true, user: current_user)
       domain.save!

@@ -47,13 +47,12 @@ module Account::ArticlesHelper
                     alt: template.screen_name),
           account_template_path(template),
           :class => 'thumbnail template_icon',
-          :template_name => template.name
+          :template => "#{template.name},#{template.version}"
       )
       html << '</div>'
       html << '</li>'
     end
     html << '</ul>'
-    html << (javascript_tag() {raw "$('.template_icon').click(function(){document.add_template($(this));return false;})"})
     raw html
   end
 end

@@ -294,7 +294,7 @@ $hover-color: mediumvioletred
           color: grey
       img
         max-height: 100px
-        min-width: 100px
+        max-width: 100px
       &:hover
         color: $black-color
         max-height: 300px
@@ -377,6 +377,7 @@ $hover-color: mediumvioletred
     border: none
     font-weight: bolder
     font-size: 14px
+    display: inline-block
     @include transition
     @include button-hover($hover-color)
     &[disabled]
@@ -585,4 +586,5 @@ $hover-color: mediumvioletred
         padding: 10px 20px
 
   .article-comment
+    border-top: 1px solid $black-color
     min-height: 200px

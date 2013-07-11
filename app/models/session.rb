@@ -1,20 +1,24 @@
 class Session
-  include MongoMapper::Document
+  include Mongoid::Document
 
   TIME_OF_YEAR = 365 * 24 * 60 * 60
 
   #登录token
-  key :login_token, String,   :required => true
+  field :login_token, type: String
   #是否需要验证ip
-  key :need_ip,     Boolean,  :default => false
+  field :need_ip, type: Boolean,  :default => false
   #每个session有一个ip地址的验证
-  key :ip_address,  String
-  key :create_at,   Time
+  field :ip_address, type: String
+  field :create_at, type: Time
   #过期时间
-  key :expired,     Time
+  field :expired, type: Time
 
   #关联的user
-  belongs_to :user
+  belongs_to :user, inverse_of: :sessions
+
+  index 'login_token' => 1
+
+  validates :login_token, presence: {with: true, message: 'Login token 必须存在。'}
 
   def self.create_with_user(user, options = {})
     if options.is_a? Hash
@@ -28,19 +32,16 @@ class Session
     hash = {
         :login_token => UUIDTools::UUID.timestamp_create.to_s.gsub('-',''),
         :expired => now + 3 * TIME_OF_YEAR,
-        :create_at => now
+        :create_at => now,
+        user: user
     }
     unless ip_address.nil?
       hash[:need_ip] = need_ip if need_ip
       hash[:ip_address] = ip_address
     end
     session = Session.new hash
-    if session.save
-      user.login_with_session session
-      session
-    else
-      nil
-    end
+    session.save!
+    session
   end
 
   def self.check_session(session, ip_address)

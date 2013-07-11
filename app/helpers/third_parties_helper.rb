@@ -26,7 +26,7 @@ module ThirdPartiesHelper
           return '' if tp.nil?
           if tp.expire?
             new_token = BaiduApi.refresh_token(tp.token, BAIDU_CLIENT)
-            tp.set(:token => new_token)
+            tp.update_attributes!(:token => new_token)
           end
           path = URI.decode path
           path.gsub!(BAIDU_ROOT_FOLDER, '')

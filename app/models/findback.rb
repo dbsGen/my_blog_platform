@@ -1,11 +1,13 @@
 class Findback
-  include MongoMapper::Document
+  include Mongoid::Document
 
   EXPIRE_TIME = 24*3600
 
-  key :token, String
-  key :expire, Time
+  field :token, type: String
+  field :expire, type: Time
   belongs_to :user
+
+  index :token => 1
 
   def self.rand_token(user)
     token = UUIDTools::UUID.timestamp_create.to_s.gsub '-', ''

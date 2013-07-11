@@ -4,7 +4,7 @@ module Account::NoticesHelper
     params = notice.params
     case notice.type
       when 'reply_comment'
-        comment = Comment.first(:id => params[:comment_id])
+        comment = Comment.where(id:params['comment_id']).first
         html << render(:partial => 'account/notices/reply', :locals => {
             :user => comment.creater,
             :comment => comment,
@@ -12,7 +12,7 @@ module Account::NoticesHelper
             :readed => notice.readed
         })
       when 'refer_comment'
-        comment = Comment.first(:id => params[:comment_id])
+        comment = Comment.where(id:params['comment_id']).first
         html << render(:partial => 'account/notices/comment', :locals => {
             :user => comment.creater,
             :comment => comment,
@@ -24,14 +24,14 @@ module Account::NoticesHelper
             :title => params[:title]
         })
       when 'refer_article'
-        article = Article.first(:id => params[:article_id])
+        article = Article.where(id:params['article_id']).first
         html << render(:partial => 'account/notices/article', :locals => {
             :user => article.creater,
             :article => article,
             :readed => notice.readed
         })
       when 'reply_article'
-        comment = Comment.first(:id => params[:comment_id])
+        comment = Comment.where(:id =>params['comment_id']).first
         html << render(:partial => 'account/notices/reply_article', :locals => {
             :user => comment.creater,
             :comment => comment,
@@ -43,7 +43,10 @@ module Account::NoticesHelper
             :readed => notice.readed
         })
     end
-    notice.set :readed => true
+    notice.readed = true
+    notice.save!
     raw html
+  rescue StandardError => _
+    ''
   end
 end

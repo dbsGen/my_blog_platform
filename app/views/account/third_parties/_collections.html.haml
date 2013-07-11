@@ -2,5 +2,5 @@
   - @files.each do |file|
     %li.files-box
       = tp_files_tag(file, @tp_id)
-  = javascript_tag do
-    $('.baidu_pic').tp_picture();
+= javascript_tag do
+  $.tpPicture('scan')

@@ -1,0 +1,19 @@
+// Place all the styles related to the account/blog controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+//= require article/pagination
+
+html,body {
+  height: 100%;
+}
+
+.full {
+  height: 100%;
+  overflow: auto;
+}
+
+#shower{
+  width: 100%;
+  height: 100%;
+  border: none;
+}

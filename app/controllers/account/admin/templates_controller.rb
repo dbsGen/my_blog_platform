@@ -5,13 +5,15 @@ class Account::Admin::TemplatesController < ApplicationController
   before_filter :require_admin, :enter_page
   before_filter :find_template, :only => [:destroy]
 
+  include Account::TemplatesHelper
+
   # 全部模板显示
   def index
     @title =  "#{t('admin.title')}>#{t('templates.label')}"
     per_page = params[:per_page] || 25
     @total_page = Template.all().count / per_page + 1
     @templates = Template.paginate(
-        :order    => :name.asc,
+        :sort     => :name.asc,
         :per_page => per_page,
         :page     => params[:page],
     )
@@ -28,7 +30,7 @@ class Account::Admin::TemplatesController < ApplicationController
     templates = Template.where :name => /#{params[:key]}/
     @total_page = templates.count / per_page + 1
     @templates = templates.paginate(
-        :order    => :name.asc,
+        :sort     => :name.asc,
         :per_page => per_page,
         :page     => params[:page],
     )
@@ -41,7 +43,7 @@ class Account::Admin::TemplatesController < ApplicationController
 
   def approve
     approve = params[:approve]
-    @template = Template.find_by_id params[:id]
+    @template = Template.find params[:id]
 
     if approve == 'true'
     #  通过批准，释放zip文件部署到服务器
@@ -77,8 +79,8 @@ class Account::Admin::TemplatesController < ApplicationController
   def destroy
     @key = dom_id(@template)
     zip_file = "#{CONFIG['zip_template_path']}/#{@template.name}-#{@template.version}.zip"
-    sp = @template.static_path
-    dp = @template.dynamic_path
+    sp = assets_path(@template, '/')
+    dp = TemplatePath.get @template
     if @template.destroy
       begin
         FileUtils.rm_f zip_file

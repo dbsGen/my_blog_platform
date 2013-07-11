@@ -5,13 +5,12 @@ require 'errors'
 #  @summary String 内容简介
 
 class ApplicationController < ActionController::Base
-  rescue_from SaveError, :with => :get_save_error
-  rescue_from MongoMapper::DocumentNotValid, :with => :get_save_error
+  rescue_from Errors::SaveError, Errors::MessageError, Mongoid::Errors::Validations, :with => :get_save_error
   before_filter :set_page_info, :page_code
 
   protect_from_forgery
 
-  helper_method :login?, :current_user, :saved_session, :remember_me?, :admin?, :user_with_domain
+  helper_method :login?, :current_user, :saved_session, :admin?, :user_with_domain
 
   def redis
     if @redis.nil?
@@ -41,30 +40,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # 是否勾选记住我
-  def remember_me?
-    r = cookies[:remember_me]
-    r.nil? ? false : r.to_i == 1
-  end
-
   #登录成功以后保存session
   def save_session(t_session)
-    cookies[:login_token] = t_session.login_token if remember_me?
-    session[:login_token] = t_session.login_token
+    cookies[:login_token] = {value: t_session.login_token, domain: ".#{CONFIG.main_domain}"}
   end
 
   def remove_session
-    cookies[:login_token] = nil
+    cookies.delete :login_token, domain: CONFIG.main_domain
     session[:login_token] = nil
   end
 
   def saved_session
-    token = session[:login_token]
-    if token.nil? #and remember_me?
-      token = cookies[:login_token]
-      session[:login_token] = token unless token.nil?
-    end
-    token
+    cookies[:login_token]
   end
 
   def user_from_saved
@@ -116,10 +103,7 @@ class ApplicationController < ActionController::Base
       redirect_to confirm_path unless current_user.confirm
     else
       store_location
-      flash[:information] = {message: t('must_login'),
-                             type: 'error',
-                             showCloseButton: true}
-      redirect_to login_url
+      redirect_to login_url(err: t('must_login'))
     end
   end
 
@@ -147,7 +131,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.json{render :text => p.to_json, :status => status, :layout => false}
       format.xml{render :text => p.to_xml, :status => status, :layout => false}
-      format.html{render :text => p.to_json, :status => status, :layout => false}
+      format.html{render_500}
     end
   end
 
@@ -171,7 +155,7 @@ class ApplicationController < ActionController::Base
       subdomain = request.subdomain
     end
 
-    d = Domain.find_by_word subdomain.nil? ? domain : "#{subdomain}.#{domain}"
+    d = Domain.where(word: (subdomain.nil? ? domain : "#{subdomain}.#{domain}")).first
     d.nil? ? nil : d.user
   end
 
@@ -182,10 +166,12 @@ class ApplicationController < ActionController::Base
 
   def get_save_error(e)
     case
-      when e.is_a?(SaveError)
+      when e.is_a?(Errors::SaveError)
         render_format(500, e.message)
-      when e.is_a?(MongoMapper::DocumentNotValid)
+      when e.is_a?(Mongoid::Errors::Validations)
         render_format(500, e.message.gsub('Validation failed: ', ''))
+      when e.is_a?(Errors::MessageError)
+        render_format 500, e.message
       else
 
     end

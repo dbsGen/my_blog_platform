@@ -49,6 +49,7 @@ zh:
   please_select_file_first: '请先选择文件!'
   set_domain: '设置域名'
   tags: '标签'
+  back_home: 返回首页
   like:
     label: '赞'
 
@@ -161,7 +162,7 @@ zh:
       pwd_placeholder: '不小于4个字符'
       email_placeholder: '用于找回密码'
 
-  mongo_mapper:
+  mongoid:
       errors:
         models:
           user:

@@ -1,5 +1,5 @@
 #需要使用的话需要在按钮上加上data-tp属性（baidu or youku），也可一加上data-tp-ext(文件类型). data-tp-path(文件夹目录)
-#= require verder/jquery.colorbox-min
+#= require vender/jquery.colorbox-min
 
 body_html = (title, type, ext, path, for_tag) ->
   for_tag = for_tag.replace(/"/g, '\'')
@@ -38,6 +38,7 @@ show_tp = (type, ext, path, for_tag) ->
     url: url
     success: (data) ->
 #        已经有三方登陆
+      data = eval("(#{data})")
       modal = $('#tp-modal')
       if modal.length == 0
         $('body').append(body_html(data.title, type, ext, path, for_tag))
@@ -158,6 +159,7 @@ f_ext_not_match = (ext) ->
     $.ajax(
       url: url
       success: (data) ->
+        data = eval("(#{data})")
         file = $('#tp-modal #file')
         progress = $('#tp-modal #progress')
         file.fileupload(

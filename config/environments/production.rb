@@ -7,6 +7,12 @@ BlogSystem::Application.configure do
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  config.action_controller.session :session_domain => '.myboka.com'
+  config.assets.precompile += %w(account/blog.css mingp-0.1.js account/templates.js users.js sessions.js)
+  config.assets.precompile += %w(home.css home.js account/setting.js account/settings.css search.js)
+  config.assets.precompile += %w(vender/colorbox.css vender/scrollpagination_myboka.js vender/jquery.colorbox-min.js)
+  config.assets.precompile += %w(account/admin/templates.js comments.js articles/edit.js account/blog.js)
+  config.assets.precompile += %w(account/admin/articles.js)
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false

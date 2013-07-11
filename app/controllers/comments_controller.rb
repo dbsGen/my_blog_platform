@@ -2,9 +2,9 @@ class CommentsController < ApplicationController
   before_filter :require_login, :only => [:create]
 
   def create
-    article = Article.first(:id => params[:article])
+    article = Article.where(:id => params[:article]).first
     return render_404 if article.nil?
-    reply_to = Comment.first(:id => params[:reply_to])
+    reply_to = Comment.where(:id => params[:reply_to]).first
 
     elements = params[:elements]
     es = []
@@ -46,5 +46,17 @@ class CommentsController < ApplicationController
     end
   rescue Exception => e
     render_format 500, e.to_s
+  end
+
+  def index
+    a_id = params[:a_id]
+    page = params[:page] || 1
+    per_page = params[:per_page] || 10
+    @article = Article.find a_id
+    return render_404 if @article.nil?
+    @comments = @article.comments.paginate :sort => :flood.desc,
+                                           :per_page => per_page,
+                                           :page => page
+    render layout: nil
   end
 end
