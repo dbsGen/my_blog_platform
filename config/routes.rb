@@ -27,6 +27,8 @@ BlogSystem::Application.routes.draw do
   get     'findback/t/:token' => 'Users#get_find_back',     :as => 'get_find_back'
   post    'findback/complete' => 'Users#complete_find_back',:as => 'complete_find_back'
   post    'blog/pagination'   => 'Main#blog',               :as => 'blog_pagination'
+  post    'followers/:id'     => 'Users#follow',            :as => 'followers'
+  delete  'followers/:id'     => 'Users#unfollow',          :as => 'followers'
   match   'search'  => 'Main#search', :as => 'main_search'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
@@ -80,9 +82,9 @@ BlogSystem::Application.routes.draw do
     delete 'third_parties/:type'        => 'ThirdParties#destroy',  :as => 'TP_delete'
     get 'third_parties/upload_url/:type'  => 'ThirdParties#upload_url',     :as => 'upload_url'
     post 'domain/host/set'        => 'Settings#set_host_domain',    :as => 'set_host_domain'
-    post 'notices'                => 'Notices#index'
-    get 'blog/edit'       => 'Blog#edit',     :as => 'edit_blog'
-    post 'blog/submit'     => 'Blog#submit',  :as => 'submit_blog'
+    post 'notices'      => 'Notices#index'
+    get 'blog/edit'     => 'Blog#edit',     :as => 'edit_blog'
+    post 'blog/submit'  => 'Blog#submit',  :as => 'submit_blog'
 
     resources :articles
     resources :templates, :only => [:index, :show, :create]

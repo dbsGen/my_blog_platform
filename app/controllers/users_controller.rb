@@ -2,7 +2,7 @@ require 'third_parties_api/mingp_api'
 
 class UsersController < ApplicationController
   before_filter :require_no_login, :only => [:create, :new]
-  before_filter :require_login, :only => [:update, :confirm]
+  before_filter :require_login, :only => [:update, :confirm, :follow]
   before_filter :require_no_confirm, only: [:confirm]
   before_filter :check_find_back, only: [:get_find_back]
 
@@ -143,6 +143,21 @@ class UsersController < ApplicationController
       end
 
     end
+  end
+
+  # 好友
+  def follow
+    @user = User.find(params[:id])
+    @url = params[:url]
+    Notice.add_like_from_user @user, current_user
+    current_user.follow @user
+  end
+
+  def unfollow
+    @user = User.find(params[:id])
+    @url = params[:url]
+    current_user.unfollow @user
+    render template: 'users/follow', layout: nil
   end
 
   protected

@@ -33,10 +33,17 @@
                 %ul.extend-list
                   %li
                     %a{href: account_settings_path}= t('profiles')
+                  - unless current_user.host_domain.nil?
+                    %li
+                      %a{href: "http://#{current_user.host_domain.word}.#{CONFIG.home_domain.first}"} 我的博客
                   %li
                     = link_to(t('logout'), logout_path, method: 'delete')
               %br/
               %span.description= current_user.summary
+              %a.button.public-button#notice-count{href: account_notices_path, style: 'display: none'}
+                .badge
+                %span.icon-mail-2
+                消息
               %a.button.public-button{href: new_account_article_path}= t('articles.new')
           - else
             .sign-up

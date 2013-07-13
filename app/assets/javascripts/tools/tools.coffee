@@ -1,3 +1,5 @@
+#= require tools/follow
+
 try
   Messenger.options = {
     extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
@@ -5,6 +7,15 @@ try
   }
 catch error
   alert "Get a error..\n#{error}"
+
+window.onhashchange = ->
+  hash = window.location.hash
+  if hash.match(/^#method:/)
+    try
+      eval(hash.replace(/^#method:/, ''))
+    catch e
+      console.error(e)
+    window.location.hash = null
 
 
 @encrypt_password = (s) ->

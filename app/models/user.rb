@@ -34,7 +34,11 @@ class User
   #关联的三方登录状态
   has_many :third_parties
   has_many :domains
-  embeds_many :notices
+  embeds_many :notices do
+    def check_for_key(key)
+      where(key: key).count > 0
+    end
+  end
 
   attr_accessor :password
 
@@ -44,6 +48,9 @@ class User
   has_and_belongs_to_many :show_articles, class_name: 'Article'
 
   has_and_belongs_to_many :usable_templates, class_name: 'Template'
+
+  has_and_belongs_to_many :followers, class_name: 'User'
+  has_and_belongs_to_many :following, class_name: 'User'
 
   has_many :comments, class_name: 'Comment', inverse_of: :creater
   has_one :using_blog_template, class_name: 'Template'
@@ -228,5 +235,19 @@ class User
   def templates_of_type(type)
     templates = usable_templates_and_check
     templates.reject{|t| t.type != type}
+  end
+
+  def follow(o_user)
+    following << o_user
+    o_user.followers << self
+  end
+
+  def unfollow(o_user)
+    following.delete o_user
+    o_user.followers.delete self
+  end
+
+  def follow?(o_user)
+    following.include? o_user
   end
 end

@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  helper_method :login?, :current_user, :saved_session, :admin?, :user_with_domain
+  helper_method :login?, :current_user, :saved_session, :admin?, :user_with_domain, :expire_fragment_
+
+  def expire_fragment_(key, options = nil)
+    expire_fragment(key, options)
+  end
 
   def redis
     if @redis.nil?

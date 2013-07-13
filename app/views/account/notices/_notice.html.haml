@@ -1,3 +1,4 @@
 - if !header
-  .notice-box{'pagination-key' => object.created_at}
-    = notice_box_tag(object)
+  - cache object do
+    .notice-box{'pagination-key' => object.created_at}
+      = notice_box_tag(object)

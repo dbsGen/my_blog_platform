@@ -435,6 +435,9 @@ $hover-color: mediumvioletred
       display: none
       position: absolute
       list-style: none
+      z-index: 13
+      a
+        display: block
   .user-info
     padding: 10px
     .avatar
@@ -483,6 +486,19 @@ $hover-color: mediumvioletred
       display: block
       font-size: 20px
       text-align: center
+      position: relative
+      .badge
+        font-size: 12px
+        border-radius: 20px
+        padding: 1px 5px
+        background-color: red
+        border: 2px solid #ffffff
+        position: absolute
+        right: -6px
+        top: -6px
+        display: block
+        box-shadow: 0 0 2px $gray-color
+        -moz-box-shadow: 0 0 2px $gray-color
   .radius-box
     border-radius: 3px
     box-shadow: 0 1px 2px $gray-color

@@ -1,0 +1,7 @@
+.notice-header
+  - unless readed
+    %span.label-important.label New
+  -#TODO 需要补全link
+  关注
+.notice-body
+  = raw "#{name_tag(user)}关注了你。"

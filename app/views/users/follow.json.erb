@@ -1,0 +1,6 @@
+{
+    "status": 200,
+    "selector": "[mp-email='<%= @user.email %>']",
+    "replace": "<%= json_escape Base64.strict_encode64(follow_button(@user, @url)) %>",
+    "replaceName": "<%= json_escape name_with_heart(@user) %>"
+}

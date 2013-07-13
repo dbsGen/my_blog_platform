@@ -80,12 +80,13 @@ function start_count(){
   $.ajax({
     url:'#{account_unread_count_path('json')}',
     success: function(data){
+      data = eval("("+ data +")")
       if (data.count > 0) {
         $('#notice-count').fadeIn();
-        $('#notice-badge').html("<i class='icon-envelope icon-white'></i>" + data.count);
+        $('#notice-count').children('.badge').text(data.count);
       }else {
         $('#notice-count').fadeOut();
-        $('#notice-badge').text(data.count);
+        $('#notice-count').children('.badge').text(data.count);
       }
     }
   });
@@ -110,7 +111,22 @@ setInterval('start_count()',30000);
 
   def name_tag(user)
     return '没有这个用户' if user.nil?
-    link_to(user.nickname, '#', 'mp-email' => user.email)
+    if current_user.nil?
+      h = nil
+    else
+      h = escape_once follow_button(user)
+    end
+    name = name_with_heart(user)
+    link_to(name, '#', 'mp-email' => user.email, 'mp-display' => h)
+  end
+
+  def follow_button(user, url = nil)
+    f = current_user.follow?(user) ? 'unfollow' : 'follow'
+    raw "<button style='background:none;border:none;' onclick='parent.location=\"#{url||request.url}#method:#{f}(\\\"#{user.id}\\\")\"'><img height='13px' src='http://#{request.host}/images/#{f}.png'></button>"
+  end
+
+  def name_with_heart(user)
+    current_user.follow?(user) ? raw("#{user.nickname}<span class='icon-heart' style='color:red'></span>") : user.nickname
   end
 
   def avatar_tag(user)
