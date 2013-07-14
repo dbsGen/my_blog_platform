@@ -1,0 +1,19 @@
+= javascript_include_tag 'account/followers'
+.form-horizontal
+  %section
+    %fieldset
+      %legend 关系
+      .navbar
+        .navbar-inner
+          .btn-group.pull-left.tab-group
+            %button.btn.active{for: 'following'} 关注
+            %button.btn{for: 'followers'} 跟随者
+          .search-bar
+            .navbar-search.pull-right{'search-url' => account_relations_following_path, for: 'following'}
+              = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+              %i.icon-search.disable#search-icon
+            .navbar-search.pull-right{'search-url' => account_relations_followers_path, for: 'followers', style: 'display: none'}
+              = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+              %i.icon-search.disable#search-icon
+    #following
+    #followers{style: 'display: none'}

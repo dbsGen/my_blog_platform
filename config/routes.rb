@@ -85,6 +85,9 @@ BlogSystem::Application.routes.draw do
     post 'notices'      => 'Notices#index'
     get 'blog/edit'     => 'Blog#edit',     :as => 'edit_blog'
     post 'blog/submit'  => 'Blog#submit',  :as => 'submit_blog'
+    get 'relations'     => 'Followers#index', :as => 'relations'
+    get 'relations/followers' => 'Followers#followers', as: 'relations_followers'
+    get 'relations/following' => 'Followers#following', as: 'relations_following'
 
     resources :articles
     resources :templates, :only => [:index, :show, :create]

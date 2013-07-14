@@ -19,6 +19,7 @@
 #= require messenger-theme-future
 #= require tools/autoExec
 #= require third_party/jquery_extend
+#= require tools/tab
 
 
 try

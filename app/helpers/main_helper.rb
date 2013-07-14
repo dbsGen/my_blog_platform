@@ -113,10 +113,11 @@ setInterval('start_count()',30000);
     return '没有这个用户' if user.nil?
     if current_user.nil?
       h = nil
+      name = user.nickname
     else
       h = escape_once follow_button(user)
+      name = name_with_heart(user)
     end
-    name = name_with_heart(user)
     link_to(name, '#', 'mp-email' => user.email, 'mp-display' => h)
   end
 

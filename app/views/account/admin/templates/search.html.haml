@@ -1,0 +1,5 @@
+= render :partial => 'layouts/content',
+         :locals => {:partial => 'account/admin/templates/template',
+                     :objects => @templates,
+                     :page => params[:page],
+                     :total_page => @total_page}

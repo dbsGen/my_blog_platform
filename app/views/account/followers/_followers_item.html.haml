@@ -1,0 +1,11 @@
+- if header
+  %tr
+    %th= t('ID')
+    %th= t('nickname')
+    %th= t('admin.actions')
+- else
+  %tr.follower{:id => dom_id(object)}
+    %td= object.name
+    %td= name_tag object
+    %td
+      %button#follow-button{href: followers_path(object.id), method: 'delete'} 取消关注

@@ -14,7 +14,8 @@ class Account::Admin::UsersController < ApplicationController
     )
     respond_to do |format|
       format.html
-      format.js {render :template => 'account/admin/users/search'}
+      format.js {render :template => 'account/admin/users/search'
+      }
     end
   end
 
@@ -28,10 +29,7 @@ class Account::Admin::UsersController < ApplicationController
       :page     => params[:page],
     )
     @total_page = users.count / per_page + 1
-    respond_to do |format|
-      format.html {render :template => 'account/admin/users/index'}
-      format.js
-    end
+    render layout: nil
   end
 
   def show

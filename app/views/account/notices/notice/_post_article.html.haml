@@ -1,0 +1,7 @@
+.notice-header
+  - unless readed
+    %span.label-important.label New
+  -#TODO 需要补全link
+  = raw "#{name_tag user}发布了一篇文章 #{link_to(article.title, article_path(article))}"
+.notice-body
+  = article.summary {|content| text = strip_tags(content); text.length > 250 ? "#{text[0..250]}..." : text}

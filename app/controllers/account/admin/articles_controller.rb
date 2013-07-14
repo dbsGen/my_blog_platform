@@ -20,10 +20,7 @@ class Account::Admin::ArticlesController < ApplicationController
         :page     => page,
     )
     @total_page = articles.count / per_page + 1
-    respond_to do |format|
-      format.html {render :template => 'account/admin/articles/index'}
-      format.js
-    end
+    render layout: nil
   end
 
   def index
@@ -37,7 +34,8 @@ class Account::Admin::ArticlesController < ApplicationController
     )
     respond_to do |format|
       format.html
-      format.js {render :template => 'account/admin/articles/search'}
+      format.js {render :template => 'account/admin/articles/search'
+      }
     end
   end
 
@@ -115,10 +113,7 @@ class Account::Admin::ArticlesController < ApplicationController
                               page: page,
                               per_page: per_page
     end
-    respond_to do |format|
-      format.html {render :template => 'account/admin/articles/index'}
-      format.js {render :template => 'account/admin/articles/search'}
-    end
+    render template: 'account/admin/articles/search', layout: nil
   end
 
   def recommend_group

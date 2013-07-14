@@ -19,7 +19,8 @@ class Account::Admin::TemplatesController < ApplicationController
     )
 
     respond_to do |format|
-      format.js {render :template => 'account/admin/templates/search'}
+      format.js {render :template => 'account/admin/templates/search'
+      }
       format.html
     end
   end
@@ -34,11 +35,7 @@ class Account::Admin::TemplatesController < ApplicationController
         :per_page => per_page,
         :page     => params[:page],
     )
-
-    respond_to do |format|
-      format.js
-      format.html {render :template => 'account/admin/templates/index'}
-    end
+    render layout: nil
   end
 
   def approve

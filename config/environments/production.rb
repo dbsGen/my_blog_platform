@@ -12,7 +12,7 @@ BlogSystem::Application.configure do
   config.assets.precompile += %w(home.css home.js account/setting.js account/settings.css search.js)
   config.assets.precompile += %w(vender/colorbox.css vender/scrollpagination_myboka.js vender/jquery.colorbox-min.js)
   config.assets.precompile += %w(account/admin/templates.js comments.js articles/edit.js account/blog.js)
-  config.assets.precompile += %w(account/admin/articles.js)
+  config.assets.precompile += %w(account/admin/articles.js account/followers.js)
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false

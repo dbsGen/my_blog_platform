@@ -106,6 +106,7 @@ $(document).ready ->
     btn = $(this)
     submit(btn,'put',
     (data) ->
+      data = JSON.parse(data)
       Messenger().post(data.msg)
       btn.attr('disabled', false)
     ,

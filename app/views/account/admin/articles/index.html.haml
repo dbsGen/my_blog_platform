@@ -1,8 +1,3 @@
-= javascript_tag do
-  this.all_search_path = this.search_path = "#{account_admin_search_articles_path}";
-  this.all_url = this.source_url = "#{request.url}";
-  this.recommend_url = "#{account_admin_recommend_articles_url}"
-  this.recommend_search_path = "#{account_admin_recommend_articles_path}"
 = javascript_include_tag 'account/admin/articles'
 .form-horizontal
   %section
@@ -18,13 +13,17 @@
               %i.icon-thumbs-up
               推荐的
           .search-bar
-            .navbar-search.pull-right
+            .navbar-search.pull-right{'search-url' => account_admin_search_articles_path, for: 'content'}
               = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
               %i.icon-search.disable#search-icon
-
-      = render :partial => 'layouts/content',
-               :locals => {:partial => 'account/admin/articles/article',
-                           :objects => @articles,
-                           :page => params[:page],
-                           :total_page => @total_page,
-                           :per_page => 10}
+            .navbar-search.pull-right{'search-url' => account_admin_recommend_articles_path, for: 'recommend-content', style: 'display: none'}
+              = text_field_tag 'search-text', '', :placeholder => t('search'), :class => 'search-query'
+              %i.icon-search.disable#search-icon
+      #content
+        = render :partial => 'layouts/content',
+                 :locals => {:partial => 'account/admin/articles/article',
+                             :objects => @articles,
+                             :page => params[:page],
+                             :total_page => @total_page,
+                             :per_page => 10}
+      #recommend-content

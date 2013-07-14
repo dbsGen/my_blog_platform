@@ -12,14 +12,14 @@
           -#          account_admin_default_templates_path,
           -#          :class => 'btn pull-left'
           .search-bar
-            .navbar-search.pull-right
+            .navbar-search.pull-right{'search-url' => account_admin_search_templates_path, for: 'content'}
               = text_field_tag 'search-text', '',
                                :placeholder => t('search'),
                                :class => 'search-query'
               %i.icon-search.disable#search-icon
-
-      = render :partial => 'layouts/content',
-               :locals => {:partial => 'account/admin/templates/template',
-                           :objects => @templates,
-                           :page => params[:page],
-                           :total_page => @total_page}
+      #content
+        = render :partial => 'layouts/content',
+                 :locals => {:partial => 'account/admin/templates/template',
+                             :objects => @templates,
+                             :page => params[:page],
+                             :total_page => @total_page}

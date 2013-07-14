@@ -9,26 +9,32 @@ ActiveClass = 'active'
 $(document).ready ->
   $('#recommend').click ->
     $this = $(this)
-    $this.attr('disabled', true)
     if $this.hasClass(ActiveClass)
       $this.removeClass(ActiveClass)
-      window.source_url = window.all_url
-      window.search_path = window.all_search_path
-      $.ajax_q(
-        url: "#{window.all_url}.js"
-        success: (data) ->
-          eval(data)
-        complete: ->
-          $this.removeAttr('disabled')
-      )
+      $('[for="recommend-content"]').hide()
+      $('#recommend-content').hide()
+      $('[for="content"]').show()
+      $('#content').show()
+      $('#recommend-content-result').hide()
+      $('#content-result').hide()
     else
       $this.addClass(ActiveClass)
-      window.source_url = window.recommend_url
-      window.search_path = window.recommend_search_path
-      $.ajax_q(
-        url: "#{window.recommend_url}.js"
-        success: (data) ->
-          eval(data)
-        complete: ->
-          $this.removeAttr('disabled')
-      )
+      $('[for="content"]').hide()
+      $('#content').hide()
+      $('#recommend-content-result').hide()
+      $('#content-result').hide()
+      rc = $('#recommend-content')
+      rs = $('[for="recommend-content"]')
+      rc.show()
+      rs.show()
+      if rc.html().trim() == ''
+        $.ajax(
+          url: rs.attr('search-url')
+          success: (data) ->
+            rc.html(data)
+          error: ->
+            Messenger().post(
+              type: 'error'
+              message: '获取推荐失败！'
+            )
+        )

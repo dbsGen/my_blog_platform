@@ -56,8 +56,13 @@ class Account::ArticlesController < ApplicationController
     logger.info "####Insert it to user #{current_user}"
     current_user.insert_article article
     if article.save
+      # 添加应用消息
       notice_to.each do |_, v|
         Notice.add_notice_from_refer_article(v, article)
+      end
+      # 添加关注者的消息
+      current_user.followers.each do |user|
+        Notice.add_article user, article
       end
       render_format 200, :msg => t('articles.post.success'), :redirect_url => article_path(article)
     else
@@ -81,6 +86,7 @@ class Account::ArticlesController < ApplicationController
 
   def show
     @title = t('articles.show.edit_label')
+    @templates = current_user.content_templates
   end
 
   def search
@@ -92,10 +98,7 @@ class Account::ArticlesController < ApplicationController
         :page     => params[:page],
     )
     @total_page = articles.count / per_page + 1
-    respond_to do |format|
-      format.html {render :template => 'account/articles/index'}
-      format.js
-    end
+    render layout: nil
   end
 
   def index
@@ -110,7 +113,8 @@ class Account::ArticlesController < ApplicationController
     )
     respond_to do |format|
       format.html
-      format.js {render :template => 'account/articles/search'}
+      format.js {render :template => 'account/articles/search'
+      }
     end
   end
 
@@ -129,12 +133,7 @@ class Account::ArticlesController < ApplicationController
     return raise Errors::MessageError.new('内容不能为空') if s == 0
     s.times do |i|
       d = elements[i.to_s]
-      tn = d['template_name']
-      c = d['content']
-      template = Template.where(:name => tn).first
-      raise 'Temp not found' if template.nil?
-      element = Element.new(:content => c, :template => template)
-      es << element
+      es << Element.create_with_params(d)
     end
     @article.title = params[:title]
     @article.edited_at = Time.now

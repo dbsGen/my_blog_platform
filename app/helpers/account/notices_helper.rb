@@ -43,6 +43,16 @@ module Account::NoticesHelper
             :user => user,
             :readed => notice.readed
         })
+      when 'article'
+        article = Article.find params['article_id']
+        html << render(
+            partial: 'account/notices/notice/post_article',
+            locals: {
+                :user => article.creater,
+                :article => article,
+                :readed => notice.readed
+            }
+        )
       else
         html << render(:partial => 'account/notices/notice/other'   , :locals => {
             :notice => notice,
